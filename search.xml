@@ -67,8 +67,8 @@
         <category>Android</category>
       </categories>
       <tags>
-        <tag>Android</tag>
         <tag>Android Studio</tag>
+        <tag>Android</tag>
       </tags>
   </entry>
   <entry>
@@ -133,6 +133,17 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[网络]]></title>
+    <url>%2F2018%2F02%2F02%2F2018%2F%E7%BD%91%E7%BB%9C%2F</url>
+    <content type="text"><![CDATA[关于网络的问题总结在这里。 常见问题 OSI与TCP/IP各层的结构与功能，都有哪些协议。 TCP与UDP的区别。 TCP报文结构。 TCP的三次握手与四次挥手过程，各个状态名称与含义，TIMEWAIT的作用。 TCP协议中的三次握手和四次挥手(图解) TCP拥塞控制。 TCP滑动窗口与回退N针协议。 Http的报文结构。 Http的状态码含义。 Http request的几种类型。 Http1.1和Http1.0的区别 Http怎么处理长连接。 Cookie与Session的作用于原理。 电脑上访问一个网页，整个过程是怎么样的：DNS、HTTP、TCP、OSPF、IP、ARP。 Ping的整个过程。ICMP报文是什么。 C/S模式下使用socket通信，几个关键函数。 IP地址分类。 路由器与交换机区别。 网络其实大体分为两块，一个TCP协议，一个HTTP协议，只要把这两块以及相关协议搞清楚，一般问题不大。 相关链接TCP/IP详解学习笔记 这位仁兄写得太好了 TCP 的那些事儿（上） TCP 的那些事儿（下）]]></content>
+      <categories>
+        <category>网络</category>
+      </categories>
+      <tags>
+        <tag>TCP/IP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Android音视频开发]]></title>
     <url>%2F2018%2F02%2F02%2F2018%2FAndroid%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91%2F</url>
     <content type="text"><![CDATA[Android音视频开发的总结和学习资料。 Android硬解接口Android MediaCodec stuff 播放器ExoPlayerexo use his own mediaExtractor ijkPlayer学习资料Android视频开发进阶(part1-关于视频的那些术语) Android视频开发进阶(part2-MP4文件的解析) Android视频开发进阶(part3-Android的Media API) Android视频开发进阶(part5-ExoPlayer分析1，ExoPlayer的handler) 视频特效性能比肩美拍秒拍的Android视频录制编辑特效解决方案 它山之石小咖秀的视频处理android平台短视频技术之 视频编辑的经验分享性能比肩美拍秒拍的Android视频录制编辑特效解决方案Android视频录制app解决方案汇总短视频处理方案概述FFmepg性能限制 可以攻玉NexEditor SDK蓝松科技SDK锐动天地 竞品分析Top10 Android Video Editing Apps FilmoraFilmora Effects Store OpenGLAndroid OpenGLOpenGL canvasAndroid弹幕-OpenGLA real OpenGL ES 2.0 2D tutorial part安卓OpenGL ES 2.0入门-1安卓OpenGL ES 2.0入门-2OpenGL学习文档OpenGL ES Android lessonOpenGL ES 学习笔记OpenGL播放视频学习OpenGL之类比画画OpenGL ES 学习博客OpenGL tutorialAndroid OpenGL基础入门 GLSL语言GLSL中文手册GLSL语言 其他图像技术在直播中的应用 直播Android中直播视频技术探究之—-摄像头Camera视频源数据采集解析Android中直播视频技术探究之–基础知识Android中直播视频技术探究之–ByteBuffer解析 Android平台美颜相机/Camera实时滤镜/视频编解码/影像后期/人脸技术探索——系统总体设计Android平台美颜相机、实时滤镜、人脸技术探秘Android中直播视频技术探究–基础知识大纲介绍ffmpeg 命令视频应用OpenGL概述 Android 高性能图形处理 StackOverFlowdisplay-two-videos-together-then-output-as-a-merged-video-on-a-single-screen play-video-with-openglES]]></content>
@@ -142,18 +153,6 @@
       <tags>
         <tag>Android</tag>
         <tag>音视频</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Android样式开发]]></title>
-    <url>%2F2018%2F02%2F02%2F2018%2FAndroid%E6%A0%B7%E5%BC%8F%E5%BC%80%E5%8F%91%2F</url>
-    <content type="text"><![CDATA[Android自定义样式开发参考。 Android样式的开发:shape篇 Android样式的开发:selector篇 Android样式的开发:layer-list篇 Android样式的开发:drawable汇总篇 Android样式的开发:View Animation篇 Android样式的开发:Property Animation篇 Android样式的开发:Style篇 转载自Keegan小钢 原文链接：http://keeganlee.me/post/android/20150830]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>Android自定义样式</tag>
       </tags>
   </entry>
   <entry>
@@ -169,17 +168,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[网络]]></title>
-    <url>%2F2018%2F02%2F02%2F2018%2F%E7%BD%91%E7%BB%9C%2F</url>
-    <content type="text"><![CDATA[关于网络的问题总结在这里。 常见问题 OSI与TCP/IP各层的结构与功能，都有哪些协议。 TCP与UDP的区别。 TCP报文结构。 TCP的三次握手与四次挥手过程，各个状态名称与含义，TIMEWAIT的作用。 TCP协议中的三次握手和四次挥手(图解) TCP拥塞控制。 TCP滑动窗口与回退N针协议。 Http的报文结构。 Http的状态码含义。 Http request的几种类型。 Http1.1和Http1.0的区别 Http怎么处理长连接。 Cookie与Session的作用于原理。 电脑上访问一个网页，整个过程是怎么样的：DNS、HTTP、TCP、OSPF、IP、ARP。 Ping的整个过程。ICMP报文是什么。 C/S模式下使用socket通信，几个关键函数。 IP地址分类。 路由器与交换机区别。 网络其实大体分为两块，一个TCP协议，一个HTTP协议，只要把这两块以及相关协议搞清楚，一般问题不大。 相关链接TCP/IP详解学习笔记 这位仁兄写得太好了 TCP 的那些事儿（上） TCP 的那些事儿（下）]]></content>
-      <categories>
-        <category>网络</category>
-      </categories>
-      <tags>
-        <tag>TCP/IP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[Git]]></title>
     <url>%2F2018%2F02%2F02%2F2018%2FGit%2F</url>
     <content type="text"><![CDATA[总结使用Git遇到的问题。 Github如何同步 Github fork 出来的分支]]></content>
@@ -191,6 +179,18 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[Android样式开发]]></title>
+    <url>%2F2018%2F02%2F02%2F2018%2FAndroid%E6%A0%B7%E5%BC%8F%E5%BC%80%E5%8F%91%2F</url>
+    <content type="text"><![CDATA[Android自定义样式开发参考。 Android样式的开发:shape篇 Android样式的开发:selector篇 Android样式的开发:layer-list篇 Android样式的开发:drawable汇总篇 Android样式的开发:View Animation篇 Android样式的开发:Property Animation篇 Android样式的开发:Style篇 转载自Keegan小钢 原文链接：http://keeganlee.me/post/android/20150830]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>Android自定义样式</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[重构之道]]></title>
     <url>%2F2018%2F01%2F19%2F2018%2F%E9%87%8D%E6%9E%84%E4%B9%8B%E9%81%93%2F</url>
     <content type="text"><![CDATA[业务快速的迭代很容易令开发工作变快变糙变莽(技术水平未达标也是原因之一)， 一次改版可能要对原有的代码做侵入式修改，而根据开/闭原则，这是不可接受的。 旧问题 由于设计欠缺优雅性导致功能扩展性差 缺少单元测试无法保证程序的鲁棒性 业务，逻辑和UI的代码耦合严重 目标 业务层，逻辑层和UI层分离 易于业务扩展 添加单元测试 支持只使用Fragment 方案 使用MVP模式 只依赖support v4，v7 通过接口和抽象类进行依赖反转 使用Junit+Mokito+Espresso做测试 相关链接哔哩哔哩Android客户端—-多媒体选择器boxing开源 用组合代替继承能为 Activity 带来什么 如何编写更棒的代码：11个核心要点]]></content>
@@ -199,8 +199,8 @@
       </categories>
       <tags>
         <tag>Android</tag>
-        <tag>优化</tag>
         <tag>Java</tag>
+        <tag>优化</tag>
       </tags>
   </entry>
   <entry>
@@ -281,8 +281,8 @@
       </categories>
       <tags>
         <tag>Android</tag>
-        <tag>优化</tag>
         <tag>Java</tag>
+        <tag>优化</tag>
       </tags>
   </entry>
   <entry>
@@ -333,6 +333,17 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[Android持久化数据的解决方案]]></title>
+    <url>%2F2017%2F04%2F26%2F2017%2FAndroid%E6%8C%81%E4%B9%85%E5%8C%96%E6%95%B0%E6%8D%AE%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%2F</url>
+    <content type="text"><![CDATA[关于Android持久化数据的解决方法和设计模式 三种方式Android系统中主要提供了三种方式用于简单地实现数据持久化功能，即文件存储、SharedPreference存储以及数据库存储。 文件存储 SharedPreference存储 数据库存储 设计模式三种存储方式各有利弊，针对不同的业务需求可以采用不同的方案。总结一下，这三种方式其实都实现了增删改查的接口，这样我们就可以抽象出一个接口出来而不用关心具体存储方式的实现。 上代码： 12345678910111213141516171819/** * 持久化数据存储接口 * 提供持久化数据的增删改查 */public interface ILocalDataManager&lt;T&gt; &#123; // 增 void insert(T t); // 删 void delete(int number); // 改 void update(T t); // 查 T get(int number);&#125; 对于具体存储方式的实现就是实现这个接口 12345678910111213141516171819202122232425/** * 序列化保存文件方式 */public class SerialDataManager&lt;T&gt; implements ILocalDataManager&lt;T&gt; &#123; @Override public void insert(T t) &#123; &#125; @Override public void delete(int number) &#123; &#125; @Override public void update(T t) &#123; &#125; @Override public T get(int number) &#123; return null; &#125;&#125; 然后使用的时候就是这样的 12345678// 父类对象指向子类引用ILocalDataManager mDataManager = new SerialDataManager();Object object = new Object();int id = object.getId();mDataManager.insert(object);mDataManager.delete(id);mDataManager.update(object);Object findObject = mDataManager.get(id);]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[targetSdkVersion的使用]]></title>
     <url>%2F2017%2F04%2F26%2F2017%2FtargetSdkVersion%E7%9A%84%E4%BD%BF%E7%94%A8%2F</url>
     <content type="text"><![CDATA[Android targetSdkVersion的使用，以及Android如何保障兼容性。 转自：Android targetSdkVersion 原理 前几天 Google 官方发布文章解析 compileSdkVersion、minSdkVersion 以及 targetSdkVersion 的含义，以及合理设置各个值的意义，原文 Picking your compileSdkVersion, minSdkVersion, and targetSdkVersion（后面简称 “原文”），还有翻译版。 其中，compileSdkVersion 和 minSdkVersion 都非常好理解，前者表示编译的 SDK 版本，后者表示应用兼容的最低 SDK 版本。但是对于 targetSdkVersion 其实很难一句话解析清楚，原文用了“万能”的词 —— interesting 来描述。以前我也有一些迷糊，看到有些人和我有同样的困惑，本文试图彻底解决这个问题。 原文是这么说的： targetSdkVersion is the main way Android provides forward compatibility targetSdkVersion 是 Android 系统提供前向兼容的主要手段。这是什么意思呢？随着 Android 系统的升级，某个系统的 API 或者模块的行为可能会发生改变，但是为了保证老 APK 的行为还是和以前兼容。只要 APK 的 targetSdkVersion 不变，即使这个 APK 安装在新 Android 系统上，其行为还是保持老的系统上的行为，这样就保证了系统对老应用的前向兼容性。 这里还是用原文的例子，在 Android 4.4 (API 19）以后，AlarmManager 的 set() 和 setRepeat() 这两个 API 的行为发生了变化。在 Android 4.4 以前，这两个 API 设置的都是精确的时间，系统能保证在 API 设置的时间点上唤醒 Alarm。因为省电原因 Android 4.4 系统实现了 AlarmManager 的对齐唤醒，这两个 API 设置唤醒的时间，系统都对待成不精确的时间，系统只能保证在你设置的时间点之后某个时间唤醒。 这时，虽然 API 没有任何变化，但是实际上 API 的行为却发生了变化，如果老的 APK 中使用了此 API，并且在应用中的行为非常依赖 AlarmManager 在精确的时间唤醒，例如闹钟应用。如果 Android 系统不能保证兼容，老的 APK 安装在新的系统上，就会出现问题。 Android 系统是怎么保证这种兼容性的呢？这时候 targetSdkVersion 就起作用了。APK 在调用系统 AlarmManager 的 set() 或者 setRepeat() 的时候，系统首先会查一下调用的 APK 的 targetSdkVersion 信息，如果小于 19，就还是按照老的行为，即精确设置唤醒时间，否者执行新的行为。 我们来看一下 Android 4.4 上 AlarmManger 的一部分源代码： 1234567private final boolean mAlwaysExact; AlarmManager(IAlarmManager service, Context ctx) &#123; mService = service; final int sdkVersion = ctx.getApplicationInfo().targetSdkVersion; mAlwaysExact = (sdkVersion &lt; Build.VERSION_CODES.KITKAT);&#125; 看到这里，首选获取应用的 targetSdkVersion，判断是否是小于 Build.VERSION_CODES.KITKAT (即 API Level 19)，来设置 mAlwaysExact 变量，表示是否使用精确时间模式。 12345678910public static final long WINDOW_EXACT = 0; public static final long WINDOW_HEURISTIC = -1;private long legacyExactLength() &#123; return (mAlwaysExact ? WINDOW_EXACT : WINDOW_HEURISTIC);&#125;public void set(int type, long triggerAtMillis, PendingIntent operation) &#123; setImpl(type, triggerAtMillis, legacyExactLength(), 0, operation, null);&#125; 这里看到，直接影响到 set() 方法给 setImpl() 传入不同的参数，从而影响到了 set() 的执行行为。具体的实现在 AlarmManagerService.java，这里就不往下深究了。 看到这里，发现其实 Android 的 targetSdkVersion 并没有什么特别的，系统使用它也非常直接，甚至很“粗糙”。仅仅是用过下面的 API 来获取 targetSdkVersion，来判断是否执行哪种行为： 1getApplicationInfo().targetSdkVersion; 所以，我们可以猜测到，如果 Android 系统升级，发生这种兼容行为的变化时，一般都会在原来的保存新旧两种逻辑，并通过 if-else 方法来判断执行哪种逻辑。果然，在源码中搜索，我们会发现不少类似 getApplicationInfo().targetSdkVersion &lt; Buid.XXXX 这样的代码，相对于浩瀚的 Android 源码量来说，这些还是相对较少了。其实原则上，这种会导致兼容性问题的修改还是越少越好，所以每次发布新的 Android 版本的时候，Android 开发者网站都会列出做了哪些改变，在这里，开发者需要特别注意。 最后，我们也可以理解原文中说的那句话的含义，明白了为什么修改了 APK 的 targetSdkVersion 行为会发生变化，也明白了为什么修改 targetSdkVersion 需要做完整的测试了。 写完这篇文章，再回头去看一下原文的 targetSdkVersion 那一段，发现作者是说的多么“滴水不漏”。]]></content>
@@ -342,17 +353,6 @@
       <tags>
         <tag>Android</tag>
         <tag>targetSdkVersion</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Android持久化数据的解决方案]]></title>
-    <url>%2F2017%2F04%2F26%2F2017%2FAndroid%E6%8C%81%E4%B9%85%E5%8C%96%E6%95%B0%E6%8D%AE%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%2F</url>
-    <content type="text"><![CDATA[关于Android持久化数据的解决方法和设计模式 三种方式Android系统中主要提供了三种方式用于简单地实现数据持久化功能，即文件存储、SharedPreference存储以及数据库存储。 文件存储 SharedPreference存储 数据库存储 设计模式三种存储方式各有利弊，针对不同的业务需求可以采用不同的方案。总结一下，这三种方式其实都实现了增删改查的接口，这样我们就可以抽象出一个接口出来而不用关心具体存储方式的实现。 上代码： 12345678910111213141516171819/** * 持久化数据存储接口 * 提供持久化数据的增删改查 */public interface ILocalDataManager&lt;T&gt; &#123; // 增 void insert(T t); // 删 void delete(int number); // 改 void update(T t); // 查 T get(int number);&#125; 对于具体存储方式的实现就是实现这个接口 12345678910111213141516171819202122232425/** * 序列化保存文件方式 */public class SerialDataManager&lt;T&gt; implements ILocalDataManager&lt;T&gt; &#123; @Override public void insert(T t) &#123; &#125; @Override public void delete(int number) &#123; &#125; @Override public void update(T t) &#123; &#125; @Override public T get(int number) &#123; return null; &#125;&#125; 然后使用的时候就是这样的 12345678// 父类对象指向子类引用ILocalDataManager mDataManager = new SerialDataManager();Object object = new Object();int id = object.getId();mDataManager.insert(object);mDataManager.delete(id);mDataManager.update(object);Object findObject = mDataManager.get(id);]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
       </tags>
   </entry>
   <entry>
@@ -390,8 +390,8 @@
       </categories>
       <tags>
         <tag>Android</tag>
-        <tag>布局</tag>
         <tag>优化</tag>
+        <tag>布局</tag>
       </tags>
   </entry>
   <entry>
