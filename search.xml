@@ -109,41 +109,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Git]]></title>
-    <url>%2F2018%2F02%2F02%2F2018%2FGit%2F</url>
-    <content type="text"><![CDATA[总结使用Git遇到的问题。 Github如何同步 Github fork 出来的分支]]></content>
-      <categories>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>Git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Android样式开发]]></title>
-    <url>%2F2018%2F02%2F02%2F2018%2FAndroid%E6%A0%B7%E5%BC%8F%E5%BC%80%E5%8F%91%2F</url>
-    <content type="text"><![CDATA[Android自定义样式开发参考。 Android样式的开发:shape篇 Android样式的开发:selector篇 Android样式的开发:layer-list篇 Android样式的开发:drawable汇总篇 Android样式的开发:View Animation篇 Android样式的开发:Property Animation篇 Android样式的开发:Style篇 转载自Keegan小钢 原文链接：http://keeganlee.me/post/android/20150830]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>Android自定义样式</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Android音视频开发]]></title>
-    <url>%2F2018%2F02%2F02%2F2018%2FAndroid%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91%2F</url>
-    <content type="text"><![CDATA[Android音视频开发的总结和学习资料。 Android硬解接口Android MediaCodec stuff 播放器ExoPlayerexo use his own mediaExtractor ijkPlayer学习资料Android视频开发进阶(part1-关于视频的那些术语) Android视频开发进阶(part2-MP4文件的解析) Android视频开发进阶(part3-Android的Media API) Android视频开发进阶(part5-ExoPlayer分析1，ExoPlayer的handler) 视频特效性能比肩美拍秒拍的Android视频录制编辑特效解决方案 它山之石小咖秀的视频处理android平台短视频技术之 视频编辑的经验分享性能比肩美拍秒拍的Android视频录制编辑特效解决方案Android视频录制app解决方案汇总短视频处理方案概述FFmepg性能限制 可以攻玉NexEditor SDK蓝松科技SDK锐动天地 竞品分析Top10 Android Video Editing Apps FilmoraFilmora Effects Store OpenGLAndroid OpenGLOpenGL canvasAndroid弹幕-OpenGLA real OpenGL ES 2.0 2D tutorial part安卓OpenGL ES 2.0入门-1安卓OpenGL ES 2.0入门-2OpenGL学习文档OpenGL ES Android lessonOpenGL ES 学习笔记OpenGL播放视频学习OpenGL之类比画画OpenGL ES 学习博客OpenGL tutorialAndroid OpenGL基础入门 GLSL语言GLSL中文手册GLSL语言 其他图像技术在直播中的应用 直播Android中直播视频技术探究之—-摄像头Camera视频源数据采集解析Android中直播视频技术探究之–基础知识Android中直播视频技术探究之–ByteBuffer解析 Android平台美颜相机/Camera实时滤镜/视频编解码/影像后期/人脸技术探索——系统总体设计Android平台美颜相机、实时滤镜、人脸技术探秘Android中直播视频技术探究–基础知识大纲介绍ffmpeg 命令视频应用OpenGL概述 Android 高性能图形处理 StackOverFlowdisplay-two-videos-together-then-output-as-a-merged-video-on-a-single-screen play-video-with-openglES]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>音视频</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[网络]]></title>
     <url>%2F2018%2F02%2F02%2F2018%2F%E7%BD%91%E7%BB%9C%2F</url>
     <content type="text"><![CDATA[关于网络的问题总结在这里。 常见问题 OSI与TCP/IP各层的结构与功能，都有哪些协议。 TCP与UDP的区别。 TCP报文结构。 TCP的三次握手与四次挥手过程，各个状态名称与含义，TIMEWAIT的作用。 TCP协议中的三次握手和四次挥手(图解) TCP拥塞控制。 TCP滑动窗口与回退N针协议。 Http的报文结构。 Http的状态码含义。 Http request的几种类型。 Http1.1和Http1.0的区别 Http怎么处理长连接。 Cookie与Session的作用于原理。 电脑上访问一个网页，整个过程是怎么样的：DNS、HTTP、TCP、OSPF、IP、ARP。 Ping的整个过程。ICMP报文是什么。 C/S模式下使用socket通信，几个关键函数。 IP地址分类。 路由器与交换机区别。 网络其实大体分为两块，一个TCP协议，一个HTTP协议，只要把这两块以及相关协议搞清楚，一般问题不大。 相关链接TCP/IP详解学习笔记 这位仁兄写得太好了 TCP 的那些事儿（上） TCP 的那些事儿（下）]]></content>
@@ -152,30 +117,6 @@
       </categories>
       <tags>
         <tag>TCP/IP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Developer Trick]]></title>
-    <url>%2F2018%2F02%2F02%2F2018%2FDeveloper%20Trick%2F</url>
-    <content type="text"><![CDATA[总结开发过程中的一些技巧和经验。 FragmentActivity和Activity的区别fragment是3.0以后的东西，为了在低版本中使用fragment就要用到android-support-v4.jar兼容包,而fragmentActivity就是这个兼容包里面的，它提供了操作fragment的一些方法，其功能跟3.0及以后的版本的Activity的功能一样。下面是API中的原话：FragmentActivity is a special activity provided in the Support Library to handle fragments on system versions older than API level 11. If the lowest system version you support is API level 11 or higher, then you can use a regular Activity. fragmentactivity 继承自activity，用来解决android3.0 之前没有fragment的api，所以在使用的时候需要导入support包，同时继承fragmentActivity，这样在activity中就能嵌入fragment来实现你想要的布局效果。 当然3.0之后你就可以直接继承自Activity，并且在其中嵌入使用fragment了。 获得Manager的方式也不同 3.0以下：getSupportFragmentManager()3.0以上：getFragmentManager() ANR 拉出anr文件夹 adb pull /data/anr C:\a 确实有一些ANR问题很难调查清楚，因为整个系统不稳定的因素很多，例如Linux Kernel本身的bug引起的内存碎片过多、硬件损坏等。这类比较底层的原因引起的ANR问题往往无从查起，并且这根本不是应用程序的问题，浪费了应用开发人员很多时间，如果你从事过整个系统的开发和维护工作的话会深有体会。所以我不能保证了解了本章的所有内容后能够解决一切ANR问题，如果出现了很疑难的ANR问题，我建议最好去和做驱动和内核的朋友聊聊，或者，如果问题只是个十万分之一的偶然现象，不影响程序的正常运行，我倒是建议不去理它。 开发者选项 动画时长 控制动画执行的时长 Android之倒计时验证两种常用方式 CountDownTimer Handler(Thread Sleep 方式) 相关链接Android小技巧(1) 很少有人会告诉你的Android开发基本常识 Android多分辨率适配经验总结 Android布局技巧：使用TextView的drawable属性 利用 Android Annotations 来玩玩契约编程 android Palette使用详解]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Android相机开发]]></title>
-    <url>%2F2018%2F02%2F02%2F2018%2FAndroid%E7%9B%B8%E6%9C%BA%E5%BC%80%E5%8F%91%2F</url>
-    <content type="text"><![CDATA[Android相机开发总结。 相机滤镜渲染android-gpuimage Android OpenGL开发实践 - GLSurfaceView对摄像头数据的再处理 android-gpuimage-plus Android 高性能图形处理 之 二. OpenGL ES Android相机开发系列]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>相机</tag>
       </tags>
   </entry>
   <entry>
@@ -191,6 +132,65 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[Android相机开发]]></title>
+    <url>%2F2018%2F02%2F02%2F2018%2FAndroid%E7%9B%B8%E6%9C%BA%E5%BC%80%E5%8F%91%2F</url>
+    <content type="text"><![CDATA[Android相机开发总结。 相机滤镜渲染android-gpuimage Android OpenGL开发实践 - GLSurfaceView对摄像头数据的再处理 android-gpuimage-plus Android 高性能图形处理 之 二. OpenGL ES Android相机开发系列]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>相机</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Android样式开发]]></title>
+    <url>%2F2018%2F02%2F02%2F2018%2FAndroid%E6%A0%B7%E5%BC%8F%E5%BC%80%E5%8F%91%2F</url>
+    <content type="text"><![CDATA[Android自定义样式开发参考。 Android样式的开发:shape篇 Android样式的开发:selector篇 Android样式的开发:layer-list篇 Android样式的开发:drawable汇总篇 Android样式的开发:View Animation篇 Android样式的开发:Property Animation篇 Android样式的开发:Style篇 转载自Keegan小钢 原文链接：http://keeganlee.me/post/android/20150830]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>Android自定义样式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Git]]></title>
+    <url>%2F2018%2F02%2F02%2F2018%2FGit%2F</url>
+    <content type="text"><![CDATA[总结使用Git遇到的问题。 Github如何同步 Github fork 出来的分支]]></content>
+      <categories>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Android音视频开发]]></title>
+    <url>%2F2018%2F02%2F02%2F2018%2FAndroid%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91%2F</url>
+    <content type="text"><![CDATA[Android音视频开发的总结和学习资料。 Android硬解接口Android MediaCodec stuff 播放器ExoPlayerexo use his own mediaExtractor ijkPlayer学习资料Android视频开发进阶(part1-关于视频的那些术语) Android视频开发进阶(part2-MP4文件的解析) Android视频开发进阶(part3-Android的Media API) Android视频开发进阶(part5-ExoPlayer分析1，ExoPlayer的handler) 视频特效性能比肩美拍秒拍的Android视频录制编辑特效解决方案 它山之石小咖秀的视频处理android平台短视频技术之 视频编辑的经验分享性能比肩美拍秒拍的Android视频录制编辑特效解决方案Android视频录制app解决方案汇总短视频处理方案概述FFmepg性能限制 可以攻玉NexEditor SDK蓝松科技SDK锐动天地 竞品分析Top10 Android Video Editing Apps FilmoraFilmora Effects Store OpenGLAndroid OpenGLOpenGL canvasAndroid弹幕-OpenGLA real OpenGL ES 2.0 2D tutorial part安卓OpenGL ES 2.0入门-1安卓OpenGL ES 2.0入门-2OpenGL学习文档OpenGL ES Android lessonOpenGL ES 学习笔记OpenGL播放视频学习OpenGL之类比画画OpenGL ES 学习博客OpenGL tutorialAndroid OpenGL基础入门 GLSL语言GLSL中文手册GLSL语言 其他图像技术在直播中的应用 直播Android中直播视频技术探究之—-摄像头Camera视频源数据采集解析Android中直播视频技术探究之–基础知识Android中直播视频技术探究之–ByteBuffer解析 Android平台美颜相机/Camera实时滤镜/视频编解码/影像后期/人脸技术探索——系统总体设计Android平台美颜相机、实时滤镜、人脸技术探秘Android中直播视频技术探究–基础知识大纲介绍ffmpeg 命令视频应用OpenGL概述 Android 高性能图形处理 StackOverFlowdisplay-two-videos-together-then-output-as-a-merged-video-on-a-single-screen play-video-with-openglES]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>音视频</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Developer Trick]]></title>
+    <url>%2F2018%2F02%2F02%2F2018%2FDeveloper%20Trick%2F</url>
+    <content type="text"><![CDATA[总结开发过程中的一些技巧和经验。 FragmentActivity和Activity的区别fragment是3.0以后的东西，为了在低版本中使用fragment就要用到android-support-v4.jar兼容包,而fragmentActivity就是这个兼容包里面的，它提供了操作fragment的一些方法，其功能跟3.0及以后的版本的Activity的功能一样。下面是API中的原话：FragmentActivity is a special activity provided in the Support Library to handle fragments on system versions older than API level 11. If the lowest system version you support is API level 11 or higher, then you can use a regular Activity. fragmentactivity 继承自activity，用来解决android3.0 之前没有fragment的api，所以在使用的时候需要导入support包，同时继承fragmentActivity，这样在activity中就能嵌入fragment来实现你想要的布局效果。 当然3.0之后你就可以直接继承自Activity，并且在其中嵌入使用fragment了。 获得Manager的方式也不同 3.0以下：getSupportFragmentManager()3.0以上：getFragmentManager() ANR 拉出anr文件夹 adb pull /data/anr C:\a 确实有一些ANR问题很难调查清楚，因为整个系统不稳定的因素很多，例如Linux Kernel本身的bug引起的内存碎片过多、硬件损坏等。这类比较底层的原因引起的ANR问题往往无从查起，并且这根本不是应用程序的问题，浪费了应用开发人员很多时间，如果你从事过整个系统的开发和维护工作的话会深有体会。所以我不能保证了解了本章的所有内容后能够解决一切ANR问题，如果出现了很疑难的ANR问题，我建议最好去和做驱动和内核的朋友聊聊，或者，如果问题只是个十万分之一的偶然现象，不影响程序的正常运行，我倒是建议不去理它。 开发者选项 动画时长 控制动画执行的时长 Android之倒计时验证两种常用方式 CountDownTimer Handler(Thread Sleep 方式) 相关链接Android小技巧(1) 很少有人会告诉你的Android开发基本常识 Android多分辨率适配经验总结 Android布局技巧：使用TextView的drawable属性 利用 Android Annotations 来玩玩契约编程 android Palette使用详解]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[重构之道]]></title>
     <url>%2F2018%2F01%2F19%2F2018%2F%E9%87%8D%E6%9E%84%E4%B9%8B%E9%81%93%2F</url>
     <content type="text"><![CDATA[业务快速的迭代很容易令开发工作变快变糙变莽(技术水平未达标也是原因之一)， 一次改版可能要对原有的代码做侵入式修改，而根据开/闭原则，这是不可接受的。 旧问题 由于设计欠缺优雅性导致功能扩展性差 缺少单元测试无法保证程序的鲁棒性 业务，逻辑和UI的代码耦合严重 目标 业务层，逻辑层和UI层分离 易于业务扩展 添加单元测试 支持只使用Fragment 方案 使用MVP模式 只依赖support v4，v7 通过接口和抽象类进行依赖反转 使用Junit+Mokito+Espresso做测试 相关链接哔哩哔哩Android客户端—-多媒体选择器boxing开源 用组合代替继承能为 Activity 带来什么 如何编写更棒的代码：11个核心要点]]></content>
@@ -199,8 +199,8 @@
       </categories>
       <tags>
         <tag>Android</tag>
-        <tag>优化</tag>
         <tag>Java</tag>
+        <tag>优化</tag>
       </tags>
   </entry>
   <entry>
@@ -281,8 +281,8 @@
       </categories>
       <tags>
         <tag>Android</tag>
-        <tag>优化</tag>
         <tag>Java</tag>
+        <tag>优化</tag>
       </tags>
   </entry>
   <entry>
@@ -333,17 +333,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Android持久化数据的解决方案]]></title>
-    <url>%2F2017%2F04%2F26%2F2017%2FAndroid%E6%8C%81%E4%B9%85%E5%8C%96%E6%95%B0%E6%8D%AE%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%2F</url>
-    <content type="text"><![CDATA[关于Android持久化数据的解决方法和设计模式 三种方式Android系统中主要提供了三种方式用于简单地实现数据持久化功能，即文件存储、SharedPreference存储以及数据库存储。 文件存储 SharedPreference存储 数据库存储 设计模式三种存储方式各有利弊，针对不同的业务需求可以采用不同的方案。总结一下，这三种方式其实都实现了增删改查的接口，这样我们就可以抽象出一个接口出来而不用关心具体存储方式的实现。 上代码： 12345678910111213141516171819/** * 持久化数据存储接口 * 提供持久化数据的增删改查 */public interface ILocalDataManager&lt;T&gt; &#123; // 增 void insert(T t); // 删 void delete(int number); // 改 void update(T t); // 查 T get(int number);&#125; 对于具体存储方式的实现就是实现这个接口 12345678910111213141516171819202122232425/** * 序列化保存文件方式 */public class SerialDataManager&lt;T&gt; implements ILocalDataManager&lt;T&gt; &#123; @Override public void insert(T t) &#123; &#125; @Override public void delete(int number) &#123; &#125; @Override public void update(T t) &#123; &#125; @Override public T get(int number) &#123; return null; &#125;&#125; 然后使用的时候就是这样的 12345678// 父类对象指向子类引用ILocalDataManager mDataManager = new SerialDataManager();Object object = new Object();int id = object.getId();mDataManager.insert(object);mDataManager.delete(id);mDataManager.update(object);Object findObject = mDataManager.get(id);]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[targetSdkVersion的使用]]></title>
     <url>%2F2017%2F04%2F26%2F2017%2FtargetSdkVersion%E7%9A%84%E4%BD%BF%E7%94%A8%2F</url>
     <content type="text"><![CDATA[Android targetSdkVersion的使用，以及Android如何保障兼容性。 转自：Android targetSdkVersion 原理 前几天 Google 官方发布文章解析 compileSdkVersion、minSdkVersion 以及 targetSdkVersion 的含义，以及合理设置各个值的意义，原文 Picking your compileSdkVersion, minSdkVersion, and targetSdkVersion（后面简称 “原文”），还有翻译版。 其中，compileSdkVersion 和 minSdkVersion 都非常好理解，前者表示编译的 SDK 版本，后者表示应用兼容的最低 SDK 版本。但是对于 targetSdkVersion 其实很难一句话解析清楚，原文用了“万能”的词 —— interesting 来描述。以前我也有一些迷糊，看到有些人和我有同样的困惑，本文试图彻底解决这个问题。 原文是这么说的： targetSdkVersion is the main way Android provides forward compatibility targetSdkVersion 是 Android 系统提供前向兼容的主要手段。这是什么意思呢？随着 Android 系统的升级，某个系统的 API 或者模块的行为可能会发生改变，但是为了保证老 APK 的行为还是和以前兼容。只要 APK 的 targetSdkVersion 不变，即使这个 APK 安装在新 Android 系统上，其行为还是保持老的系统上的行为，这样就保证了系统对老应用的前向兼容性。 这里还是用原文的例子，在 Android 4.4 (API 19）以后，AlarmManager 的 set() 和 setRepeat() 这两个 API 的行为发生了变化。在 Android 4.4 以前，这两个 API 设置的都是精确的时间，系统能保证在 API 设置的时间点上唤醒 Alarm。因为省电原因 Android 4.4 系统实现了 AlarmManager 的对齐唤醒，这两个 API 设置唤醒的时间，系统都对待成不精确的时间，系统只能保证在你设置的时间点之后某个时间唤醒。 这时，虽然 API 没有任何变化，但是实际上 API 的行为却发生了变化，如果老的 APK 中使用了此 API，并且在应用中的行为非常依赖 AlarmManager 在精确的时间唤醒，例如闹钟应用。如果 Android 系统不能保证兼容，老的 APK 安装在新的系统上，就会出现问题。 Android 系统是怎么保证这种兼容性的呢？这时候 targetSdkVersion 就起作用了。APK 在调用系统 AlarmManager 的 set() 或者 setRepeat() 的时候，系统首先会查一下调用的 APK 的 targetSdkVersion 信息，如果小于 19，就还是按照老的行为，即精确设置唤醒时间，否者执行新的行为。 我们来看一下 Android 4.4 上 AlarmManger 的一部分源代码： 1234567private final boolean mAlwaysExact; AlarmManager(IAlarmManager service, Context ctx) &#123; mService = service; final int sdkVersion = ctx.getApplicationInfo().targetSdkVersion; mAlwaysExact = (sdkVersion &lt; Build.VERSION_CODES.KITKAT);&#125; 看到这里，首选获取应用的 targetSdkVersion，判断是否是小于 Build.VERSION_CODES.KITKAT (即 API Level 19)，来设置 mAlwaysExact 变量，表示是否使用精确时间模式。 12345678910public static final long WINDOW_EXACT = 0; public static final long WINDOW_HEURISTIC = -1;private long legacyExactLength() &#123; return (mAlwaysExact ? WINDOW_EXACT : WINDOW_HEURISTIC);&#125;public void set(int type, long triggerAtMillis, PendingIntent operation) &#123; setImpl(type, triggerAtMillis, legacyExactLength(), 0, operation, null);&#125; 这里看到，直接影响到 set() 方法给 setImpl() 传入不同的参数，从而影响到了 set() 的执行行为。具体的实现在 AlarmManagerService.java，这里就不往下深究了。 看到这里，发现其实 Android 的 targetSdkVersion 并没有什么特别的，系统使用它也非常直接，甚至很“粗糙”。仅仅是用过下面的 API 来获取 targetSdkVersion，来判断是否执行哪种行为： 1getApplicationInfo().targetSdkVersion; 所以，我们可以猜测到，如果 Android 系统升级，发生这种兼容行为的变化时，一般都会在原来的保存新旧两种逻辑，并通过 if-else 方法来判断执行哪种逻辑。果然，在源码中搜索，我们会发现不少类似 getApplicationInfo().targetSdkVersion &lt; Buid.XXXX 这样的代码，相对于浩瀚的 Android 源码量来说，这些还是相对较少了。其实原则上，这种会导致兼容性问题的修改还是越少越好，所以每次发布新的 Android 版本的时候，Android 开发者网站都会列出做了哪些改变，在这里，开发者需要特别注意。 最后，我们也可以理解原文中说的那句话的含义，明白了为什么修改了 APK 的 targetSdkVersion 行为会发生变化，也明白了为什么修改 targetSdkVersion 需要做完整的测试了。 写完这篇文章，再回头去看一下原文的 targetSdkVersion 那一段，发现作者是说的多么“滴水不漏”。]]></content>
@@ -353,6 +342,17 @@
       <tags>
         <tag>Android</tag>
         <tag>targetSdkVersion</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Android持久化数据的解决方案]]></title>
+    <url>%2F2017%2F04%2F26%2F2017%2FAndroid%E6%8C%81%E4%B9%85%E5%8C%96%E6%95%B0%E6%8D%AE%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%2F</url>
+    <content type="text"><![CDATA[关于Android持久化数据的解决方法和设计模式 三种方式Android系统中主要提供了三种方式用于简单地实现数据持久化功能，即文件存储、SharedPreference存储以及数据库存储。 文件存储 SharedPreference存储 数据库存储 设计模式三种存储方式各有利弊，针对不同的业务需求可以采用不同的方案。总结一下，这三种方式其实都实现了增删改查的接口，这样我们就可以抽象出一个接口出来而不用关心具体存储方式的实现。 上代码： 12345678910111213141516171819/** * 持久化数据存储接口 * 提供持久化数据的增删改查 */public interface ILocalDataManager&lt;T&gt; &#123; // 增 void insert(T t); // 删 void delete(int number); // 改 void update(T t); // 查 T get(int number);&#125; 对于具体存储方式的实现就是实现这个接口 12345678910111213141516171819202122232425/** * 序列化保存文件方式 */public class SerialDataManager&lt;T&gt; implements ILocalDataManager&lt;T&gt; &#123; @Override public void insert(T t) &#123; &#125; @Override public void delete(int number) &#123; &#125; @Override public void update(T t) &#123; &#125; @Override public T get(int number) &#123; return null; &#125;&#125; 然后使用的时候就是这样的 12345678// 父类对象指向子类引用ILocalDataManager mDataManager = new SerialDataManager();Object object = new Object();int id = object.getId();mDataManager.insert(object);mDataManager.delete(id);mDataManager.update(object);Object findObject = mDataManager.get(id);]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
       </tags>
   </entry>
   <entry>
@@ -442,17 +442,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[adb常用命令]]></title>
-    <url>%2F2017%2F01%2F19%2F2017%2Fadb%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%2F</url>
-    <content type="text"><![CDATA[记住一些adb常用命令可以提高工作效率,以下按adb命令和adb shell分类。 adb 获取序列号： 1adb get-serialno 查看连接计算机的设备： 1adb devices 重启机器： 1adb reboot 重启到bootloader，即刷机模式： 1adb reboot bootloader 重启到recovery，即恢复模式： 1adb reboot recovery 查看log： 1adb logcat 终止adb服务进程： 1adb kill-server 重启adb服务进程： 1adb start-server 获取机器MAC地址： 1adb shell cat /sys/class/net/wlan0/address adb shell 获取CPU序列号： 1adb shell cat /proc/cpuinfo 查看屏幕分辨率 1adb shell wm size 查看屏幕密度： 1adb shell wm density 安装apk到sd卡： 1adb install -s &lt;apkfile&gt; // 比如：adb install -s baidu.apk 卸载APK： 1adb uninstall &lt;package&gt; //比如：adb uninstall com.baidu.search 卸载app但保留数据和缓存文件： 1adb uninstall -k &lt;package&gt; //比如：adb uninstall -k com.baidu.search 启动应用： 1adb shell am start -n &lt;package_name&gt;/.&lt;activity_class_name&gt; 查看设备cpu和内存占用情况： 1adb shell top 查看占用内存前6的app： 1adb shell top -m 6 刷新一次内存信息，然后返回： 1adb shell top -n 1 查询各进程内存使用情况： 1adb shell procrank 杀死一个进程： 1adb shell kill [pid] 查看进程列表： 1adb shell ps 查看指定进程状态： 1adb shell ps -x [PID] 查看后台services信息： 1adb shell service list 查看当前内存占用： 1adb shell cat /proc/meminfo 查看IO内存分区： 1adb shell cat /proc/iomem 将system分区重新挂载为可读写分区： 1adb remount 从本地复制文件到设备： 1adb push &lt;local&gt; &lt;remote&gt; 从设备复制文件到本地： 1adb pull &lt;remote&gt; &lt;local&gt; 列出目录下的文件和文件夹，等同于dos中的dir命令： 1adb shell ls 进入文件夹，等同于dos中的cd 命令： 1adb shell cd &lt;folder&gt; 重命名文件： 1adb shell rename path/oldfilename path/newfilename 删除system/avi.apk： 1adb shell rm /system/avi.apk 删除文件夹及其下面所有文件： 1adb shell rm -r &lt;folder&gt; 移动文件： 1adb shell mv path/file newpath/file 设置文件权限： 1adb shell chmod 777 /system/fonts/DroidSansFallback.ttf 新建文件夹： 1adb shell mkdir path/foldelname 查看文件内容： 1adb shell cat &lt;file&gt; 查看wifi密码： 1adb shell cat /data/misc/wifi/*.conf 清除log缓存： 1adb logcat -c 查看bug报告： 1adb bugreport 获取设备名称： 1adb shell cat /system/build.prop 查看ADB帮助： 1adb help 跑monkey： 1adb shell monkey -v -p your.package.name 500 参考资料: 如何获得Android设备名称(ADB命令详细介绍) 官方说明]]></content>
-      <categories>
-        <category>命令行</category>
-      </categories>
-      <tags>
-        <tag>adb</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[Android 获取唯一标识]]></title>
     <url>%2F2017%2F01%2F19%2F2017%2FAndroid%20%E8%8E%B7%E5%8F%96%E5%94%AF%E4%B8%80%E6%A0%87%E8%AF%86%2F</url>
     <content type="text"><![CDATA[有时需要对用户设备进行标识，所以希望能够得到一个稳定可靠并且唯一的识别码。虽然Android系统中提供了这样设备识别码，但是由于Android系统版本、厂商定制系统中的Bug等限制，稳定性和唯一性并不理想。而通过其他硬件信息标识也因为系统版本、手机硬件等限制存在不同程度的问题。 DEVICE ID在以前，我们的Android设备是手机，这个DEVICE ID可以通过TelephonyManager.getDeviceId()获取，它根据不同的手机设备返回IMEI，MEID或者ESN码，但它在使用的过程中会遇到很多问题： 非手机设备： 如果只带有Wifi的设备或者音乐播放器没有通话的硬件功能的话就没有这个DEVICE_ID 权限： 获取DEVICE_ID需要READ_PHONE_STATE权限，但如果我们只为了获取它，没有用到其他的通话功能，那这个权限有点大才小用 bug：在少数的一些手机设备上，该实现有漏洞，会返回垃圾，如:zeros(全是0)或者asterisks(星号)的产品 MAC ADDRESS我们也可以通过手机的Wifi或者蓝牙设备获取MAC ADDRESS作为DEVICE ID，但是并不建议这么做，因为: 硬件限制：并不是所有的设备都有Wifi和蓝牙硬件，硬件不存在自然也就得不到这一信息。 获取的限制：如果Wifi没有打开过，是无法获取其Mac地址的；而蓝牙是只有在打开的时候才能获取到其Mac地址。 Serial Number在Android 2.3以后可以通过android.os.Build.SERIAL获取，非手机设备可以通过该接口获取。没有电话功能的设备被要求必须提供这样一个序列号。 ANDROID IDANDROID ID是设备第一次启动时产生和存储的64bit的一个数，当设备被wipe后该数重置。 但它也有缺陷： 它在Android &lt;=2.1 or Android &gt;=2.3的版本是可靠、稳定的，但在2.2的版本并不是100%可靠的。 在主流厂商生产的设备上，有一个很经常的bug，就是每个设备都会产生相同的ANDROID_ID：9774d56d682e549c。 厂商定制系统的Bug：有些设备返回的值为null。 设备差异：对于CDMA设备，ANDROID_ID和TelephonyManager.getDeviceId() 返回相同的值。 UUID以上四种方式都有或多或少存在的一定的局限性或者bug，在这里，有另外一种方式解决，就是使用UUID，该方法无需访问设备的资源，也跟设备类型无关。 这种方式是通过在程序安装后第一次运行后生成一个ID实现的，但该方式跟设备唯一标识不一样，它会因为不同的应用程序而产生不同的ID，而不是设备唯一ID。因此经常用来标识在某个应用中的唯一ID（即Installtion ID），或者跟踪应用的安装数量。很幸运的，Google Developer Blog提供了这样的一个框架： 1234567891011121314151617181920212223242526272829303132333435public class Installation &#123; private static String sID = null; private static final String INSTALLATION = "INSTALLATION"; public synchronized static String id(Context context) &#123; if (sID == null) &#123; File installation = new File(context.getFilesDir(), INSTALLATION); try &#123; if (!installation.exists()) writeInstallationFile(installation); sID = readInstallationFile(installation); &#125; catch (Exception e) &#123; throw new RuntimeException(e); &#125; &#125; return sID; &#125; private static String readInstallationFile(File installation) throws IOException &#123; RandomAccessFile f = new RandomAccessFile(installation, "r"); byte[] bytes = new byte[(int) f.length()]; f.readFully(bytes); f.close(); return new String(bytes); &#125; private static void writeInstallationFile(File installation) throws IOException &#123; FileOutputStream out = new FileOutputStream(installation); String id = UUID.randomUUID().toString(); out.write(id.getBytes()); out.close(); &#125;&#125; 综合以上所述，为了实现在设备上更通用的获取设备唯一标识，我们可以实现这样的一个类，为每个设备产生唯一的UUID，以ANDROID_ID为基础，在获取失败时以TelephonyManager.getDeviceId()为备选方法，如果再失败，使用UUID的生成策略。 重申下，以下方法是生成Device ID，在大多数情况下Installtion ID能够满足我们的需求，但是如果确实需要用到Device ID，那可以通过以下方式实现： 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647public class DeviceUuidFactory &#123; protected static final String PREFS_FILE = "device_id.xml"; protected static final String PREFS_DEVICE_ID = "device_id"; protected volatile static UUID uuid; public DeviceUuidFactory(Context context) &#123; if (uuid == null) &#123; synchronized (DeviceUuidFactory.class) &#123; if (uuid == null) &#123; final SharedPreferences prefs = context.getSharedPreferences(PREFS_FILE, 0); final String id = prefs.getString(PREFS_DEVICE_ID, null); if (id != null) &#123; // Use the ids previously computed and stored in the // prefs file uuid = UUID.fromString(id); &#125; else &#123; final String androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID); // Use the Android ID unless it's broken, in which case // fallback on deviceId, // unless it's not available, then fallback on a random // number which we store to a prefs file try &#123; if (!"9774d56d682e549c".equals(androidId)) &#123; uuid = UUID.nameUUIDFromBytes(androidId.getBytes("utf8")); &#125; else &#123; final String deviceId = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId(); uuid = deviceId != null ? UUID.nameUUIDFromBytes(deviceId.getBytes("utf8")) : UUID.randomUUID(); &#125; &#125; catch (UnsupportedEncodingException e) &#123; throw new RuntimeException(e); &#125; // Write the value out to the prefs file prefs.edit().putString(PREFS_DEVICE_ID, uuid.toString()).commit(); &#125; &#125; &#125; &#125; &#125; public UUID getDeviceUuid() &#123; return uuid; &#125;&#125; 通过这种方式生成的设备标志号在一定程度上可以比较稳定的标记一台Android设备。这个产生标记符的方法有以下几点要注意： 由于现在Android手机已经普遍升级到4.0以上，2.3以下支持有限，所以ANDROID ID一般可用，即以ANDROID ID为种子产生UUID基本可用； 使用Device ID为种子产生UUID并非好的选择，Android平板等不具备通信功能的设备就不能拿到Device ID； 加入有一个需求是希望用户的设备无论在安装多少次应用之后都可以唯一的确定该设备，则可用的方式是什么呢？我们得同时考虑ANDROID ID，Serizal Number以及DEVICE ID，其中任何一个都可以标识设备~~SO，最好的选择是不是将这三个拼接起来作为UUID的种子呢？其中，我们可以排除掉不合法的DEVICE ID等； 检查非法性： 序列号本身字符是否重复：比如全是000000000; 是否为Null，用于无法拿到相关数据； 是否包含*号； 如果这三点中得任意一点满足，则表示该数据非法，可以丢弃使用，否则，可字符拼接作为UUID的种子，如果三种数据都非法，才可以随机生成UUID作为设备标识符。 参考资料http://www.cnblogs.com/lqminn/p/4204855.html http://android-developers.blogspot.jp/2011/03/identifying-app-installations.html http://stackoverflow.com/questions/2785485/is-there-a-unique-android-device-id 官方链接：唯一标识符最佳做法 Android O的变化： Android O 中对设备标识符所做的变更]]></content>
@@ -461,6 +450,17 @@
       </categories>
       <tags>
         <tag>Android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[adb常用命令]]></title>
+    <url>%2F2017%2F01%2F19%2F2017%2Fadb%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%2F</url>
+    <content type="text"><![CDATA[记住一些adb常用命令可以提高工作效率,以下按adb命令和adb shell分类。 adb 获取序列号： 1adb get-serialno 查看连接计算机的设备： 1adb devices 重启机器： 1adb reboot 重启到bootloader，即刷机模式： 1adb reboot bootloader 重启到recovery，即恢复模式： 1adb reboot recovery 查看log： 1adb logcat 终止adb服务进程： 1adb kill-server 重启adb服务进程： 1adb start-server 获取机器MAC地址： 1adb shell cat /sys/class/net/wlan0/address adb shell 获取CPU序列号： 1adb shell cat /proc/cpuinfo 查看屏幕分辨率 1adb shell wm size 查看屏幕密度： 1adb shell wm density 安装apk到sd卡： 1adb install -s &lt;apkfile&gt; // 比如：adb install -s baidu.apk 卸载APK： 1adb uninstall &lt;package&gt; //比如：adb uninstall com.baidu.search 卸载app但保留数据和缓存文件： 1adb uninstall -k &lt;package&gt; //比如：adb uninstall -k com.baidu.search 启动应用： 1adb shell am start -n &lt;package_name&gt;/.&lt;activity_class_name&gt; 查看设备cpu和内存占用情况： 1adb shell top 查看占用内存前6的app： 1adb shell top -m 6 刷新一次内存信息，然后返回： 1adb shell top -n 1 查询各进程内存使用情况： 1adb shell procrank 杀死一个进程： 1adb shell kill [pid] 查看进程列表： 1adb shell ps 查看指定进程状态： 1adb shell ps -x [PID] 查看后台services信息： 1adb shell service list 查看当前内存占用： 1adb shell cat /proc/meminfo 查看IO内存分区： 1adb shell cat /proc/iomem 将system分区重新挂载为可读写分区： 1adb remount 从本地复制文件到设备： 1adb push &lt;local&gt; &lt;remote&gt; 从设备复制文件到本地： 1adb pull &lt;remote&gt; &lt;local&gt; 列出目录下的文件和文件夹，等同于dos中的dir命令： 1adb shell ls 进入文件夹，等同于dos中的cd 命令： 1adb shell cd &lt;folder&gt; 重命名文件： 1adb shell rename path/oldfilename path/newfilename 删除system/avi.apk： 1adb shell rm /system/avi.apk 删除文件夹及其下面所有文件： 1adb shell rm -r &lt;folder&gt; 移动文件： 1adb shell mv path/file newpath/file 设置文件权限： 1adb shell chmod 777 /system/fonts/DroidSansFallback.ttf 新建文件夹： 1adb shell mkdir path/foldelname 查看文件内容： 1adb shell cat &lt;file&gt; 查看wifi密码： 1adb shell cat /data/misc/wifi/*.conf 清除log缓存： 1adb logcat -c 查看bug报告： 1adb bugreport 获取设备名称： 1adb shell cat /system/build.prop 查看ADB帮助： 1adb help 跑monkey： 1adb shell monkey -v -p your.package.name 500 参考资料: 如何获得Android设备名称(ADB命令详细介绍) 官方说明]]></content>
+      <categories>
+        <category>命令行</category>
+      </categories>
+      <tags>
+        <tag>adb</tag>
       </tags>
   </entry>
   <entry>

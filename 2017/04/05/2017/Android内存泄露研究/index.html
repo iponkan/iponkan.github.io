@@ -92,15 +92,15 @@
 <meta property="og:site_name" content="Ponkan&#39;s Blog">
 <meta property="og:description" content="什么是内存泄漏？部分对象的内存不在GC掌控之内。 垃圾回收机制JAVA GC：某对象不再有任何的引用的时候才会被回收。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ojmg5j9kb.bkt.clouddn.com/image/jpg/GC_ROOT.PNG">
-<meta property="og:image" content="http://ojmg5j9kb.bkt.clouddn.com/image/jpg/old_driver.jpg">
-<meta property="og:image" content="http://ojmg5j9kb.bkt.clouddn.com/image/jpg/heap_htopgramis.PNG">
-<meta property="og:image" content="http://ojmg5j9kb.bkt.clouddn.com/image/jpg/Context_use.jpg">
-<meta property="og:updated_time" content="2018-02-27T08:43:09.540Z">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fxfujwl1z7j30gy09w3zo.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwgy1fxfujw2xtoj3064064a9z.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fxfujw8n3yj31170hejum.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fxfujwum5gj30s20fd0um.jpg">
+<meta property="og:updated_time" content="2018-11-21T10:18:19.450Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android性能优化之内存泄漏">
 <meta name="twitter:description" content="什么是内存泄漏？部分对象的内存不在GC掌控之内。 垃圾回收机制JAVA GC：某对象不再有任何的引用的时候才会被回收。">
-<meta name="twitter:image" content="http://ojmg5j9kb.bkt.clouddn.com/image/jpg/GC_ROOT.PNG">
+<meta name="twitter:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fxfujwl1z7j30gy09w3zo.jpg">
 
 
 
@@ -391,7 +391,7 @@
 <h2 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h2><p>JAVA GC：某对象不再有任何的引用的时候才会被回收。</p>
 <a id="more"></a>
 <h3 id="GCRoot"><a href="#GCRoot" class="headerlink" title="GCRoot"></a>GCRoot</h3><p>在JAVA中是通过可达性（Reachability Analysis)来判断对象是否存活，这个算法的基本思想是通过一系列的称谓”GC Roots”的对象作为起始点，从这些节点开始向下搜索，搜索所走得路径称为引用链，当一个对象到GC Roots没有任何引用链相连则该对象被判定为可以被回收的对象，反之不能被回收</p>
-<p><img src="http://ojmg5j9kb.bkt.clouddn.com/image/jpg/GC_ROOT.PNG" alt=""></p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fxfujwl1z7j30gy09w3zo.jpg" alt=""></p>
 <p><em>哪些对象可以作为GCRoot？</em></p>
 <p>可以作为GCRoot引用点的是(GCRoot会去持有)</p>
 <ul>
@@ -405,7 +405,7 @@
 <p>假如new 了一个对象，进入一个activity，再退出，主动调用GC很多回，对象没有被释放。在GC眼里并不是垃圾对象，而在开发者眼里这个对象就是垃圾对象。</p>
 <p>最坏的情况，App可能会因为大量的内存泄漏而导致内存耗尽，引发Crash，如果内存未耗尽，App也会犹豫内存空间不足，出现频繁的GC（垃圾回收），每次一出GC都是非常耗时的阻塞性操作，会造成设备非常严重的卡顿，给用户的体验就是，手机无论做什么操作，都是卡的，这也是Android设备玩久了之后常见的现象。</p>
 <p>内存泄露多了容易导致OOM—-就像老司机开车开着开着就翻车了，内存溢出，app会崩溃</p>
-<p><img src="http://ojmg5j9kb.bkt.clouddn.com/image/jpg/old_driver.jpg" alt=""></p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fxfujw2xtoj3064064a9z.jpg" alt=""></p>
 <h2 id="确定我们项目中是否存在内存泄露"><a href="#确定我们项目中是否存在内存泄露" class="headerlink" title="确定我们项目中是否存在内存泄露"></a>确定我们项目中是否存在内存泄露</h2><p>粗略判断: </p>
 <ul>
 <li>app用着用着变卡顿</li>
@@ -415,7 +415,7 @@
 </li>
 </ul>
 <h2 id="更仔细地查找内存泄漏的位置"><a href="#更仔细地查找内存泄漏的位置" class="headerlink" title="更仔细地查找内存泄漏的位置"></a>更仔细地查找内存泄漏的位置</h2><ol>
-<li>使用Android Studio Heap SnapShot工具（堆栈快照） <img src="http://ojmg5j9kb.bkt.clouddn.com/image/jpg/heap_htopgramis.PNG" alt=""></li>
+<li>使用Android Studio Heap SnapShot工具（堆栈快照） <img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fxfujw8n3yj31170hejum.jpg" alt=""></li>
 </ol>
 <p>分析：<br>Java的对象成员都是些引用。真正的内存都在堆上，看起来是一堆原生的byte[], char[], int[]，对象本身的内存都很小。所以我们可以看到以Shallow Heap进行排序的Histogram图中，通常排在第一位第二位的是byte，char[]</p>
 <table>
@@ -491,8 +491,7 @@
 <ol>
 <li>上下文的引用</li>
 </ol>
-<p>对 Activity 等组件的引用应该控制在 Activity 的生命周期之内； 如果不能就考虑使用 getApplicationContext 或者 getApplication，以避免 Activity 被外部长生命周期的对象引用而泄露。</p>
-<p><img src="http://ojmg5j9kb.bkt.clouddn.com/image/jpg/Context_use.jpg" alt=""></p>
+<p>对 Activity 等组件的引用应该控制在 Activity 的生命周期之内； 如果不能就考虑使用 getApplicationContext 或者 getApplication，以避免 Activity 被外部长生命周期的对象引用而泄露。<img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fxfujwum5gj30s20fd0um.jpg" alt=""></p>
 <pre><code>- 数字1：启动Activity在这些类中是可以的，但是需要创建一个新的task，一般情况不推荐；
 
 - 数字2：在这些类中去layout inflate是合法的，但是会使用系统默认的主题样式，如果你自定义了某些样式可能不会被使用；
@@ -605,8 +604,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/04/26/2017/targetSdkVersion的使用/" rel="prev" title="targetSdkVersion的使用">
-                targetSdkVersion的使用 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/04/26/2017/Android持久化数据的解决方案/" rel="prev" title="Android持久化数据的解决方案">
+                Android持久化数据的解决方案 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
