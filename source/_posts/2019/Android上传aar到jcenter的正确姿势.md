@@ -58,7 +58,7 @@ implementation('com.sonicers:commonlib:0.0.8') {
 > Google Android Studio 的负责人在 stackoverflow 上解释了 [为什么 Android Studio 不能将多个依赖打包进一个 AAR 文件](https://stackoverflow.com/questions/20700581/android-studio-how-to-package-single-aar-from-multiple-library-projects/20715155#20715155)的原因，是因为将不同的library打包在一起，涉及到资源和配置文件智能合并，所以是个比较复杂的问题，同时也容易造成相同的依赖冲突。
 >
 
-那怎么把依赖打进pom文件呢？但是我现在是需要这个的，因为使用起来会方便很多 (๑•̀ㅂ•́)و✧ 
+虽然Google爸爸这么说，但是加入依赖信息会使我们使用起来方便很多，只要引用我们的库，就可以把其他依赖的库引用进来。那怎么把依赖信息打进pom文件呢？ (๑•̀ㅂ•́)و✧ 
 
 ## 骚操作
 
