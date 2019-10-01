@@ -122,5 +122,3 @@ key = project.hasProperty('bintrayApiKey') ?: System.getenv('BINTRAY_API_KEY')
 ## 扩展链接
 
 [利用 gradle 多 aar 发布私有 maven](https://xiaozhuanlan.com/topic/2981475360)
-
-[android studio gradle plugin 3.0上 多aar打包发布私有maven服务器]([https://github.com/YuTianTina/ForMultiUploadMaven#android-studio-gradle-plugin-30%E4%B8%8A-%E5%A4%9Aaar%E6%89%93%E5%8C%85%E5%8F%91%E5%B8%83%E7%A7%81%E6%9C%89maven%E6%9C%8D%E5%8A%A1%E5%99%A8](https://github.com/YuTianTina/ForMultiUploadMaven#android-studio-gradle-plugin-30上-多aar打包发布私有maven服务器))
