@@ -1,0 +1,678 @@
+---
+title: Retrofit 最佳实践
+date: 2019-10-28
+categories: Android
+tags: 
+   - Retorfit
+   - Android
+---
+
+本文是Retrofit结合Rxjava的最佳实践。
+
+<!-- more -->
+
+## 依赖
+
+```groovy
+    // rxJava
+    api 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    api 'io.reactivex.rxjava2:rxjava:2.2.9'
+
+    // 网络
+    api 'com.squareup.okhttp3:okhttp:3.12.0'
+    api 'com.squareup.okhttp3:logging-interceptor:4.2.0'
+    api 'com.squareup.retrofit2:retrofit:2.3.0'
+    api 'com.squareup.retrofit2:converter-gson:2.3.0'
+    api 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+```
+
+## 基本使用
+
+###  改造Http Api变成一个Java接口
+
+```java
+    /**
+     * 获取公钥
+     */
+    @GET("/smart_platform/logon/getPublicKey")
+    Observable<PublicKeyBean> getPublicKey(@Query("_") long systemtime);
+```
+
+- 函数签名可以与服务端接口命名一致
+- 实体类，如这里的`PublicKeyBean`代码可以根据服务端返回的json用GsonFormat生成
+
+###  定义一个Serveice接口
+
+```java
+public interface ISkyNet {
+
+    /**
+     * 获取公钥
+     */
+    @GET("/smart_platform/logon/getPublicKey")
+    Observable<PublicKeyBean> getPublicKey(@Query("_") long systemtime);
+}
+```
+
+###  创建RetrofitManager
+
+ 定义一个`RetrofitManager`，这个类主要来设置请求的base_url，初始化OkHttp，设置公共请求头，OKHttp基本配置，打印等。
+
+```java
+public class RetrofitManager {
+
+    public static final String TAG = "RetrofitManager";
+
+    private static final String SEVER_URL = "http://dareway.cn:43001";
+
+    private static final int DEFAULT_TIME_OUT = 5;//超时时间 5s
+    private static final int DEFAULT_READ_TIME_OUT = 10;
+
+    private Retrofit mRetrofit;
+    private static RetrofitManager mManager;
+
+    private HashSet<String> cookies = new HashSet<>();
+
+    private RetrofitManager() {
+        if (mRetrofit == null) {
+            OkHttpClient.Builder builder = new OkHttpClient.Builder();
+            builder.connectTimeout(DEFAULT_TIME_OUT, TimeUnit.SECONDS);//连接超时时间
+            builder.writeTimeout(DEFAULT_READ_TIME_OUT, TimeUnit.SECONDS);//写操作 超时时间
+            builder.readTimeout(DEFAULT_READ_TIME_OUT, TimeUnit.SECONDS);//读操作超时时间
+            ClearableCookieJar cookieJar =
+                    new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(MyApplication.getContext()));
+
+            builder.cookieJar(cookieJar);
+
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLogger());
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            //设置 Debug Log 模式
+            builder.addNetworkInterceptor(loggingInterceptor);
+
+            // 创建Retrofit
+            mRetrofit = new Retrofit.Builder()
+                    .baseUrl(SEVER_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .client(builder.build())
+                    .build();
+        }
+    }
+
+    /**
+     * 获取RetrofitManager
+     *
+     * @return RetrofitManager
+     */
+    public static RetrofitManager getInstance() {
+        if (mManager == null) {
+            synchronized (RetrofitManager.class) {
+                if (mManager == null) {
+                    mManager = new RetrofitManager();
+                }
+            }
+        }
+        return mManager;
+    }
+
+    /**
+     * 获取对应的Service
+     *
+     * @param service Service 的 class
+     * @param <T>
+     * @return
+     */
+    public <T> T create(Class<T> service) {
+        return mRetrofit.create(service);
+    }
+
+    private class HttpLogger implements HttpLoggingInterceptor.Logger {
+
+        @Override
+        public void log(String message) {
+            // 使用Logger打印
+            Logger.t("OkHttp").d(message);
+        }
+    }
+
+}
+```
+
+###  RetrofitManager生成一个 Service 接口的实现
+
+```java
+ISkyNet skyNet = RetrofitManager.getInstance().create(ISkyNet.class);
+```
+
+### 接口请求
+
+```java
+skyNet.getPublicKey(System.currentTimeMillis())
+                .subscribeOn(Schedulers.io())//在io线程执行
+                .observeOn(AndroidSchedulers.mainThread())//在主线程回调
+                .subscribeWith(new Observer<PublicKeyBean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        
+                    }
+
+                    @Override
+                    public void onNext(PublicKeyBean publicKeyBean) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+```
+
+至此，一个请求可以方便的使用Retrofit进行。
+
+这里我们可以看下Retrofit的优越性
+
+-  API 声明：接口方法通过注解的方式及其参数指示如何处理一个请求，请求方式一目了然
+-  所有请求采用同一份配置(如Headers，Log打印)，在我们和同一个服务对接的时候不必写很多重复代码
+-  结合Rxjava的写法简洁美观，包装了线程切换和异常回调
+-  提供各种各样的转换器，支持` JSON,protocol buffers `等，省去请求返回结果和实体的转换代码
+
+### 一些必须知道的事情
+
+#### 可选参数
+
+如下接口：
+
+```java
+@GET("index.php?r=default/homepage")
+Observable<Response<Exercise>> getDataList(@Query("page") int page);
+
+@GET("index.php?r=default/homepage")
+Observable<Response<Exercise>> getDataList(@Query("page") int page, @Query("user_id") int userId);
+```
+
+
+两个接口，区别就在于有没有『user_id』参数。
+
+这样做，总感觉有点罗嗦，体现不出Retrofit的优越性。有没有更好的方法呢？当然有，那就是动态参数（其实很简单）。
+
+上面的两个接口合并为一个：
+
+```java
+@GET("index.php?r=default/homepage")
+Observable<Response<Exercise>> getDataList(@Query("page") int page,@Query("user_id") Integer userId);
+```
+
+使用
+登录：
+
+`APIWrapper.getInstance().getDataList(mCurrentPage, 10);`
+未登录：
+
+`APIWrapper.getInstance().getDataList(mCurrentPage, null);`
+
+Retrofit运行null值参数，如果在实际调用的时候传一个null, 系统也不会出错，会把这个参数当作没有。
+
+### 混淆配置
+
+```shell
+# okio
+-dontwarn org.codehaus.mojo.animal_sniffer.*
+
+# retrofit
+
+# Platform calls Class.forName on types which do not exist on Android to determine platform.
+-dontnote retrofit2.Platform
+# Platform used when running on Java 8 VMs. Will not be used at runtime.
+-dontwarn retrofit2.Platform$Java8
+# Retain generic type information for use by reflection by converters and adapters.
+-keepattributes Signature
+# Retain declared checked exceptions for use by a Proxy instance.
+-keepattributes Exceptions
+```
+
+## 进阶使用
+
+### 更简单的线程封装
+
+利用compose操作符，可以将
+
+```java
+.subscribeOn(Schedulers.io())//在io线程执行
+.observeOn(AndroidSchedulers.mainThread())//在主线程回调
+```
+
+合并为一行代码
+
+```java
+ .compose(RxSchedulers.io_main())//在io线程执行，在主线程回调
+```
+
+RxSchedulers的代码
+
+```java
+public class RxSchedulers {
+    public static <T> ObservableTransformer<T, T> io_main() {
+        return upstream ->
+                upstream.subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread());
+    }
+}
+```
+
+### 更简洁的Observer
+
+我们可以封装一个Observer，用来
+
+1.处理网络请求接口返回错误码 2.减少回调接口数 3.封装dialog的显示(因为通常dialog都是在onSubscribe的时候显示，onOberver的时候消失)
+
+RxDataObserver
+
+```java
+public abstract class RxDataObserver<M> extends DisposableObserver<M> {
+
+    private LoadingDialog mLoadingDialog;
+
+    public abstract void onSuccess(M model);
+
+    public abstract void onFailure(String msg);
+
+    public RxDataObserver() {
+
+    }
+
+    /**
+     * @param dialog may be null,null present not dialog show
+     */
+    public RxDataObserver(@Nullable LoadingDialog dialog) {
+        mLoadingDialog = dialog;
+    }
+
+    @Override
+    protected void onStart() {
+        showLoadingDialog();
+    }
+
+    @Override
+    public void onError(Throwable throwable) {
+        throwable.printStackTrace();
+        if (throwable instanceof HttpException) {
+            HttpException httpException = (HttpException) throwable;
+            int code = httpException.code();
+            String msg = httpException.getMessage();
+            if (code == 504) {
+                msg = "网络不给力";
+            }
+            if (code == 502 || code == 404) {
+                msg = "服务器异常，请稍后再试";
+            }
+            onFailure(msg);
+        } else {
+            onFailure(throwable.getMessage());
+        }
+        dismissLoadingDialog();
+    }
+
+    /**
+     * 直接返回数据给上层
+     */
+    @Override
+    public void onNext(M m) {
+        onSuccess(m);
+    }
+
+    @Override
+    public void onComplete() {
+        dismissLoadingDialog();
+    }
+
+    public void showLoadingDialog() {
+        if (mLoadingDialog != null) {
+            mLoadingDialog.show();
+        }
+    }
+
+    public void dismissLoadingDialog() {
+
+        if (mLoadingDialog != null) {
+            Activity activity = mLoadingDialog.getContext();
+            if (isInvalidContext(activity)) {
+                return;
+            }
+            mLoadingDialog.hide();
+        }
+    }
+
+    private boolean isInvalidContext(Activity activity) {
+        if (activity == null) {
+            return false;
+        }
+        return (activity.isDestroyed() || activity.isFinishing());
+    }
+}
+```
+
+这里的话，dialog是由外部传来的(因为界面通常有一个共用的dialog，我们只要控制这个dialog的显示和消失就可以了)
+
+值得注意的是，如果你有多个异步操作的话，比如说你不仅调用了Retrofit的网络请求还有其他显示dialog的异步操作，可能会在请求结束后这里就把dialog给dismiss掉了，而其他操作并没有完成~，并不应该把dialog消失。这样子的话，如果你想控制这个dialog的显示的话，可以使用RxDataObserver的默认构造函数，这样请求就不会去控制显示dialog。具体的话视业务场景而定，这里封装这个dialog还是很有用的，因为这种情况不算很多。
+
+这样我们的请求代码变成了
+
+```java
+skyNet.logout(userName, DeviceUuidFactory.getDeviceUuid())
+                .compose(RxSchedulers.io_main())
+                .subscribeWith(new RxDataObserver<TypeContentBean>() {
+                    @Override
+                    public void onSuccess(TypeContentBean model) {
+                        //这里需要对返回结果的code等进行判断，并需要手动获得我们需要的实体类
+                    }
+
+                    @Override
+                    public void onFailure(String msg) {
+                        
+                    }
+                });
+```
+
+### 更更简洁的Observer
+
+在上述的Observer的基础上，我们可以使我们的Observer更加简洁。
+
+在一些与服务对接的场景下，通常服务返回的数据会有一些自定义的错误码，还有服务固定返回的数据结构的key，比如说data，这样我们这些对错误码和data的处理可以封装在一起。
+
+封装一个通用返回结构RxRespond，实体类抽象成泛型T
+
+```java
+/**
+ * 网络请求结果 基类,剥离出数据给上层
+ */
+public class BaseRespond<T> {
+
+    /**
+     * code : 200
+     * status : SUCCESS
+     * msg :
+     * data : [{"alarmLevel":1,"alarmTemperature":75},{"alarmLevel":2,"alarmTemperature":100},{"alarmLevel":3,"alarmTemperature":150}]
+     */
+
+    private int code;
+    private String status;
+    private String msg;
+    private T data;
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+}
+```
+
+RxObserver
+
+```java
+/**
+ * 剥离数据的观察者
+ */
+public abstract class BaseObserver<M> extends DisposableObserver<BaseRespond<M>> {
+
+    public abstract void onSuccess(M model);
+
+    public abstract void onFailure(String msg);
+
+    private LoadingDialog mLoadingDialog;
+
+    public BaseObserver() {
+
+    }
+
+    /**
+     * @param dialog null
+     */
+    public BaseObserver(@Nullable LoadingDialog dialog) {
+        mLoadingDialog = dialog;
+    }
+
+    @Override
+    protected void onStart() {
+        showLoadingDialog();
+    }
+
+    @Override
+    public void onError(Throwable throwable) {
+        throwable.printStackTrace();
+        if (throwable instanceof HttpException) {
+            HttpException httpException = (HttpException) throwable;
+            int code = httpException.code();
+            String msg = httpException.getMessage();
+            if (code == 504) {
+                msg = "网络不给力";
+            }
+            if (code == 502 || code == 404) {
+                msg = "服务器异常，请稍后再试";
+            }
+            onFailure(msg);
+        } else {
+            onFailure(throwable.getMessage());
+        }
+        dismissLoadingDialog();
+    }
+
+    /**
+     * 剥离需要的数据返回给上层
+     * 接口请求成功 并不代表真正的成功
+     * 需要对业务的code 判断  再分情况返回给上层
+     */
+    @Override
+    public void onNext(BaseRespond<M> mBaseRespond) {
+        if ("SUCCESS".endsWith(mBaseRespond.getStatus())) {
+            onSuccess(mBaseRespond.getData());
+        } else {
+            onFailure("服务器Status返回Fail");
+        }
+    }
+
+    @Override
+    public void onComplete() {
+        dismissLoadingDialog();
+    }
+
+    public void showLoadingDialog() {
+        if (mLoadingDialog != null) {
+            mLoadingDialog.show();
+        }
+    }
+
+    public void dismissLoadingDialog() {
+
+        if (mLoadingDialog != null) {
+            Activity activity = mLoadingDialog.getContext();
+            if (isInvalidContext(activity)) {
+                return;
+            }
+            mLoadingDialog.hide();
+        }
+    }
+
+    private boolean isInvalidContext(Activity activity) {
+        if (activity == null) {
+            return false;
+        }
+        return (activity.isDestroyed() || activity.isFinishing());
+    }
+}
+```
+
+这样ISkyNet里面的接口签名变成了这样
+
+```java
+    /**
+     * 区域温度
+     *
+     */
+    @GET("/monitor/region/temperature")
+    Observable<RxRespond<RegionTemperatureList>> regionTemperature();
+```
+
+我们的接口使用代码变成了这样
+
+```java
+skyNet.regionTemperature()
+    				.compose(RxSchedulers.io_main())
+                    .subscribeWith(new BaseObserver<RegionTemperatureList>() {
+                        @Override
+                        public void onSuccess(RegionTemperatureList model) {
+                            //这里的数据是有效的
+                        }
+
+                        @Override
+                        public void onFailure(String msg) {
+                            
+                        }
+                    });
+```
+
+当然，这种写法需要服务端返回的结构格式都是一样的，这样可以减少很多重复处理的代码。
+
+### 重复/轮询请求
+
+直接上代码
+
+```java
+skyNet.regionTemperature()
+                    .repeatWhen(objectObservable -> 		objectObservable.flatMap((Function<Object, ObservableSource<?>>) o -> {
+                        if (!isMonitoring) {
+                            return Observable.empty();
+                        } else {
+                            return Observable.timer(1, TimeUnit.SECONDS);
+                        }
+                    }))
+                    .compose(RxSchedulers.io_main())
+                    .subscribeWith(new BaseObserver<RegionTemperatureList>() {
+                        @Override
+                        public void onSuccess(RegionTemperatureList model) {
+                            
+                        }
+
+                        @Override
+                        public void onFailure(String msg) {
+                            
+                        }
+                    })
+```
+
+当isMonitoring为false的时候结束重复调用，否则1s执行一次。
+
+值得注意的是如果请求返回错误的话，这个函数就不会重复执行下去，和我们想要的还有点出入，后续需要改进下
+
+### 绑定生命周期
+
+1.引入依赖
+
+```groovy
+api 'com.trello.rxlifecycle3:rxlifecycle:3.0.0'
+api 'com.trello.rxlifecycle3:rxlifecycle-android:3.0.0'
+api 'com.trello.rxlifecycle3:rxlifecycle-components:3.0.0'
+```
+
+2.Activity继承RxAppCompatActivity
+
+使用`.compose(bindToLifecycle())`将请求绑定到当前Activity的生命周期
+
+###  嵌套网络请求处理 
+
+比如说我们要在一个请求成功后再执行另一个请求
+
+```java
+skyNet.getPublicKey(System.currentTimeMillis())
+                .compose(RxSchedulers.io_main())
+                .observeOn(Schedulers.io()) // （新被观察者，同时也是新观察者）切换到IO线程去发起登录请求
+                // 特别注意：因为flatMap是对初始被观察者作变换，所以对于旧被观察者，它是新观察者，所以通过observeOn切换线程
+                // 但对于初始观察者，它则是新的被观察者
+                .flatMap(new Function<PublicKeyBean, ObservableSource<LoginResultBean>>() { // 作变换，即作嵌套网络请求
+                    @Override
+                    public ObservableSource<LoginResultBean> apply(PublicKeyBean result) throws Exception {
+                        // 将网络请求1转换成网络请求2，即发送网络请求2
+                        if (result != null) {
+                            String modulus = result.getModulus();
+                            String exponent = result.getExponent();
+                            String cryPasswd = CrypUtil.encodePass(passwd, modulus, exponent);
+                            return skyNet.login(userName, cryPasswd, DeviceUuidFactory.getDeviceUuid());
+                        } else {
+                            throw new Exception("getPublicKey Fail");
+                        }
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())  // （初始观察者）切换到主线程 处理网络请求2的结果
+                .subscribeWith(new RxDataObserver<LoginResultBean>() {
+                    @Override
+                    public void onSuccess(LoginResultBean model) {
+                        if (model != null && model.getResult() == 1) {
+                            callBack.onLogin(true);
+                            login = true;
+                        } else {
+                            callBack.onLogin(false);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(String msg) {
+                        LogUtils.e(TAG, "login fail: " + msg);
+                        callBack.onLogin(false);
+                    }
+                });
+```
+
+这里是一段常见的登录代码，需要获取公钥，加密后登录，使用flatmap操作符可以将两个网络请求的结果统一在Observer中处理。
+
+### 使用Cookie缓存
+
+1.引入依赖
+
+```groovy
+// http cookie管理
+api 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
+```
+
+2.在RetrofitManager配置使用
+
+```java
+ OkHttpClient.Builder builder = new OkHttpClient.Builder();
+ClearableCookieJar cookieJar =
+                    new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(MyApplication.getContext()));
+
+            builder.cookieJar(cookieJar);
+```
+
