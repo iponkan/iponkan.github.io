@@ -74,19 +74,20 @@ Android Logcat 配色方案(**都是设置foreground**)
 
 ## 快捷键
 
-| 功能             | 快捷键                 |
-| :------------- | :------------------ |
+| 功能                         | 快捷键              |
+| :--------------------------- | :------------------ |
 | 查看代码所在位置的上下文信息 | Alt+Q               |
-| 在方法和内部类之间跳转    | Alt + 上/下           |
-| 定位到父类          | Ctrl+U              |
-| 显示/隐藏数字编号面板    | Alt + 数字编号          |
-| 显示方法参数         | Ctrl+P              |
-| 查看方法定义         | Ctrl+Shift+I        |
-| 查看最近修改的文件      | Ctrl+Shift+E        |
-| 查看最近使用的文件      | Ctrl+E              |
-| 扩大/缩小选择        | Ctrl+W Ctrl+Shift+W |
-| 查看类所有方法        | Ctrl+F12            |
-| 版本控制操作弹窗       | Alt+`               |
+| 在方法和内部类之间跳转       | Alt + 上/下         |
+| 定位到父类                   | Ctrl+U              |
+| 显示/隐藏数字编号面板        | Alt + 数字编号      |
+| 显示方法参数                 | Ctrl+P              |
+| 查看方法定义                 | Ctrl+Shift+I        |
+| 查看最近修改的文件           | Ctrl+Shift+E        |
+| 查看最近使用的文件           | Ctrl+E              |
+| 扩大/缩小选择                | Ctrl+W Ctrl+Shift+W |
+| 查看类所有方法               | Ctrl+F12            |
+| 版本控制操作弹窗             | Alt+`               |
+| 查找使用                     | Alt+F7              |
 
 ## 快捷输入
 
@@ -97,6 +98,31 @@ Android Logcat 配色方案(**都是设置foreground**)
 | for循环  | 对象.for， 对象.fori ， 对象.forr |
 | if判断   | 判断条件.if                   |
 | 实例类型判断 | 对象.inst , 对象.instanceof   |
+
+## 运行Java代码
+
+首先了解一点Android Studio是Intellij的社区版改装的，支持java。
+
+可以在build.gradle增加java文件目录的路径
+
+```groovy
+android {
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java', 'src/main/aidl', 'D:/code/leetcode/editor/en',
+            'D:/code/sonicers/decss/src']
+        }
+    }
+}
+```
+
+增加一个main函数就可以运行java代码了
+
+## 一劳永逸修改 Android Studio .gitignore 默认模板
+
+https://blog.csdn.net/ziwang_/article/details/78498578
+
+
 
 ## 相关链接
 
