@@ -8,7 +8,6 @@
   {{ partial('_third-party/analytics/index.swig', {}, {cache: theme.cache.enable}) }}
   {{ partial('_scripts/noscript.swig', {}, {cache: theme.cache.enable}) }}
   <script src="/js/axios.min.js"></script>
-  <script src="/js/vconsole.min.js"></script>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -61,8 +60,5 @@
   <!-- 微信分享 -->
 	<script type="text/javascript" src="https://res2.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
 	<script type="text/javascript" src="/js/wxshare.js"></script>
-  <script>
-    var vConsole = new VConsole();
-  </script>
 </body>
 </html>

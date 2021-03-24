@@ -1,10 +1,14 @@
 const baseLink = window.location.href.replace(/%26/g, '&')
+const commonTitle = document.getElementsByTagName('title')[0].innerHTML
+const index = commonTitle.indexOf(" ");
+const myTitle = commonTitle.substring(0,index)
+console.log("myTitle:" + myTitle)
 console.log("baseLink:" + baseLink)
 
 //自定义微信分享
 window.shareData = {
     url: baseLink,
-    picUrl: "https://uss.sonicers.com/mouse/img/thumbnail.jpg",
+    picUrl: './images/logo.png',
     title: document.getElementsByTagName('title')[0].innerHTML,
     desc: '遗忘日益贪婪，无情地吞噬一点一滴的记忆',
     timelineTitle: document.getElementsByTagName('title')[0].innerHTML,
