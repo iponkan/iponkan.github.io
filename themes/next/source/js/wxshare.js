@@ -1,17 +1,17 @@
 const baseLink = window.location.href.replace(/%26/g, '&')
-const commonTitle = document.getElementsByTagName('title')[0].innerHTML
-const index = commonTitle.indexOf(" ");
-const myTitle = commonTitle.substring(0,index)
+const myPic = './images/logo.png'
+const myTitle = document.querySelector("meta[property='og:title']").getAttribute("content")
+const myDesc = document.querySelector("meta[property='og:description']").getAttribute("content")
 console.log("myTitle:" + myTitle)
 console.log("baseLink:" + baseLink)
 
 //自定义微信分享
 window.shareData = {
     url: baseLink,
-    picUrl: './images/logo.png',
-    title: document.getElementsByTagName('title')[0].innerHTML,
-    desc: '遗忘日益贪婪，无情地吞噬一点一滴的记忆',
-    timelineTitle: document.getElementsByTagName('title')[0].innerHTML,
+    picUrl: myPic,
+    title: myTitle,
+    desc: myDesc,
+    timelineTitle: myTitle,
 
     callback: function (type) {//分享成功回调，可以在这里做统计
         console.log("分享成功==========", type)
@@ -75,4 +75,11 @@ function refreshShareData() {
 
 }
 
-refreshShareData()
+const isWeixin = function () { //判断是否是微信
+    const ua = navigator.userAgent.toLowerCase();
+    return ua.match(/MicroMessenger/i) == "micromessenger";
+};
+
+if(isWeixin){
+    refreshShareData()
+}
