@@ -1,5 +1,5 @@
 const baseLink = window.location.href.replace(/%26/g, '&')
-const myPic = './images/logo.png'
+const myPic = 'https://uss.sonicers.com/blog/logo.png'
 const myTitle = document.querySelector("meta[property='og:title']").getAttribute("content")
 const myDesc = document.querySelector("meta[property='og:description']").getAttribute("content")
 console.log("myTitle:" + myTitle)
