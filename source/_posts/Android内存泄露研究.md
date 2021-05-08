@@ -22,7 +22,7 @@ JAVA GC：某对象不再有任何的引用的时候才会被回收。
 
 在JAVA中是通过可达性（Reachability Analysis)来判断对象是否存活，这个算法的基本思想是通过一系列的称谓"GC Roots"的对象作为起始点，从这些节点开始向下搜索，搜索所走得路径称为引用链，当一个对象到GC Roots没有任何引用链相连则该对象被判定为可以被回收的对象，反之不能被回收
 
-![](http://ojmg5j9kb.bkt.clouddn.com/image/jpg/GC_ROOT.PNG)
+![GC_ROOT](GC_ROOT.png)
 
 _哪些对象可以作为GCRoot？_
 
@@ -44,7 +44,7 @@ _哪些对象可以作为GCRoot？_
 
 内存泄露多了容易导致OOM----就像老司机开车开着开着就翻车了，内存溢出，app会崩溃
 
-![](http://ojmg5j9kb.bkt.clouddn.com/image/jpg/old_driver.jpg)
+![old_driver](old_driver.jpg)
 
 ## 确定我们项目中是否存在内存泄露
 
@@ -59,7 +59,9 @@ _哪些对象可以作为GCRoot？_
 
 ## 更仔细地查找内存泄漏的位置
 
-1. 使用Android Studio Heap SnapShot工具（堆栈快照） ![](http://ojmg5j9kb.bkt.clouddn.com/image/jpg/heap_htopgramis.PNG)
+1. 使用Android Studio Heap SnapShot工具（堆栈快照）
+
+   ![heap_htopgramis](heap_htopgramis.png)
 
 分析：
 Java的对象成员都是些引用。真正的内存都在堆上，看起来是一堆原生的byte[], char[], int[]，对象本身的内存都很小。所以我们可以看到以Shallow Heap进行排序的Histogram图中，通常排在第一位第二位的是byte，char[]
@@ -126,14 +128,14 @@ Retained Set 当X被回收时那些将被GC回收的对象集合。
 
 对 Activity 等组件的引用应该控制在 Activity 的生命周期之内； 如果不能就考虑使用 getApplicationContext 或者 getApplication，以避免 Activity 被外部长生命周期的对象引用而泄露。
 
-![](http://ojmg5j9kb.bkt.clouddn.com/image/jpg/Context_use.jpg)
+![Context_use](Context_use.jpg)
 
 	- 数字1：启动Activity在这些类中是可以的，但是需要创建一个新的task，一般情况不推荐；
-
+	
 	- 数字2：在这些类中去layout inflate是合法的，但是会使用系统默认的主题样式，如果你自定义了某些样式可能不会被使用；
-
-    - 数字3：在Receiver为null时允许，在4.2或以上的版本中，用于获取黏性广播的当前值。（可以无视）；
-
+	
+	- 数字3：在Receiver为null时允许，在4.2或以上的版本中，用于获取黏性广播的当前值。（可以无视）；
+	
 	- ContentProvider、BroadcastReceiver之所以在上述表格中，是因为在其内部方法中都有一个context用于使用。
 
 3. 其他
