@@ -1,8 +1,9 @@
 ---
 title: adb常用命令
 date: 2017-01-19
-categories: 命令行
-tags: adb
+categories: Android
+tags: 
+	- adb
 ---
 
 记住一些adb常用命令可以提高工作效率,以下按adb命令和adb shell分类。
