@@ -7,6 +7,10 @@ tags:
 
 ---
 
+Android开发的一些零零散散的经验
+
+<!-- more -->
+
 # 依赖库的引入
 
 aar是有依赖树的，避免使用依赖树很多的aar，可以在pom文件查看，比如Google的Guava就很大
