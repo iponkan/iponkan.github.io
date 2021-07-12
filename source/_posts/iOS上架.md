@@ -1,0 +1,264 @@
+---
+title: iOS上架
+date: 2021-7-12
+categories: Tech
+tags: 
+   - iOS
+---
+
+# 准备
+
+需申请苹果开发者账号，在调试期间，申请iOS开发证书（**iOS Development**）和描述文件。开发期开发完成后成功打出ipa包后再申请发布证书和描述文件，按下述流程上架.
+
+<!-- more -->
+
+
+
+# 上架
+
+1、申请iOS发布证书（**iOS Distribution**）
+
+2、申请iOS发布描述文件
+
+3、上传ios证书编译打包IPA
+
+4、上传iTunes Connect
+
+5、上传好IPA回到iTunes Connect填写APP信息并提交审核
+
+## 注意事项
+
+- 需提供描述和应用截图
+
+6.5 英寸（1284 x 2778 像素） 和5.5 英寸（ 1242 x 2208  像素）3-5张应用内截屏。这是手机的，如果app支持ipad，也要使用需要上传ipad尺寸的截图。
+
+- 需要登录的应用需提供测试账号给苹果审核
+
+- 苹果审核需要https协议的域名，如果使用的是http，需要再打包配置里加上http请求的域名进白名单
+
+- 没有用到的权限不能在配置里写明，需要删除
+
+# 详细步骤
+
+##  一、开发者基本知识
+
+苹果开发者官网：https://developer.apple.com/account/ ，个人账号688人民币一年。上架app和游戏需要先申请证书，申请证书需要涉及到下面的设置，功能列表:
+
+### 1. Certification和p12(证书)
+
+证书是对电脑开发资格的认证，每个开发者帐号有一套，分为两种：
+
+1. Developer Certification(开发证书)：用于开发测试；
+2. Distribution Certification(发布证书)：用于打包测试`ipa`或者`Appstore`的安装包；
+
+`.cer`是苹果的默认证书，在`xcode`开发打包可以使用，如果在`lbuilder`、`phonegap`、`HBuilder`、`AppCan`、`APICloud`这些跨平台开发工具打包，就需要用到`p12`文件。 或者多人开发的时候，本机用`.cer`，其他人用`p12`证书。
+
+`.cer`证书仅包含公钥，`.p12`证书可能既包含公钥也包含私钥，这就是他们的区别，除开`xcode`开发工具，其他都需要用`p12`才能打包。
+
+### 2. Identifiers(AppID、应用id)
+
+app的标识，例如app的名字描述，包名
+
+### 3. Devives(设备)
+
+设备列表，表示当app安装调试的时候可以安装在这些机器上面，设备使用udid进行唯一判断，创建描述文件(Profiles)的时候需要选择设备。
+
+### 4. Profiles(描述文件)
+
+这个文件用来描述App IDs、证书和设备之间的关系，我们一般只用到Development、App Store和Ad Hoc三种，Development和Ad Hoc类型的需要指定可以运行在哪些Devices上，而App Store类型的不需要。授权文件分为两种，对应相应的证书使用：
+
+1. Developer Provisioning Profile(开发描述文件)：在装有开发证书或副本的电脑上使用，开发人员选择该描述文件通过电脑将程序安装到授权文件记录的设备中，即可进行真机测试，一般是开发自己做调试的时候用。
+2. Distribution Provisioning Profile(发布描述文件)：在装有发布证书的电脑上（即配置证书的电脑，只有一台）制做测试版和发布版的程序。
+
+- AppStore发布版就是发布到AppStore上的程序文件，一般是测试完毕之后打AppStore包用；
+- AdHoc测试版就是在发布之前交给测试人员可同步到设备上的程序文件，一般是打包给内测的时候用，只有描述文件里面包含了UDID对应的设备才能安装上。
+
+## 二、创建Certification(证书)
+
+1. 创建证书之前需要现在Mac电脑上面申请certSigningRequest(CSR)文件，打开钥匙串访问程序 - 证书助理 - 从证书颁发机构请求证书
+   ![sOB1Jg.png](https://img-blog.csdnimg.cn/img_convert/6050bb6ae95a4833a1d58c229825c749.png)
+2. 输入下面两项，保存证书文件到电脑。
+
+![sLNs3t.png](https://img-blog.csdnimg.cn/img_convert/6eb6376672fb0250ea2acbc7f3d3a540.png)
+
+1. [打开网站](https://developer.apple.com/account/resources/certificates/list)，开始申请证书
+
+![sLNRHg.png](https://img-blog.csdnimg.cn/img_convert/835ebb6c118ce2489fc7ee9b6a8f5785.png)
+
+1. 选择Apple Develpment,continue
+
+![sLNv59.png](https://img-blog.csdnimg.cn/img_convert/41d91651cac689283e541329532564c8.png)
+
+1. Choose File选择刚刚创建的文件
+
+![sLUPKK.png](https://img-blog.csdnimg.cn/img_convert/2c6798a93733fffa790e510a4c9ab495.png)
+
+1. 确定信息，Download下载证书
+
+![sLUMKf.png](https://img-blog.csdnimg.cn/img_convert/fb692c82fc4354a86aa8723706a84e60.png)
+
+1. 接着重复刚刚的步骤创建一个`iOS Distribution`证书（注意是iOS Distribution，不是Apple Distribution）
+2. 这时候已经下载了两个证书，双击证书，导入到电脑，两个都要。
+
+## 三、创建Identifiers
+
+1. 打开网站：https://developer.apple.com/account/resources/identifiers/list/bundleId
+
+![image](https://img-blog.csdnimg.cn/img_convert/3fcdcca09de07bd8a05b6446d856caa8.png)
+
+1. 选择App IDs，Continue
+
+![image](https://img-blog.csdnimg.cn/img_convert/863257ea8e76147e560511fdff1abcc4.png)
+
+1. 选择App
+
+![sLJXEd.png](https://img-blog.csdnimg.cn/img_convert/828444380fa4913ebceb95f9276b644c.png)
+
+1. 输入名字描述(注意不能中文)，包名(一般是com.xxxx.xxxx)，选择app里面需要的服务(这个可以后面编辑)。
+   ![sLYfsS.png](https://img-blog.csdnimg.cn/img_convert/55a76805e624ecd3b1854a0120159ea6.png)
+2. `continue`之后`Resister`，然后你会在Idntifiers列表里面看到你创建的`Identifier`
+
+## 四、添加测试设备Devices
+
+1. 在打包的时候需要运行到手机上，然后运行的手机需要在开发者网站添加
+
+![sLwEaF.png](https://img-blog.csdnimg.cn/img_convert/133a19b1f85e11f0a65eaa8f0b65d697.png)
+
+1. 输入对应的信息（注意这里需要获取设备的udid，获取方法看下面）
+
+![sLwcGj.png](https://img-blog.csdnimg.cn/img_convert/bb401161992bbdf6b45a9dc22d359216.png)
+
+> **获取设备的udid**
+> **方法1（电脑）**: 电脑连接手机(手机弹窗选择信任)，打开XCode，菜单栏Window-Devices and Simulates-就可以看到对应的udid
+> ![sL0YwT.png](https://img-blog.csdnimg.cn/img_convert/94dc9bab091aaf1303eadd814b4c6d22.png)
+>
+> **方法2（电脑）**: 打开访达Fidler，位置栏目点击手机，手机名字下面的信息，即可看到udid，右键即可复制
+> ![sL0xcn.png](https://img-blog.csdnimg.cn/img_convert/10196061a254965a35d9fcf417b659a2.png)
+>
+> **方法3（手机**）: 手机打开蒲公英网址 https://www.pgyer.com/tools/udid ,根据提示操作
+
+1. 确定之后确定信息点击Register即可在Devices列表里面看到刚刚创建的手机
+
+## 五、创建描述文件(Profiles)
+
+1. 打开https://developer.apple.com/account/resources/profiles/list
+
+![image](https://img-blog.csdnimg.cn/img_convert/771367bc5e52262bee11d4a96641d2e8.png)
+
+1. 首先创建开发证书(开发证书类型为iOS Development)，开发调试的使用用这个证书
+
+![image](https://img-blog.csdnimg.cn/img_convert/007095b5d1e6f5565a68dbf9df739d75.png)
+
+1. Continue之后选择之前创建的Identifiers，即AppID
+
+![sLDws1.png](https://img-blog.csdnimg.cn/img_convert/af5d1b7a9f963e74fc7497e1e4c3852e.png)
+
+1. Continue之后选择之前创建的Development开发证书
+
+![sLDzwV.png](https://img-blog.csdnimg.cn/img_convert/c0016589b837196f0ec747939109dd50.png)
+
+1. Continue之后选择测试设备（这些设备就是Deevics设备列表的设备）
+
+![sLrmTK.png](https://img-blog.csdnimg.cn/img_convert/86d6c59ddb96642dd4d695094417df16.png)
+
+1. 之后输入描述文件的名字，我一般取名是 项目名+证书类型，例如Project3_Development
+
+![sLrv1H.png](https://img-blog.csdnimg.cn/img_convert/105ee2974e982ba553e56d4a0a70445a.png)
+
+1. 生成之后Download下来，文件的后缀名是mobileprovision。
+2. 重复上面的步骤，再创建一个AdHoc的描述文件
+3. 再次重复上面的步骤，再创建一个AppStore的描述文件
+4. 三个描述文件下载下来：
+   ![sLs458.png](https://img-blog.csdnimg.cn/img_convert/56ce69300015a95ee329271b2f512cb2.png)
+
+## 六、导入使用
+
+在XCode里面新建项目，点击项目 - TARGETS下面的项目 - Siging & Capabilities - Provisioning Profile - 点开选择Import Profile，导入你下载的3个描述文件
+
+![sOutq1.png](https://img-blog.csdnimg.cn/img_convert/f1421ea8f69e44c9e02633f4477c3a80.png)
+
+4、上传ios证书编译打包IPA
+
+用Xcode打开自己的应用后，双击uploadTest.mobileprovision授权文件，它会自己安装到Xcode中。
+
+![img](https://pic4.zhimg.com/80/v2-80a4f088d4ba4a53f5a9526b77e34e4f_720w.jpg)
+
+如果Team中没有选项：
+
+![img](https://pic1.zhimg.com/80/v2-5541e3c520a73bacf3ce9bcb926b54d0_720w.jpg)
+
+![img](https://pic1.zhimg.com/80/v2-b1e160e6e9da95ed8c715b16bd1b8430_720w.jpg)
+
+添加你的开发者账号后Team中就会增加一个以你账号命名的选项，选择即可。（有可能会有延时，可能要等会儿出现）
+
+
+
+注意：如果你的账号名下有两个选项，一个是开发证书，一个是发布证书。开发证书后面会带有“(Personal Team)”的字样，选择另外一个即是发布证书（打包上线用）。
+
+![img](https://pic3.zhimg.com/80/v2-7ec43ba4549f3bd7d2f253196ee09e2a_720w.jpg)
+
+到这里我们就可以开始打包上传了
+
+![img](https://pic1.zhimg.com/80/v2-e6c0aad85b1bf4c613e785180ccfb0ac_720w.jpg)
+
+打开Product - > Archive 点击
+
+![img](https://pic4.zhimg.com/80/v2-0d634f9e4c5085badfb7a630b805519f_720w.jpg)
+
+
+
+**5、上传iTunes Connect**
+
+等Archive成功后会弹出一个窗口如下图，点击Validate验证一下应用
+
+![img](https://pic2.zhimg.com/80/v2-cd722e5dc6d92c74b030f5390124c9f5_720w.jpg)
+
+![img](https://pic2.zhimg.com/80/v2-1024afbd96701b267a4d5a84e9b4c939_720w.jpg)
+
+![img](https://pic2.zhimg.com/80/v2-933d84d563f7482e4745f2136087e56d_720w.jpg)
+
+![img](https://pic4.zhimg.com/80/v2-4421ee03b0550c8407b28e03aef6cb63_720w.jpg)
+
+验证成功后，点击Upload to App Store上传
+
+![img](https://pic3.zhimg.com/80/v2-77fc03be36975a929ba31fc12ebe6c5a_720w.jpg)
+
+同Validate时一样，选择开发证书对应的Team，点击Choose
+
+![img](https://pic2.zhimg.com/80/v2-39e0dee4b45c73f5330b6664984702f9_720w.jpg)
+
+然后点击Upload按钮上传
+
+![img](https://pic1.zhimg.com/80/v2-5c01f6ef904d07dfde3cb5aa40401f48_720w.jpg)
+
+
+
+等上传成功会有Success的提醒，点击Done即可。这时已经说明打包上传App Store成功
+
+
+
+
+
+**6、上传好IPA回到iTunes Connect填写APP信息并提交审核**
+
+到iTunes Connect后台 - > 你的App - > 准备提交的版本 - > 构建版本旁边的“+”号或选择一个构建版本。
+
+![img](https://pic3.zhimg.com/80/v2-7345a77fdc652632fe789320dc30090e_720w.jpg)
+
+选择刚才打包上传的版本后，点完成。
+
+![img](https://pic3.zhimg.com/80/v2-7caecad7eab02db49e518f94a519699e_720w.jpg)
+
+
+
+然后按照你们需求吧itunes connect后台的数据填写完毕就好（app名称，副标题，截图，预览视频等）
+
+最后iTunes后台App中的其它信息可以根据公司的要求来填写，完成之后点击右上角“存储”后，点击“提交以供审核”即可
+
+![img](https://pic3.zhimg.com/80/v2-78b2c18da60ce8e5b69684ed8c506bf6_720w.jpg)
+
+以上两项，如果公司没有特别说明，都选否然后提交即可。
+
+# 参考链接
+
+[2021苹果AppleiOS开发证书申请详细图文流程](https://blog.csdn.net/niubitianping/article/details/113137555)
