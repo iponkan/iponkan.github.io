@@ -152,3 +152,14 @@ BroadcastReceiver设计的初衷是从全局考虑可以方便应用程序和系
 
 logcat有打印进程id和线程id，不需要手动打印
 
+# LRUCache
+
+实现原理是一个LinkedHashMap，采用强引用。使用泛型。
+
+当一个对象被使用时会被移到队列头部，当达到容量限制的时候会移除回收尾部的对象。
+
+[详细解读LruCache类
+
+# 声明式的UI框架
+
+SwiftUI，Flutter，JetPackcompose
