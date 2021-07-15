@@ -1,5 +1,5 @@
 ---
-titie: 自学前端开发之一-Javascript和Node.js
+title: 自学前端开发之一-Javascript和Node.js
 date: 2021-07-13
 categories: Tech
 tags:	
