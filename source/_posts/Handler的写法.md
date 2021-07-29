@@ -11,7 +11,9 @@ tags:
 
 <!-- more -->
 
-## 作为内部类
+
+
+# 作为内部类
 
 第1种写法：
 
@@ -88,7 +90,7 @@ private static class ViewHandler extends Handler {
     }
 ```
 
-## 作为一个变量
+# 作为一个变量
 
 第3种写法：
 
@@ -108,14 +110,14 @@ handler.postDelay(mTask, 3000);
 mHandler.removeCallbacksAndMessages(null);
 ```
 
-## 现在的问题是
+# 现在的问题是
 
 1. 为什么android framework可以在这么写，不会造成内存泄漏吗？
 2. 对于new Handler(Looper.getMainLooper())的写法，这个只是声明了在主线程建立Handler，并不能避免内存泄漏的风险，但是Android Studio不会出现警告，因为android studio不是万能的吗？
 3. 对于第3种写法，有必要调用mHandler.removeCallbacksAndMessages(null);吗？ 如果不调用，有没有可能出现延时任务还没执行，activity被销毁，而延时任务持有了activity的引用，从而造成内存泄漏
 4. 什么的写法比较好呢？
 
-## 解答
+# 解答
 
 1.我的理解是：内存泄漏不是必然的，只是会有这种风险
 
@@ -133,6 +135,6 @@ mHandler.removeCallbacksAndMessages(null);
 If the Handler is using a Looper or MessageQueue for a thread other than the main thread, then there is no issue. If the Handler is using the Looper or MessageQueue of the main thread, you need to fix your Handler declaration, as follows: Declare the Handler as a static class; In the outer class, instantiate a WeakReference to the outer class and pass this object to your Handler when you instantiate the Handler; Make all references to members of the outer class using the WeakReference object.
 ```
 
-## 相关链接
+# 相关链接
 
 [关于 Handler 的写法讨论](http://talkcode.cc/topics/42)
