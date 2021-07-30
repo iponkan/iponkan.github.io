@@ -3,8 +3,8 @@ title: Android性能优化之内存泄漏
 date: 2017-04-5
 categories: Android
 tags:
-	- Android
-    - JVM
+- Android
+- JVM
 ---
 
 内存空间使用完毕之后未回收, 会导致内存泄漏。有人会问：Java不是有垃圾自动回收机制么？不幸的是，在Java中仍存在很多容易导致内存泄漏的逻辑(logical leak)。虽然垃圾回收器会帮我们干掉大部分无用的内存空间，但是对于还保持着引用，但逻辑上已经不会再用到的对象，垃圾回收器不会回收它们。
