@@ -201,7 +201,9 @@ links_settings:
   layout: block
 
 links:
-  #Title: http://yoursite.com
+  RustFisher: https://rustfisher.com
+  Android应用开发技术:  https://an.rustfisher.com
+
 
 # Table of Contents in the Sidebar
 # Front-matter variable (unsupport wrap expand_all).
