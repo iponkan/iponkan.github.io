@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yrc.vlooktech.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Android上传aar到jcenter的正确姿势">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android上传aar到jcenter的正确姿势">
+<meta property="og:url" content="https://yrc.vlooktech.com/2019/08/08/Android%E4%B8%8A%E4%BC%A0aar%E5%88%B0jcenter%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF/index.html">
+<meta property="og:site_name" content="Ponkan&#39;s Blog">
+<meta property="og:description" content="Android上传aar到jcenter的正确姿势">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-08-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-24T07:18:03.864Z">
+<meta property="article:author" content="iponkan">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="gradle">
+<meta property="article:tag" content="aar">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://yrc.vlooktech.com/2019/08/08/Android%E4%B8%8A%E4%BC%A0aar%E5%88%B0jcenter%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Android上传aar到jcenter的正确姿势 | Ponkan's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+  <script src="/js/axios.min.js"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Ponkan's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yrc.vlooktech.com/2019/08/08/Android%E4%B8%8A%E4%BC%A0aar%E5%88%B0jcenter%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="iponkan">
+      <meta itemprop="description" content="Developer,Reader,Thinker">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ponkan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android上传aar到jcenter的正确姿势
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-08-08 00:00:00" itemprop="dateCreated datePublished" datetime="2019-08-08T00:00:00+08:00">2019-08-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/08/08/Android%E4%B8%8A%E4%BC%A0aar%E5%88%B0jcenter%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/08/08/Android%E4%B8%8A%E4%BC%A0aar%E5%88%B0jcenter%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Android上传aar到jcenter的正确姿势</p>
+<span id="more"></span>
+
+<h2 id="常规操作"><a href="#常规操作" class="headerlink" title="常规操作"></a>常规操作</h2><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/77894c3bc0d6">Android Studio 上传aar(Library)到JCenter - 简书</a></p>
+<p>完成上述操作后可以成功把aar上传到jcenter。但是有个问题——aar的依赖传递问题，下面会详细描述，这里以我的<a target="_blank" rel="noopener" href="https://github.com/sonicers/commonlib">commonlib项目</a>为例。</p>
+<p>这个库用于快速构建android工程，如果想快速构建一个app而不在意依赖的aar细节时，可以使用本库进行快速开发。</p>
+<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>按照上述的方式打包aar后我们可以在工程里方便使用：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation <span class="string">&#x27;com.sonicers:commonlib:0.0.8&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>但是sync后会发现，ide报出没找到OkHttp包等的问题，因为这个库依赖了OkHttp等包</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 网络</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.okhttp3:okhttp:3.10.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.okhttp3:logging-interceptor:3.10.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.retrofit2:retrofit:2.3.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.retrofit2:converter-gson:2.3.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.retrofit2:adapter-rxjava2:2.3.0&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>gradle默认是不会把lib里面的依赖传递进来的，这就是<strong>依赖传递</strong>问题</p>
+<p>我们需要添加一个属性：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">implementation(<span class="string">&#x27;com.sonicers:commonlib:0.0.8&#x27;</span>) &#123;</span><br><span class="line">    transitive = <span class="literal">true</span><span class="comment">//依赖传递为true时才能把依赖的库打进去</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>加了以后，嗯，发现没什么卵用  (⊙ө⊙)，嗯，基本操作，程序员天天遇到。。。</p>
+<p>原因在于使用上述上传aar到jcenter的常规操作，<strong>没有把依赖信息打进pom.xml</strong>。关于pom文件的用处，可以网上自己搜搜。可以参考</p>
+<p><a href="%5Bhttps://drprincess.github.io/2018/01/31/Android-%E5%B0%91%E4%B8%8D%E4%BA%86%E7%9A%84AAR%E6%96%87%E4%BB%B6/%5D(https://drprincess.github.io/2018/01/31/Android-%E5%B0%91%E4%B8%8D%E4%BA%86%E7%9A%84AAR%E6%96%87%E4%BB%B6/)">Android-少不了的 AAR 文件常识，最好知道的注意事项</a></p>
+<blockquote>
+<p>Google Android Studio 的负责人在 stackoverflow 上解释了 <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/20700581/android-studio-how-to-package-single-aar-from-multiple-library-projects/20715155#20715155">为什么 Android Studio 不能将多个依赖打包进一个 AAR 文件</a>的原因，是因为将不同的library打包在一起，涉及到资源和配置文件智能合并，所以是个比较复杂的问题，同时也容易造成相同的依赖冲突。</p>
+</blockquote>
+<p>虽然Google爸爸这么说，但是加入依赖信息会使我们使用起来方便很多，只要引用我们的库，就可以把其他依赖的库引用进来。那怎么把依赖信息打进pom文件呢？ (๑•̀ㅂ•́)و✧ </p>
+<h2 id="骚操作"><a href="#骚操作" class="headerlink" title="骚操作"></a>骚操作</h2><p>首先看下常规操作所用的插件</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">classpath <span class="string">&#x27;com.jfrog.bintray.gradle:gradle-bintray-plugin:1.0&#x27;</span></span><br><span class="line">classpath <span class="string">&#x27;com.github.dcendents:android-maven-gradle-plugin:1.4.1&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>这两个插件的官网</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/bintray/gradle-bintray-plugin">jfrog.bintray</a>，这个个人理解是上传到jcenter的插件</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/dcendents/android-maven-gradle-plugin">android-maven-gradle-plugin</a>，maven adnroid aar打包插件</p>
+<p>可以看到android-maven-gradle-plugin对这个插件的描述是已经过时的，这个插件默认是不把dependency信息打进pom文件的。</p>
+<p>so，我们抛弃android-maven-gradle-plugin插件，使用maven插件，这是关键，对于jfrog.bintray如何结合maven使用,在<a target="_blank" rel="noopener" href="https://github.com/bintray/gradle-bintray-plugin">jfrog.bintray</a>上有详细的描述和demo。</p>
+<p>直接看gradle pluin 3.0的<a target="_blank" rel="noopener" href="https://github.com/bintray/bintray-examples/blob/master/gradle-bintray-plugin-examples/android-gradle-3.0.0-maven-example/app/publish.gradle">demo</a>，这个demo有两个坑。</p>
+<h3 id="第一，"><a href="#第一，" class="headerlink" title="第一，"></a>第一，</h3><p>使用</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">user = project.hasProperty(<span class="string">&#x27;bintrayUser&#x27;</span>) ?: System.getenv(<span class="string">&#x27;BINTRAY_USER&#x27;</span>)</span><br><span class="line">key = project.hasProperty(<span class="string">&#x27;bintrayApiKey&#x27;</span>) ?: System.getenv(<span class="string">&#x27;BINTRAY_API_KEY&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>是读取不到local.properties里面的内容的</p>
+<p>正确姿势：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Properties propertyReader = <span class="keyword">new</span> Properties()</span><br><span class="line">propertyReader.load(<span class="keyword">new</span> FileInputStream(<span class="string">&quot;$&#123;rootDir&#125;$&#123;File.separator&#125;local.properties&quot;</span>))</span><br><span class="line">user = propertyReader.bintrayUser.toString()</span><br><span class="line">key = propertyReader.bintrayApiKey.toString()</span><br></pre></td></tr></table></figure>
+
+<h3 id="第二"><a href="#第二" class="headerlink" title="第二,"></a>第二,</h3><p>需要把<code>dryRun = true</code>去掉,文档解释：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dryRun = false //[Default: false] Whether to run this as dry-run, without deploying</span><br></pre></td></tr></table></figure>
+
+<p>这个demo仔细看应该是开发人员随便写的，没有验证过，这两个坑需要改过来，可以直接参照我的commonlib的<a target="_blank" rel="noopener" href="https://github.com/sonicers/commonlib/blob/master/upload.gradle">upload.gradle</a>,这个脚本还额外加了sources和javadoc的上传，符合jcenter的规范。另外一些路径的东西需要根据自己的具体配置修改，这里不赘述。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>使用maven插件可以自定义写pom文件，通过一些本地配置去控制写dependency或者不写，这里没有示例，有兴趣可以自行研究。</p>
+<p>如果是上传到自己的pixel仓库需要自己去修改一些脚本的配置，暂时没做过，我就不吹牛逼了。</p>
+<p>另外，非常感谢文中链接的作者。站在巨人的肩膀上٩(•̤̀ᵕ•̤́๑)ᵒᵏᵎᵎᵎᵎ </p>
+<h2 id="扩展链接"><a href="#扩展链接" class="headerlink" title="扩展链接"></a>扩展链接</h2><p><a target="_blank" rel="noopener" href="https://xiaozhuanlan.com/topic/2981475360">利用 gradle 多 aar 发布私有 maven</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"># Android</a>
+              <a href="/tags/gradle/" rel="tag"># gradle</a>
+              <a href="/tags/aar/" rel="tag"># aar</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/06/12/Android%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E9%9B%B6%E9%9B%B6%E6%95%A3%E6%95%A3%E7%9A%84%E7%BB%8F%E9%AA%8C/" rel="prev" title="Android开发的一些零零散散的经验">
+      <i class="fa fa-chevron-left"></i> Android开发的一些零零散散的经验
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/10/28/Retrifit%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" rel="next" title="Retrofit 最佳实践">
+      Retrofit 最佳实践 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%84%E6%93%8D%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">常规操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="nav-number">2.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AA%9A%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">骚操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%EF%BC%8C"><span class="nav-number">3.1.</span> <span class="nav-text">第一，</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C"><span class="nav-number">3.2.</span> <span class="nav-text">第二,</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">4.</span> <span class="nav-text">其他</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E9%93%BE%E6%8E%A5"><span class="nav-number">5.</span> <span class="nav-text">扩展链接</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">iponkan</p>
+  <div class="site-description" itemprop="description">Developer,Reader,Thinker</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://rustfisher.com/" title="https:&#x2F;&#x2F;rustfisher.com" rel="noopener" target="_blank">RustFisher</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://an.rustfisher.com/" title="https:&#x2F;&#x2F;an.rustfisher.com" rel="noopener" target="_blank">Android应用开发技术</a>
+        </li>
+    </ul>
+  </div>
+<style>
+    .custom-sidebar {
+        margin-top: 20px;
+    }
+    .custom-sidebar-title {
+        font-size: 14px;
+        font-weight: 600;
+        text-align: center;
+        border-top: 1px dotted #ccc;
+    }
+</style>
+<div class="custom-sidebar">
+    <div class="custom-sidebar-title"><i class="fa fa-fw fa-cloud"></i> CDN By<br></div>
+    <a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral">
+        <img src="/images/upyun.png" alt="又拍云联盟"/>
+    </a>
+</div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">iponkan</span>
+  <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn">闽ICP备19021186号</a>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">61k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">55 分钟</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'NryIlaaOlJS8IxRoRzxpQw0p-gzGzoHsz',
+      appKey     : 'yHYCBjPUYuqS201h8vyiT29I',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <!-- 微信分享 -->
+	<script type="text/javascript" src="https://res2.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+	<script type="text/javascript" src="/js/wxshare.js"></script>
+</body>
+</html>

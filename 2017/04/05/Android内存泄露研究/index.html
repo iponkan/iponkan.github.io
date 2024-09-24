@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yrc.vlooktech.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="内存空间使用完毕之后未回收, 会导致内存泄漏。有人会问：Java不是有垃圾自动回收机制么？不幸的是，在Java中仍存在很多容易导致内存泄漏的逻辑(logical leak)。虽然垃圾回收器会帮我们干掉大部分无用的内存空间，但是对于还保持着引用，但逻辑上已经不会再用到的对象，垃圾回收器不会回收它们。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android性能优化之内存泄漏">
+<meta property="og:url" content="https://yrc.vlooktech.com/2017/04/05/Android%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%A0%94%E7%A9%B6/index.html">
+<meta property="og:site_name" content="Ponkan&#39;s Blog">
+<meta property="og:description" content="内存空间使用完毕之后未回收, 会导致内存泄漏。有人会问：Java不是有垃圾自动回收机制么？不幸的是，在Java中仍存在很多容易导致内存泄漏的逻辑(logical leak)。虽然垃圾回收器会帮我们干掉大部分无用的内存空间，但是对于还保持着引用，但逻辑上已经不会再用到的对象，垃圾回收器不会回收它们。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yrc.vlooktech.com/picgo/202409241442173.png">
+<meta property="og:image" content="https://yrc.vlooktech.com/picgo/202409241442927.jpg">
+<meta property="og:image" content="https://yrc.vlooktech.com/picgo/202409241442614.png">
+<meta property="og:image" content="https://yrc.vlooktech.com/picgo/202409241442075.jpg">
+<meta property="article:published_time" content="2017-04-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-24T07:18:03.865Z">
+<meta property="article:author" content="iponkan">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yrc.vlooktech.com/picgo/202409241442173.png">
+
+<link rel="canonical" href="https://yrc.vlooktech.com/2017/04/05/Android%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%A0%94%E7%A9%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Android性能优化之内存泄漏 | Ponkan's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+  <script src="/js/axios.min.js"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Ponkan's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yrc.vlooktech.com/2017/04/05/Android%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%A0%94%E7%A9%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="iponkan">
+      <meta itemprop="description" content="Developer,Reader,Thinker">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ponkan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android性能优化之内存泄漏
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-04-05 00:00:00" itemprop="dateCreated datePublished" datetime="2017-04-05T00:00:00+08:00">2017-04-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2017/04/05/Android%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%A0%94%E7%A9%B6/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2017/04/05/Android%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%A0%94%E7%A9%B6/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>内存空间使用完毕之后未回收, 会导致内存泄漏。有人会问：Java不是有垃圾自动回收机制么？不幸的是，在Java中仍存在很多容易导致内存泄漏的逻辑(logical leak)。虽然垃圾回收器会帮我们干掉大部分无用的内存空间，但是对于还保持着引用，但逻辑上已经不会再用到的对象，垃圾回收器不会回收它们。</p>
+<span id="more"></span>
+
+<h1 id="什么是内存泄漏？"><a href="#什么是内存泄漏？" class="headerlink" title="什么是内存泄漏？"></a>什么是内存泄漏？</h1><p>部分对象的内存不在GC掌控之内。</p>
+<h1 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h1><p>JAVA GC：某对象不再有任何的引用的时候才会被回收。</p>
+<h2 id="GCRoot"><a href="#GCRoot" class="headerlink" title="GCRoot"></a>GCRoot</h2><p>在JAVA中是通过可达性（Reachability Analysis)来判断对象是否存活，这个算法的基本思想是通过一系列的称谓”GC Roots”的对象作为起始点，从这些节点开始向下搜索，搜索所走得路径称为引用链，当一个对象到GC Roots没有任何引用链相连则该对象被判定为可以被回收的对象，反之不能被回收</p>
+<p><img src="https://yrc.vlooktech.com/picgo/202409241442173.png" alt="GC_ROOT"></p>
+<p><em>哪些对象可以作为GCRoot？</em></p>
+<p>可以作为GCRoot引用点的是(GCRoot会去持有)</p>
+<ul>
+<li>激活状态的线程</li>
+<li>方法区中静态引用指向的对象</li>
+<li>方法区中常量引用指向的对象</li>
+<li>Native方法中JNI引用的对象</li>
+<li>Java栈中的引用对象，因为随时都可能被用到</li>
+</ul>
+<h2 id="怎么判断一个对象是垃圾对象？"><a href="#怎么判断一个对象是垃圾对象？" class="headerlink" title="怎么判断一个对象是垃圾对象？"></a>怎么判断一个对象是垃圾对象？</h2><p>这是一个主观的判断</p>
+<p>假如new 了一个对象，进入一个activity，再退出，主动调用GC很多回，对象没有被释放。在GC眼里并不是垃圾对象，而在开发者眼里这个对象就是垃圾对象。</p>
+<p>最坏的情况，App可能会因为大量的内存泄漏而导致内存耗尽，引发Crash，如果内存未耗尽，App也会犹豫内存空间不足，出现频繁的GC（垃圾回收），每次一出GC都是非常耗时的阻塞性操作，会造成设备非常严重的卡顿，给用户的体验就是，手机无论做什么操作，都是卡的，这也是Android设备玩久了之后常见的现象。</p>
+<p>内存泄露多了容易导致OOM—-就像老司机开车开着开着就翻车了，内存溢出，app会崩溃</p>
+<p><img src="https://yrc.vlooktech.com/picgo/202409241442927.jpg" alt="old_driver"></p>
+<h1 id="确定我们项目中是否存在内存泄露"><a href="#确定我们项目中是否存在内存泄露" class="headerlink" title="确定我们项目中是否存在内存泄露"></a>确定我们项目中是否存在内存泄露</h1><p>粗略判断: </p>
+<ul>
+<li>app用着用着变卡顿</li>
+<li>自动化测试中同一个操作内存一直升高没有释放</li>
+<li>Android Studio  monitor</li>
+</ul>
+<p> android studio有多个工具可以看到内存使用情况，具体可以这样操作：<br> 检查一个一个的动作。(比如activity的跳转），反复多次执行某一个操作，不断地通过这个工具查看内存的大概变化情况。若前后两个内存变化增加了不少则有可能发生了内存泄漏。</p>
+<h1 id="更仔细地查找内存泄漏的位置"><a href="#更仔细地查找内存泄漏的位置" class="headerlink" title="更仔细地查找内存泄漏的位置"></a>更仔细地查找内存泄漏的位置</h1><ol>
+<li><p>使用Android Studio Heap SnapShot工具（堆栈快照）</p>
+<p><img src="https://yrc.vlooktech.com/picgo/202409241442614.png" alt="heap_htopgramis"></p>
+</li>
+</ol>
+<p>分析：<br>Java的对象成员都是些引用。真正的内存都在堆上，看起来是一堆原生的byte[], char[], int[]，对象本身的内存都很小。所以我们可以看到以Shallow Heap进行排序的Histogram图中，通常排在第一位第二位的是byte，char[]</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th align="center">意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Total Count</td>
+<td align="center">内存中该类的对象个数</td>
+</tr>
+<tr>
+<td>Heap Count</td>
+<td align="center">堆内存中该类的对象个数</td>
+</tr>
+<tr>
+<td>Sizeof</td>
+<td align="center">物理大小</td>
+</tr>
+<tr>
+<td>Shallow size</td>
+<td align="center">该对象本身占有的内存大小</td>
+</tr>
+<tr>
+<td>Retained size</td>
+<td align="center">释放该对象后，节省的内存大小</td>
+</tr>
+</tbody></table>
+<p><strong>Retained Heap</strong></p>
+<p>比如: 一个ArrayList持有100,000个对象，每一个占用16 bytes，移除这些ArrayList可以释放16 x 100,000 + X，X代表ArrayList的shallow大小。相对于shallow heap，RetainedHeap可以更精确的反映一个对象实际占用的大小（因为如果该对象释放，retained heap都可以被释放）。</p>
+<p>Retained Heap值的计算方式是将Retained Set中的所有对象大小叠加。或者说，由于X被释放，导致其它所有被释放对象（包括被递归释放的）所占的heap大小。</p>
+<p>Retained Set 当X被回收时那些将被GC回收的对象集合。</p>
+<ol start="2">
+<li>MAT内存分析工具</li>
+</ol>
+<p>具体使用可以参考这个链接介绍的较为详细：</p>
+<p><strong>MAT - Memory Analyzer Tool 使用进阶</strong> <a target="_blank" rel="noopener" href="http://www.lightskystreet.com/2015/09/01/mat_usage/">http://www.lightskystreet.com/2015/09/01/mat_usage/</a></p>
+<p>查看一个对象到RC Roots的引用链</p>
+<ul>
+<li><p>List object - With outgoing References 显示选中对象持有那些对象</p>
+</li>
+<li><p>List object - With incoming Reference 显示选中对象被那些外部对象所持有</p>
+</li>
+<li><p>Show object by class - With outgoing References 显示选中对象持有哪些对象, 这些对象按类合并在一起排序</p>
+</li>
+<li><p>Show object by class - With incoming References 显示选中对象被哪些外部对象持有, 这些对象按类合并在一起排序</p>
+</li>
+<li><p>Merge Shortest path to GC root - exclude all phantom/weak/soft etc.references 通常在排查内存泄漏的时候，我们会选择exclude all phantom/weak/soft etc.references,意思是查看排除虚引用/弱引用/软引用等的引用链，因为被虚引用/弱引用/软引用的对象可以直接被GC给回收，我们要看的就是某个对象否还存在Strong 引用链（在导出HeapDump之前要手动出发GC来保证），如果有，则说明存在内存泄漏，然后再去排查具体引用。</p>
+</li>
+</ul>
+<p><strong>Note</strong>：关于使用最短路径，其实最短路径不一定是内存泄漏的路径，实际操作时可以先查看所有incoming Reference查找比较有嫌疑的对象，比如我们自己的代码</p>
+<h1 id="常见内存泄漏和高内存占用原因"><a href="#常见内存泄漏和高内存占用原因" class="headerlink" title="常见内存泄漏和高内存占用原因"></a>常见内存泄漏和高内存占用原因</h1><ol>
+<li>内部类</li>
+</ol>
+<p>非静态内部类中线程生命周期不可控，能否正常回收完全由线程的生命周期决定。如果线程是永久运行的，那么将永远无法释放，因为在Java中线程是垃圾回收机制的根源，在运行系统中DVM虚拟机总会硬件持有所有运行状态的进程的引用，结果导致处于运行状态的线程将永远不会被回收。</p>
+<p><strong>非静态内部类还有一种的情况的内存泄漏</strong> 非静态内部类中创建了一个静态实例，导致该实例的生命周期和应用ClassLoader级别，又因为该静态实例又会隐式持有其外部类的引用，所以导致其外部类无法正常释放，出现了泄漏问题。</p>
+<p><strong>深入分析</strong></p>
+<p>参考这篇文章：</p>
+<p><strong>Android 非静态内部类导致内存泄漏原因深入剖析</strong><a target="_blank" rel="noopener" href="http://www.echojb.com/dotnet-report/2016/09/12/205273.html">http://www.echojb.com/dotnet-report/2016/09/12/205273.html</a></p>
+<p><strong>解决思路</strong></p>
+<ul>
+<li><p>去除隐式引用（通过静态内部类来去除隐式引用）</p>
+</li>
+<li><p>手动管理对象引用（修改静态内部类的构造方式，手动引入其外部类引用）</p>
+</li>
+<li><p>当内存不可用时，不执行不可控代码（Android可以结合智能指针，WeakReference包裹外部类实例）</p>
+</li>
+</ul>
+<ol start="2">
+<li>上下文的引用</li>
+</ol>
+<p>对 Activity 等组件的引用应该控制在 Activity 的生命周期之内； 如果不能就考虑使用 getApplicationContext 或者 getApplication，以避免 Activity 被外部长生命周期的对象引用而泄露。</p>
+<p><img src="https://yrc.vlooktech.com/picgo/202409241442075.jpg" alt="Context_use"></p>
+<pre><code>- 数字1：启动Activity在这些类中是可以的，但是需要创建一个新的task，一般情况不推荐；
+
+- 数字2：在这些类中去layout inflate是合法的，但是会使用系统默认的主题样式，如果你自定义了某些样式可能不会被使用；
+
+- 数字3：在Receiver为null时允许，在4.2或以上的版本中，用于获取黏性广播的当前值。（可以无视）；
+
+- ContentProvider、BroadcastReceiver之所以在上述表格中，是因为在其内部方法中都有一个context用于使用。
+</code></pre>
+<ol start="3">
+<li>其他</li>
+</ol>
+<ul>
+<li><p>慎重使用static变量 尽量不要在静态变量或者静态内部类中使用非静态外部成员变量（包括context )，即使要使用，也要考虑适时把外部成员变量置空；也可以在内部类中使用弱引用来引用外部类的变量。</p>
+</li>
+<li><p>长周期内部类、匿名内部类长时间持有外部类引用导致相关资源无法释放（Handler或者内部线程等）</p>
+</li>
+<li><p>BitMap导致内存溢出</p>
+</li>
+<li><p>数据库、文件流等没有关闭</p>
+</li>
+<li><p>监听器、广播注册后没有及时注销</p>
+</li>
+<li><p>字符串拼接尽量使用StringBuilder或者StringBuffer(Java 8 不需要)</p>
+</li>
+<li><p>避免内存抖动，例如不要在onDraw中创建对象。</p>
+</li>
+<li><p>界面不可见时，停止动画和相关线程</p>
+</li>
+<li><p>调用了<code>View.getViewTreeObserver().addOnXXXListener</code> ,而没调用<code>View.getViewTreeObserver().removeXXXListener</code></p>
+</li>
+<li><p>Handler的持有的引用对象最好使用弱引用，资源释放时也可以清空Handler 里面的消息。比如在 Activity onStop 或者 onDestroy 的时候，取消掉该 Handler对象的Message和<code>Runnable.removeCallbacks(Runnable r)</code> 或<code>removeMessages(int what)</code>，或<code>removeCallbacksAndMessages(null)</code>等。</p>
+</li>
+<li><p>线程 Runnable 执行耗时操作，注意在页面返回时及时取消或者把 Runnable 写成静态类。 a) 如果线程类是内部类，改为静态内部类。 b) 线程内如果需要引用外部类对象如 context，需要使用弱引用。</p>
+</li>
+</ul>
+<h1 id="GC的打印"><a href="#GC的打印" class="headerlink" title="GC的打印"></a>GC的打印</h1><p><strong>Reason</strong></p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th align="center">意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Concurrent</td>
+<td align="center">后台回收内存，不暂停用户线程</td>
+</tr>
+<tr>
+<td>Alloc</td>
+<td align="center">当app要申请内存，而堆又快满了的时候，会阻塞用户线程</td>
+</tr>
+<tr>
+<td>Explicit</td>
+<td align="center">调用Systemt.gc()等方法的时候触发，一般不建议使用</td>
+</tr>
+<tr>
+<td>NativeAlloc</td>
+<td align="center">当native内存有压力的时候触发</td>
+</tr>
+</tbody></table>
+<p><strong>Name</strong> </p>
+<p>Concurrent mark sweep—-全部对象的检测回收 Concurrent partial mark sweep—-部分的检测回收 Concurrent sticky mark sweep—-仅检测上次回收后创建的对象，速度快，卡顿少，比较频繁</p>
+<p>比如： <code>I/art: Explicit concurrent mark sweep GC freed 40184(1902KB) AllocSpace objects, 4(61KB) LOS objects, 22% free, 26MB/34MB, paused 840us total 90.643ms</code></p>
+<p>freed 1413K表示GC释放了1902KB的内存 22% free, 26MB/34MB， 22%表示目前可分配内存占的比例，26MB表示当前活动对象所占内存，34MB表示Heap的大小 paused 840us， total 90.643ms,则表示触发GC应用暂停的时间和GC总共消耗的时间</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a target="_blank" rel="noopener" href="http://youli9056.github.io/blog/categories/gc/">Java垃圾回收机制</a><br><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/33d3f89f7941">Android应用内存泄露分析、改善经验总结</a><br><a target="_blank" rel="noopener" href="https://yq.aliyun.com/articles/3009">Android 内存泄漏总结</a><br><a target="_blank" rel="noopener" href="http://blog.csdn.net/gemmem/article/details/13017999">Android内存泄漏分析及调试</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"># Android</a>
+              <a href="/tags/JVM/" rel="tag"># JVM</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/03/08/Android%E5%B8%83%E5%B1%80%E4%BC%98%E5%8C%96/" rel="prev" title="Android布局优化">
+      <i class="fa fa-chevron-left"></i> Android布局优化
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/05/04/Handler%E7%9A%84%E5%86%99%E6%B3%95/" rel="next" title="Handler的写法">
+      Handler的写法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">什么是内存泄漏？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6"><span class="nav-number">2.</span> <span class="nav-text">垃圾回收机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GCRoot"><span class="nav-number">2.1.</span> <span class="nav-text">GCRoot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%8E%E4%B9%88%E5%88%A4%E6%96%AD%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%E6%98%AF%E5%9E%83%E5%9C%BE%E5%AF%B9%E8%B1%A1%EF%BC%9F"><span class="nav-number">2.2.</span> <span class="nav-text">怎么判断一个对象是垃圾对象？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A1%AE%E5%AE%9A%E6%88%91%E4%BB%AC%E9%A1%B9%E7%9B%AE%E4%B8%AD%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2"><span class="nav-number">3.</span> <span class="nav-text">确定我们项目中是否存在内存泄露</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9B%B4%E4%BB%94%E7%BB%86%E5%9C%B0%E6%9F%A5%E6%89%BE%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="nav-number">4.</span> <span class="nav-text">更仔细地查找内存泄漏的位置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E5%92%8C%E9%AB%98%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8%E5%8E%9F%E5%9B%A0"><span class="nav-number">5.</span> <span class="nav-text">常见内存泄漏和高内存占用原因</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GC%E7%9A%84%E6%89%93%E5%8D%B0"><span class="nav-number">6.</span> <span class="nav-text">GC的打印</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">7.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">iponkan</p>
+  <div class="site-description" itemprop="description">Developer,Reader,Thinker</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://rustfisher.com/" title="https:&#x2F;&#x2F;rustfisher.com" rel="noopener" target="_blank">RustFisher</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://an.rustfisher.com/" title="https:&#x2F;&#x2F;an.rustfisher.com" rel="noopener" target="_blank">Android应用开发技术</a>
+        </li>
+    </ul>
+  </div>
+<style>
+    .custom-sidebar {
+        margin-top: 20px;
+    }
+    .custom-sidebar-title {
+        font-size: 14px;
+        font-weight: 600;
+        text-align: center;
+        border-top: 1px dotted #ccc;
+    }
+</style>
+<div class="custom-sidebar">
+    <div class="custom-sidebar-title"><i class="fa fa-fw fa-cloud"></i> CDN By<br></div>
+    <a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral">
+        <img src="/images/upyun.png" alt="又拍云联盟"/>
+    </a>
+</div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">iponkan</span>
+  <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn">闽ICP备19021186号</a>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">61k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">55 分钟</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'NryIlaaOlJS8IxRoRzxpQw0p-gzGzoHsz',
+      appKey     : 'yHYCBjPUYuqS201h8vyiT29I',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <!-- 微信分享 -->
+	<script type="text/javascript" src="https://res2.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+	<script type="text/javascript" src="/js/wxshare.js"></script>
+</body>
+</html>

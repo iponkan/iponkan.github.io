@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yrc.vlooktech.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Android开发的一些零零散散的经验">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android开发的一些零零散散的经验">
+<meta property="og:url" content="https://yrc.vlooktech.com/2019/06/12/Android%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E9%9B%B6%E9%9B%B6%E6%95%A3%E6%95%A3%E7%9A%84%E7%BB%8F%E9%AA%8C/index.html">
+<meta property="og:site_name" content="Ponkan&#39;s Blog">
+<meta property="og:description" content="Android开发的一些零零散散的经验">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-06-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-24T07:18:03.866Z">
+<meta property="article:author" content="iponkan">
+<meta property="article:tag" content="Android">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://yrc.vlooktech.com/2019/06/12/Android%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E9%9B%B6%E9%9B%B6%E6%95%A3%E6%95%A3%E7%9A%84%E7%BB%8F%E9%AA%8C/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Android开发的一些零零散散的经验 | Ponkan's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+  <script src="/js/axios.min.js"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Ponkan's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yrc.vlooktech.com/2019/06/12/Android%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E9%9B%B6%E9%9B%B6%E6%95%A3%E6%95%A3%E7%9A%84%E7%BB%8F%E9%AA%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="iponkan">
+      <meta itemprop="description" content="Developer,Reader,Thinker">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ponkan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android开发的一些零零散散的经验
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-06-12 00:00:00" itemprop="dateCreated datePublished" datetime="2019-06-12T00:00:00+08:00">2019-06-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/06/12/Android%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E9%9B%B6%E9%9B%B6%E6%95%A3%E6%95%A3%E7%9A%84%E7%BB%8F%E9%AA%8C/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/06/12/Android%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E9%9B%B6%E9%9B%B6%E6%95%A3%E6%95%A3%E7%9A%84%E7%BB%8F%E9%AA%8C/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Android开发的一些零零散散的经验</p>
+<span id="more"></span>
+
+<h1 id="依赖库的引入"><a href="#依赖库的引入" class="headerlink" title="依赖库的引入"></a>依赖库的引入</h1><p>aar是有依赖树的，避免使用依赖树很多的aar，可以在pom文件查看，比如Google的Guava就很大</p>
+<h1 id="搭建通过的网络框架"><a href="#搭建通过的网络框架" class="headerlink" title="搭建通过的网络框架"></a>搭建通过的网络框架</h1><p>封装线程，对请求进行统一处理，重试等机制</p>
+<h1 id="Fragment使用"><a href="#Fragment使用" class="headerlink" title="Fragment使用"></a>Fragment使用</h1><p> 多使用fragment来呈现ui试图，使用activity只是为了管理Fragment</p>
+<h1 id="样式"><a href="#样式" class="headerlink" title="样式"></a>样式</h1><ul>
+<li><p>可以整合styles来避免使用重复的属性，</p>
+</li>
+<li><p>使用多个style文件来避免单一的一个大style文件</p>
+<p>样式的开发可以参考：</p>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="http://keeganlee.me/post/android/20150830">Android样式的开发:shape篇</a></p>
+<p><a target="_blank" rel="noopener" href="http://keeganlee.me/post/android/20150905">Android样式的开发:selector篇</a></p>
+<p><a target="_blank" rel="noopener" href="http://keeganlee.me/post/android/20150909">Android样式的开发:layer-list篇</a></p>
+<p><a target="_blank" rel="noopener" href="http://keeganlee.me/post/android/20150916">Android样式的开发:drawable汇总篇</a></p>
+<p><a target="_blank" rel="noopener" href="http://keeganlee.me/post/android/20151003">Android样式的开发:View Animation篇</a></p>
+<p><a target="_blank" rel="noopener" href="http://keeganlee.me/post/android/20151026">Android样式的开发:Property Animation篇</a></p>
+<p><a target="_blank" rel="noopener" href="http://keeganlee.me/post/android/20151031">Android样式的开发:Style篇</a></p>
+<h1 id="配置位置"><a href="#配置位置" class="headerlink" title="配置位置"></a>配置位置</h1><p>可以将密码配置等放在local.properties文件中，如果代码放在GitHub上</p>
+<h1 id="抓包"><a href="#抓包" class="headerlink" title="抓包"></a>抓包</h1><p>Windows用Fiddler抓包，Mac用的是Chales，靠的是代理的方式，专门用来捕获HTTP，HTTPS的。</p>
+<p><em>备注</em></p>
+<p><em>wireshark能获取HTTP，也能获取HTTPS，但是不能解密HTTPS，所以wireshark看不懂HTTPS中的内容。</em></p>
+<p><em>总结，如果是处理HTTP,HTTPS 还是用Fiddler, 其他协议比如TCP,UDP 就用wireshark。</em></p>
+<h1 id="快速安装apk"><a href="#快速安装apk" class="headerlink" title="快速安装apk"></a>快速安装apk</h1><p>可以简单写个脚本，双击apk自动安装到手机上，我自己写的Windows脚本，可以参考下 <a target="_blank" rel="noopener" href="https://gist.github.com/iponkan/2c655d3cbe93f2b63a229b1cf5f42578">install.bat</a></p>
+<p>思想是利用adb命令和批处理来安装apk，在windows上可以直接指定apk的安装方式为install.bat,实现快速安装</p>
+<h1 id="隐藏API"><a href="#隐藏API" class="headerlink" title="隐藏API"></a>隐藏API</h1><p>首先要明白为什么隐藏API（有@hide标记）和Internal包不能使用。</p>
+<p>当我们使用android的SDK进行开发的时候都会用到一个非常重要的jar文件–android.jar（SDK_DIR/platforms /platform-X/android.jar，X是API等级）。这个包中移除了所有被标记的尾@hide的类、方法、枚举、字段和Internal 包。当我们的程序在设备上运行的时候会加载设备上的一个framework.jar的文件，它包含了移除的部分</p>
+<h1 id="Gradle和Gradle插件"><a href="#Gradle和Gradle插件" class="headerlink" title="Gradle和Gradle插件"></a>Gradle和Gradle插件</h1><p>因为Ｇradle仍在发展，在不断更新，自然Ｇradle插件也需要不断更新版本才能提供对新版本Ｇradle的支持，那么它们之间的版本是如何对应的呢？</p>
+<p>官网链接<a target="_blank" rel="noopener" href="https://developer.android.com/studio/releases/gradle-plugin?hl=zh-cn">Android Gradle 插件版本说明</a>展示了Gradle插件与Gradle版本间更新的对应关系.顺便说一下,最好让你的Gradle和Gradle插件都更新到最新.</p>
+<p>补充：</p>
+<p><em>gradle-wrapper.properties</em>中配置的是的<strong>Gradle</strong>的版本.</p>
+<p><em>build.gradle</em>中的依赖指定的是<strong>Gradle插件</strong>的版本.</p>
+<h1 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h1><h2 id="AnimatorSet和AnimationSet"><a href="#AnimatorSet和AnimationSet" class="headerlink" title="AnimatorSet和AnimationSet"></a>AnimatorSet和AnimationSet</h2><p>AnimationSet 我们最常用的是调用其 addAnimation 将一个个不一样的动画组织到一起来，然后调用view 的 startAnimation 方法触发这些动画执行。功能较弱不能做到把集合中的动画按一定顺序进行组织然后在执行的定制。</p>
+<p>AnimatorSet 我们最常用的是调用其play、before、with、after 等方法设置动画的执行顺序，然后调用其start 触发动画执行。</p>
+<p>AnimationSet 与 AnimatorSet 最大的不同在于，AnimationSet 使用的是 Animation 子类、AnimatorSet 使用的是 Animator 的子类。</p>
+<p>Animation 是针对视图外观的动画实现，动画被应用时外观改变但视图的触发点不会发生变化，还是在原来定义的位置。</p>
+<p>Animator  是针对视图属性的动画实现，动画被应用时对象属性产生变化，最终导致视图外观变化。</p>
+<h1 id="PopupWindow"><a href="#PopupWindow" class="headerlink" title="PopupWindow"></a>PopupWindow</h1><p>PopupWindow显示的方法有三个,showAsDropDown(anchor),showAsDropDown(anchor, xoff, yoff)和showAtLocation(parent, gravity, x, y)。<br>前两个showAsDropDown方法是让PopupWindow相对于某个控件显示，而showAtLocation是相对于整个窗口的。<br>第一个参数是View类型的parent,虽然这里参数名是parent，其实，不是把PopupWindow放到这个parent里，并不要求这个parent是一个ViewGroup，这个参数名让人误解。官方文档”a parent view to get the android.view.View.getWindowToken() token from<br>“,这个parent的作用应该是调用其getWindowToken()方法获取窗口的Token,所以，只要是该窗口上的控件就可以了。<br>第二个参数是Gravity，可以使用|附加多个属性，如Gravity.LEFT|Gravity.BOTTOM。<br>第三四个参数是x,y偏移。</p>
+<h1 id="广播的使用"><a href="#广播的使用" class="headerlink" title="广播的使用"></a>广播的使用</h1><p>优先使用LocalBroadcastManager管理本地广播。</p>
+<h2 id="BroadcastReceiver安全问题"><a href="#BroadcastReceiver安全问题" class="headerlink" title="BroadcastReceiver安全问题"></a>BroadcastReceiver安全问题</h2><p>BroadcastReceiver设计的初衷是从全局考虑可以方便应用程序和系统、应用程序之间、应用程序内的通信，所以对单个应用程序而言BroadcastReceiver是存在安全性问题的(恶意程序脚本不断的去发送你所接收的广播)。为了解决这个问题LocalBroadcastManager就应运而生了。</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zhaoyanjun/p/6048369.html">Android LocalBroadcastManager 的使用总结</a></p>
+<h1 id="滤镜相机的开发"><a href="#滤镜相机的开发" class="headerlink" title="滤镜相机的开发"></a>滤镜相机的开发</h1><p><a target="_blank" rel="noopener" href="https://github.com/CyberAgent/android-gpuimage">android-gpuimage</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/R1QcicC14TYNnxJ4s-8SEw">Android OpenGL开发实践 - GLSurfaceView对摄像头数据的再处理</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/wysaid/android-gpuimage-plus">android-gpuimage-plus</a></p>
+<p><a target="_blank" rel="noopener" href="http://tangzm.com/blog/?p=20">Android 高性能图形处理 之 二. OpenGL ES</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.polarxiong.com/archives/Android%E7%9B%B8%E6%9C%BA%E5%BC%80%E5%8F%91%E7%B3%BB%E5%88%97.html">Android相机开发系列</a></p>
+<h1 id="ANR"><a href="#ANR" class="headerlink" title="ANR"></a>ANR</h1><p>确实有一些ANR问题很难调查清楚，因为整个系统不稳定的因素很多，例如Linux Kernel本身的bug引起的内存碎片过多、硬件损坏等。这类比较底层的原因引起的ANR问题往往无从查起，并且这根本不是应用程序的问题，浪费了应用开发人员很多时间，如果你从事过整个系统的开发和维护工作的话会深有体会。所以我不能保证了解了本章的所有内容后能够解决一切ANR问题，如果出现了很疑难的ANR问题，我建议最好去和做驱动和内核的朋友聊聊，或者，如果问题只是个十万分之一的偶然现象，不影响程序的正常运行，我倒是建议不去理它。</p>
+<h1 id="开发者选项"><a href="#开发者选项" class="headerlink" title="开发者选项"></a>开发者选项</h1><ul>
+<li><p>打开GPU过度绘制开关查看过度绘制区域</p>
+</li>
+<li><p>可以控制动画执行的时长</p>
+</li>
+</ul>
+<h1 id="屏幕适配"><a href="#屏幕适配" class="headerlink" title="屏幕适配"></a>屏幕适配</h1><p><a target="_blank" rel="noopener" href="http://zmywly8866.github.io/2015/03/04/android-multi-resolution-adaptation.html">Android多分辨率适配经验总结</a></p>
+<h1 id="依赖分析"><a href="#依赖分析" class="headerlink" title="依赖分析"></a>依赖分析</h1><p>可以用gradle命令分析依赖</p>
+<p>./gradlew :app:dependencies </p>
+<h1 id="Logcat"><a href="#Logcat" class="headerlink" title="Logcat"></a>Logcat</h1><p>logcat有打印进程id和线程id，不需要手动打印</p>
+<h1 id="LRUCache"><a href="#LRUCache" class="headerlink" title="LRUCache"></a>LRUCache</h1><p>实现原理是一个LinkedHashMap，采用强引用。使用泛型。</p>
+<p>当一个对象被使用时会被移到队列头部，当达到容量限制的时候会移除回收尾部的对象。</p>
+<p>[详细解读LruCache类</p>
+<h1 id="声明式的UI框架"><a href="#声明式的UI框架" class="headerlink" title="声明式的UI框架"></a>声明式的UI框架</h1><p>SwiftUI，Flutter，JetPackcompose</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"># Android</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/06/12/Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%8F%E9%AA%8C/" rel="prev" title="Hexo博客搭建的一些经验">
+      <i class="fa fa-chevron-left"></i> Hexo博客搭建的一些经验
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/08/08/Android%E4%B8%8A%E4%BC%A0aar%E5%88%B0jcenter%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF/" rel="next" title="Android上传aar到jcenter的正确姿势">
+      Android上传aar到jcenter的正确姿势 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E5%BC%95%E5%85%A5"><span class="nav-number">1.</span> <span class="nav-text">依赖库的引入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA%E9%80%9A%E8%BF%87%E7%9A%84%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6"><span class="nav-number">2.</span> <span class="nav-text">搭建通过的网络框架</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Fragment%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">Fragment使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%B7%E5%BC%8F"><span class="nav-number">4.</span> <span class="nav-text">样式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E4%BD%8D%E7%BD%AE"><span class="nav-number">5.</span> <span class="nav-text">配置位置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8A%93%E5%8C%85"><span class="nav-number">6.</span> <span class="nav-text">抓包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%AE%89%E8%A3%85apk"><span class="nav-number">7.</span> <span class="nav-text">快速安装apk</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9A%90%E8%97%8FAPI"><span class="nav-number">8.</span> <span class="nav-text">隐藏API</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle%E5%92%8CGradle%E6%8F%92%E4%BB%B6"><span class="nav-number">9.</span> <span class="nav-text">Gradle和Gradle插件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A8%E7%94%BB"><span class="nav-number">10.</span> <span class="nav-text">动画</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#AnimatorSet%E5%92%8CAnimationSet"><span class="nav-number">10.1.</span> <span class="nav-text">AnimatorSet和AnimationSet</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PopupWindow"><span class="nav-number">11.</span> <span class="nav-text">PopupWindow</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B9%BF%E6%92%AD%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">12.</span> <span class="nav-text">广播的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#BroadcastReceiver%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98"><span class="nav-number">12.1.</span> <span class="nav-text">BroadcastReceiver安全问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%BB%A4%E9%95%9C%E7%9B%B8%E6%9C%BA%E7%9A%84%E5%BC%80%E5%8F%91"><span class="nav-number">13.</span> <span class="nav-text">滤镜相机的开发</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ANR"><span class="nav-number">14.</span> <span class="nav-text">ANR</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E8%80%85%E9%80%89%E9%A1%B9"><span class="nav-number">15.</span> <span class="nav-text">开发者选项</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B1%8F%E5%B9%95%E9%80%82%E9%85%8D"><span class="nav-number">16.</span> <span class="nav-text">屏幕适配</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E5%88%86%E6%9E%90"><span class="nav-number">17.</span> <span class="nav-text">依赖分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Logcat"><span class="nav-number">18.</span> <span class="nav-text">Logcat</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LRUCache"><span class="nav-number">19.</span> <span class="nav-text">LRUCache</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%9A%84UI%E6%A1%86%E6%9E%B6"><span class="nav-number">20.</span> <span class="nav-text">声明式的UI框架</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">iponkan</p>
+  <div class="site-description" itemprop="description">Developer,Reader,Thinker</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://rustfisher.com/" title="https:&#x2F;&#x2F;rustfisher.com" rel="noopener" target="_blank">RustFisher</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://an.rustfisher.com/" title="https:&#x2F;&#x2F;an.rustfisher.com" rel="noopener" target="_blank">Android应用开发技术</a>
+        </li>
+    </ul>
+  </div>
+<style>
+    .custom-sidebar {
+        margin-top: 20px;
+    }
+    .custom-sidebar-title {
+        font-size: 14px;
+        font-weight: 600;
+        text-align: center;
+        border-top: 1px dotted #ccc;
+    }
+</style>
+<div class="custom-sidebar">
+    <div class="custom-sidebar-title"><i class="fa fa-fw fa-cloud"></i> CDN By<br></div>
+    <a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral">
+        <img src="/images/upyun.png" alt="又拍云联盟"/>
+    </a>
+</div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">iponkan</span>
+  <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn">闽ICP备19021186号</a>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">61k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">55 分钟</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'NryIlaaOlJS8IxRoRzxpQw0p-gzGzoHsz',
+      appKey     : 'yHYCBjPUYuqS201h8vyiT29I',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <!-- 微信分享 -->
+	<script type="text/javascript" src="https://res2.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+	<script type="text/javascript" src="/js/wxshare.js"></script>
+</body>
+</html>

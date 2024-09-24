@@ -1,0 +1,1622 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Android Studio 奇技淫巧</title>
+    <url>/2018/02/11/AndroidStudio%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>总结Android Studio奇技淫巧。</p>
+<span id="more"></span>
+
+<h2 id="配置多端同步配置"><a href="#配置多端同步配置" class="headerlink" title="配置多端同步配置"></a>配置多端同步配置</h2><p>对于jetbrain家族，可以把自定义配置同步到github，实现多端(Windows，Mac， Linux)同步。</p>
+<p>其实这里有两种方法：</p>
+<ol>
+<li>注册jetbrain帐号，然后绑定到github上</li>
+<li>直接将配置到github仓库上</li>
+</ol>
+<p>我采用的是第二种方式，其实都是放在github上，我倒觉得第一种方式更为麻烦。</p>
+<p>具体方法，参考 <a href="https://blog.csdn.net/aa464971/article/details/89364015"> <strong>Android Studio 多设备同步配置</strong>  </a></p>
+<p>奇怪的是我用ssh的方式不能配置，用https配置成功的，暂时不知道为什么，看官们可以看看我上传到github的效果 <a href="https://github.com/iponkan/as-setting">Android Studio</a>，<a href="https://github.com/iponkan/webstrom-setting">WebStrom</a></p>
+<h2 id="工具使用"><a href="#工具使用" class="headerlink" title="工具使用"></a>工具使用</h2><ul>
+<li> Layout  Inspector </li>
+<li> Extract - Style 抽出控件Style</li>
+<li> Extract - Method 抽出方法</li>
+<li> Annotate 标注每一行是git哪个用户那个版本什么时候提交的</li>
+<li>  集成bug追踪系统 </li>
+<li>  修改方法签名 比refactor更高级</li>
+</ul>
+<h2 id="调试技巧"><a href="#调试技巧" class="headerlink" title="调试技巧"></a>调试技巧</h2><p><a href="http://weishu.me/2015/12/21/android-studio-debug-tips-you-may-not-know/index.html">Android Studio你不知道的调试技巧</a></p>
+<p>主要是</p>
+<ul>
+<li><p>attach to debugger的使用</p>
+<p>android studio上没有默认的快捷键，可以自己添加一个，我用alt+a</p>
+</li>
+<li><p>表达式的使用</p>
+</li>
+</ul>
+<h2 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h2><ul>
+<li><a href="https://plugins.jetbrains.com/plugin/7369-android-butterknife-zelezny/">Android ButterKnife Zelezny</a></li>
+</ul>
+<p>注意暂时还不支持kotlin</p>
+<ul>
+<li><a href="https://plugins.jetbrains.com/plugin/11204-android-findviewbyid-support/">Android FindViewById Support</a><br>这个插件是配合Android ButterKnife Zelezny使用的，支持kotlin场景，我本人的习惯是自定义view的时候使用这个插件，而不用引入butternife依赖</li>
+<li><a href="https://plugins.jetbrains.com/plugin/12132-leetcode-editor/">leetcode插件</a></li>
+<li><a href="https://plugins.jetbrains.com/plugin/8579-translation/">Translatioin</a></li>
+<li><a href="https://plugins.jetbrains.com/plugin/7332-android-parcelable-code-generator/">Android Parcelable code generator</a></li>
+<li><a href="https://plugins.jetbrains.com/plugin/7654-gsonformat/">GsonFormat</a></li>
+</ul>
+<h2 id="配色"><a href="#配色" class="headerlink" title="配色"></a>配色</h2><p>Android Logcat 配色方案(<strong>都是设置foreground</strong>)</p>
+<ul>
+<li>Assert   #FF4949</li>
+<li>Debug  #6897BB</li>
+<li>Error    #FF6B68</li>
+<li>Info      #6A8759</li>
+<li>Verbose   #BBBBBB</li>
+<li>Warning    #BBB529</li>
+</ul>
+<h2 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h2><table>
+<thead>
+<tr>
+<th align="left">功能</th>
+<th align="left">快捷键</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">查看代码所在位置的上下文信息</td>
+<td align="left">Alt+Q</td>
+</tr>
+<tr>
+<td align="left">在方法和内部类之间跳转</td>
+<td align="left">Alt + 上/下</td>
+</tr>
+<tr>
+<td align="left">定位到父类</td>
+<td align="left">Ctrl+U</td>
+</tr>
+<tr>
+<td align="left">显示/隐藏数字编号面板</td>
+<td align="left">Alt + 数字编号</td>
+</tr>
+<tr>
+<td align="left">显示方法参数</td>
+<td align="left">Ctrl+P</td>
+</tr>
+<tr>
+<td align="left">查看方法定义</td>
+<td align="left">Ctrl+Shift+I</td>
+</tr>
+<tr>
+<td align="left">查看最近修改的文件</td>
+<td align="left">Ctrl+Shift+E</td>
+</tr>
+<tr>
+<td align="left">查看最近使用的文件</td>
+<td align="left">Ctrl+E</td>
+</tr>
+<tr>
+<td align="left">扩大/缩小选择</td>
+<td align="left">Ctrl+W Ctrl+Shift+W</td>
+</tr>
+<tr>
+<td align="left">查看类所有方法</td>
+<td align="left">Ctrl+F12</td>
+</tr>
+<tr>
+<td align="left">版本控制操作弹窗</td>
+<td align="left">Alt+`</td>
+</tr>
+<tr>
+<td align="left">查找使用</td>
+<td align="left">Alt+F7</td>
+</tr>
+</tbody></table>
+<h2 id="快捷输入"><a href="#快捷输入" class="headerlink" title="快捷输入"></a>快捷输入</h2><table>
+<thead>
+<tr>
+<th>功能</th>
+<th>快捷输入</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>非空判断</td>
+<td>对象.nn</td>
+</tr>
+<tr>
+<td>为空判断</td>
+<td>对象.null</td>
+</tr>
+<tr>
+<td>for循环</td>
+<td>对象.for， 对象.fori ， 对象.forr</td>
+</tr>
+<tr>
+<td>if判断</td>
+<td>判断条件.if</td>
+</tr>
+<tr>
+<td>实例类型判断</td>
+<td>对象.inst , 对象.instanceof</td>
+</tr>
+</tbody></table>
+<h2 id="运行Java代码"><a href="#运行Java代码" class="headerlink" title="运行Java代码"></a>运行Java代码</h2><p>首先了解一点Android Studio是Intellij的社区版改装的，支持java。</p>
+<p>可以在build.gradle增加java文件目录的路径</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    sourceSets &#123;</span><br><span class="line">        main &#123;</span><br><span class="line">            java.srcDirs = [<span class="string">&#x27;src/main/java&#x27;</span>, <span class="string">&#x27;src/main/aidl&#x27;</span>, <span class="string">&#x27;D:/code/leetcode/editor/en&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;D:/code/sonicers/decss/src&#x27;</span>]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>增加一个main函数就可以运行java代码了</p>
+<h2 id="一劳永逸修改-Android-Studio-gitignore-默认模板"><a href="#一劳永逸修改-Android-Studio-gitignore-默认模板" class="headerlink" title="一劳永逸修改 Android Studio .gitignore 默认模板"></a>一劳永逸修改 Android Studio .gitignore 默认模板</h2><p><a href="https://blog.csdn.net/ziwang_/article/details/78498578">https://blog.csdn.net/ziwang_/article/details/78498578</a></p>
+<h2 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h2><p><a href="http://stormzhang.com/2016/08/21/android-studio-live-templates/">Live Templates</a></p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android Studio</tag>
+        <tag>Android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android上传aar到jcenter的正确姿势</title>
+    <url>/2019/08/08/Android%E4%B8%8A%E4%BC%A0aar%E5%88%B0jcenter%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>Android上传aar到jcenter的正确姿势</p>
+<span id="more"></span>
+
+<h2 id="常规操作"><a href="#常规操作" class="headerlink" title="常规操作"></a>常规操作</h2><p><a href="https://www.jianshu.com/p/77894c3bc0d6">Android Studio 上传aar(Library)到JCenter - 简书</a></p>
+<p>完成上述操作后可以成功把aar上传到jcenter。但是有个问题——aar的依赖传递问题，下面会详细描述，这里以我的<a href="https://github.com/sonicers/commonlib">commonlib项目</a>为例。</p>
+<p>这个库用于快速构建android工程，如果想快速构建一个app而不在意依赖的aar细节时，可以使用本库进行快速开发。</p>
+<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>按照上述的方式打包aar后我们可以在工程里方便使用：</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">implementation <span class="string">&#x27;com.sonicers:commonlib:0.0.8&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>但是sync后会发现，ide报出没找到OkHttp包等的问题，因为这个库依赖了OkHttp等包</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 网络</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.okhttp3:okhttp:3.10.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.okhttp3:logging-interceptor:3.10.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.retrofit2:retrofit:2.3.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.retrofit2:converter-gson:2.3.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.retrofit2:adapter-rxjava2:2.3.0&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>gradle默认是不会把lib里面的依赖传递进来的，这就是<strong>依赖传递</strong>问题</p>
+<p>我们需要添加一个属性：</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">implementation(<span class="string">&#x27;com.sonicers:commonlib:0.0.8&#x27;</span>) &#123;</span><br><span class="line">    transitive = <span class="literal">true</span><span class="comment">//依赖传递为true时才能把依赖的库打进去</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>加了以后，嗯，发现没什么卵用  (⊙ө⊙)，嗯，基本操作，程序员天天遇到。。。</p>
+<p>原因在于使用上述上传aar到jcenter的常规操作，<strong>没有把依赖信息打进pom.xml</strong>。关于pom文件的用处，可以网上自己搜搜。可以参考</p>
+<p><a href="%5Bhttps://drprincess.github.io/2018/01/31/Android-%E5%B0%91%E4%B8%8D%E4%BA%86%E7%9A%84AAR%E6%96%87%E4%BB%B6/%5D(https://drprincess.github.io/2018/01/31/Android-%E5%B0%91%E4%B8%8D%E4%BA%86%E7%9A%84AAR%E6%96%87%E4%BB%B6/)">Android-少不了的 AAR 文件常识，最好知道的注意事项</a></p>
+<blockquote>
+<p>Google Android Studio 的负责人在 stackoverflow 上解释了 <a href="https://stackoverflow.com/questions/20700581/android-studio-how-to-package-single-aar-from-multiple-library-projects/20715155#20715155">为什么 Android Studio 不能将多个依赖打包进一个 AAR 文件</a>的原因，是因为将不同的library打包在一起，涉及到资源和配置文件智能合并，所以是个比较复杂的问题，同时也容易造成相同的依赖冲突。</p>
+</blockquote>
+<p>虽然Google爸爸这么说，但是加入依赖信息会使我们使用起来方便很多，只要引用我们的库，就可以把其他依赖的库引用进来。那怎么把依赖信息打进pom文件呢？ (๑•̀ㅂ•́)و✧ </p>
+<h2 id="骚操作"><a href="#骚操作" class="headerlink" title="骚操作"></a>骚操作</h2><p>首先看下常规操作所用的插件</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">classpath <span class="string">&#x27;com.jfrog.bintray.gradle:gradle-bintray-plugin:1.0&#x27;</span></span><br><span class="line">classpath <span class="string">&#x27;com.github.dcendents:android-maven-gradle-plugin:1.4.1&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>这两个插件的官网</p>
+<p><a href="https://github.com/bintray/gradle-bintray-plugin">jfrog.bintray</a>，这个个人理解是上传到jcenter的插件</p>
+<p><a href="https://github.com/dcendents/android-maven-gradle-plugin">android-maven-gradle-plugin</a>，maven adnroid aar打包插件</p>
+<p>可以看到android-maven-gradle-plugin对这个插件的描述是已经过时的，这个插件默认是不把dependency信息打进pom文件的。</p>
+<p>so，我们抛弃android-maven-gradle-plugin插件，使用maven插件，这是关键，对于jfrog.bintray如何结合maven使用,在<a href="https://github.com/bintray/gradle-bintray-plugin">jfrog.bintray</a>上有详细的描述和demo。</p>
+<p>直接看gradle pluin 3.0的<a href="https://github.com/bintray/bintray-examples/blob/master/gradle-bintray-plugin-examples/android-gradle-3.0.0-maven-example/app/publish.gradle">demo</a>，这个demo有两个坑。</p>
+<h3 id="第一，"><a href="#第一，" class="headerlink" title="第一，"></a>第一，</h3><p>使用</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">user = project.hasProperty(<span class="string">&#x27;bintrayUser&#x27;</span>) ?: System.getenv(<span class="string">&#x27;BINTRAY_USER&#x27;</span>)</span><br><span class="line">key = project.hasProperty(<span class="string">&#x27;bintrayApiKey&#x27;</span>) ?: System.getenv(<span class="string">&#x27;BINTRAY_API_KEY&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>是读取不到local.properties里面的内容的</p>
+<p>正确姿势：</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">Properties propertyReader = <span class="keyword">new</span> Properties()</span><br><span class="line">propertyReader.load(<span class="keyword">new</span> FileInputStream(<span class="string">&quot;$&#123;rootDir&#125;$&#123;File.separator&#125;local.properties&quot;</span>))</span><br><span class="line">user = propertyReader.bintrayUser.toString()</span><br><span class="line">key = propertyReader.bintrayApiKey.toString()</span><br></pre></td></tr></table></figure>
+
+<h3 id="第二"><a href="#第二" class="headerlink" title="第二,"></a>第二,</h3><p>需要把<code>dryRun = true</code>去掉,文档解释：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">dryRun = false //[Default: false] Whether to run this as dry-run, without deploying</span><br></pre></td></tr></table></figure>
+
+<p>这个demo仔细看应该是开发人员随便写的，没有验证过，这两个坑需要改过来，可以直接参照我的commonlib的<a href="https://github.com/sonicers/commonlib/blob/master/upload.gradle">upload.gradle</a>,这个脚本还额外加了sources和javadoc的上传，符合jcenter的规范。另外一些路径的东西需要根据自己的具体配置修改，这里不赘述。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>使用maven插件可以自定义写pom文件，通过一些本地配置去控制写dependency或者不写，这里没有示例，有兴趣可以自行研究。</p>
+<p>如果是上传到自己的pixel仓库需要自己去修改一些脚本的配置，暂时没做过，我就不吹牛逼了。</p>
+<p>另外，非常感谢文中链接的作者。站在巨人的肩膀上٩(•̤̀ᵕ•̤́๑)ᵒᵏᵎᵎᵎᵎ </p>
+<h2 id="扩展链接"><a href="#扩展链接" class="headerlink" title="扩展链接"></a>扩展链接</h2><p><a href="https://xiaozhuanlan.com/topic/2981475360">利用 gradle 多 aar 发布私有 maven</a></p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>gradle</tag>
+        <tag>aar</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android性能优化之内存泄漏</title>
+    <url>/2017/04/05/Android%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%A0%94%E7%A9%B6/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>内存空间使用完毕之后未回收, 会导致内存泄漏。有人会问：Java不是有垃圾自动回收机制么？不幸的是，在Java中仍存在很多容易导致内存泄漏的逻辑(logical leak)。虽然垃圾回收器会帮我们干掉大部分无用的内存空间，但是对于还保持着引用，但逻辑上已经不会再用到的对象，垃圾回收器不会回收它们。</p>
+<span id="more"></span>
+
+<h1 id="什么是内存泄漏？"><a href="#什么是内存泄漏？" class="headerlink" title="什么是内存泄漏？"></a>什么是内存泄漏？</h1><p>部分对象的内存不在GC掌控之内。</p>
+<h1 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h1><p>JAVA GC：某对象不再有任何的引用的时候才会被回收。</p>
+<h2 id="GCRoot"><a href="#GCRoot" class="headerlink" title="GCRoot"></a>GCRoot</h2><p>在JAVA中是通过可达性（Reachability Analysis)来判断对象是否存活，这个算法的基本思想是通过一系列的称谓”GC Roots”的对象作为起始点，从这些节点开始向下搜索，搜索所走得路径称为引用链，当一个对象到GC Roots没有任何引用链相连则该对象被判定为可以被回收的对象，反之不能被回收</p>
+<p><img src="https://yrc.vlooktech.com/picgo/202409241442173.png" alt="GC_ROOT"></p>
+<p><em>哪些对象可以作为GCRoot？</em></p>
+<p>可以作为GCRoot引用点的是(GCRoot会去持有)</p>
+<ul>
+<li>激活状态的线程</li>
+<li>方法区中静态引用指向的对象</li>
+<li>方法区中常量引用指向的对象</li>
+<li>Native方法中JNI引用的对象</li>
+<li>Java栈中的引用对象，因为随时都可能被用到</li>
+</ul>
+<h2 id="怎么判断一个对象是垃圾对象？"><a href="#怎么判断一个对象是垃圾对象？" class="headerlink" title="怎么判断一个对象是垃圾对象？"></a>怎么判断一个对象是垃圾对象？</h2><p>这是一个主观的判断</p>
+<p>假如new 了一个对象，进入一个activity，再退出，主动调用GC很多回，对象没有被释放。在GC眼里并不是垃圾对象，而在开发者眼里这个对象就是垃圾对象。</p>
+<p>最坏的情况，App可能会因为大量的内存泄漏而导致内存耗尽，引发Crash，如果内存未耗尽，App也会犹豫内存空间不足，出现频繁的GC（垃圾回收），每次一出GC都是非常耗时的阻塞性操作，会造成设备非常严重的卡顿，给用户的体验就是，手机无论做什么操作，都是卡的，这也是Android设备玩久了之后常见的现象。</p>
+<p>内存泄露多了容易导致OOM—-就像老司机开车开着开着就翻车了，内存溢出，app会崩溃</p>
+<p><img src="https://yrc.vlooktech.com/picgo/202409241442927.jpg" alt="old_driver"></p>
+<h1 id="确定我们项目中是否存在内存泄露"><a href="#确定我们项目中是否存在内存泄露" class="headerlink" title="确定我们项目中是否存在内存泄露"></a>确定我们项目中是否存在内存泄露</h1><p>粗略判断: </p>
+<ul>
+<li>app用着用着变卡顿</li>
+<li>自动化测试中同一个操作内存一直升高没有释放</li>
+<li>Android Studio  monitor</li>
+</ul>
+<p> android studio有多个工具可以看到内存使用情况，具体可以这样操作：<br> 检查一个一个的动作。(比如activity的跳转），反复多次执行某一个操作，不断地通过这个工具查看内存的大概变化情况。若前后两个内存变化增加了不少则有可能发生了内存泄漏。</p>
+<h1 id="更仔细地查找内存泄漏的位置"><a href="#更仔细地查找内存泄漏的位置" class="headerlink" title="更仔细地查找内存泄漏的位置"></a>更仔细地查找内存泄漏的位置</h1><ol>
+<li><p>使用Android Studio Heap SnapShot工具（堆栈快照）</p>
+<p><img src="https://yrc.vlooktech.com/picgo/202409241442614.png" alt="heap_htopgramis"></p>
+</li>
+</ol>
+<p>分析：<br>Java的对象成员都是些引用。真正的内存都在堆上，看起来是一堆原生的byte[], char[], int[]，对象本身的内存都很小。所以我们可以看到以Shallow Heap进行排序的Histogram图中，通常排在第一位第二位的是byte，char[]</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th align="center">意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Total Count</td>
+<td align="center">内存中该类的对象个数</td>
+</tr>
+<tr>
+<td>Heap Count</td>
+<td align="center">堆内存中该类的对象个数</td>
+</tr>
+<tr>
+<td>Sizeof</td>
+<td align="center">物理大小</td>
+</tr>
+<tr>
+<td>Shallow size</td>
+<td align="center">该对象本身占有的内存大小</td>
+</tr>
+<tr>
+<td>Retained size</td>
+<td align="center">释放该对象后，节省的内存大小</td>
+</tr>
+</tbody></table>
+<p><strong>Retained Heap</strong></p>
+<p>比如: 一个ArrayList持有100,000个对象，每一个占用16 bytes，移除这些ArrayList可以释放16 x 100,000 + X，X代表ArrayList的shallow大小。相对于shallow heap，RetainedHeap可以更精确的反映一个对象实际占用的大小（因为如果该对象释放，retained heap都可以被释放）。</p>
+<p>Retained Heap值的计算方式是将Retained Set中的所有对象大小叠加。或者说，由于X被释放，导致其它所有被释放对象（包括被递归释放的）所占的heap大小。</p>
+<p>Retained Set 当X被回收时那些将被GC回收的对象集合。</p>
+<ol start="2">
+<li>MAT内存分析工具</li>
+</ol>
+<p>具体使用可以参考这个链接介绍的较为详细：</p>
+<p><strong>MAT - Memory Analyzer Tool 使用进阶</strong> <a href="http://www.lightskystreet.com/2015/09/01/mat_usage/">http://www.lightskystreet.com/2015/09/01/mat_usage/</a></p>
+<p>查看一个对象到RC Roots的引用链</p>
+<ul>
+<li><p>List object - With outgoing References 显示选中对象持有那些对象</p>
+</li>
+<li><p>List object - With incoming Reference 显示选中对象被那些外部对象所持有</p>
+</li>
+<li><p>Show object by class - With outgoing References 显示选中对象持有哪些对象, 这些对象按类合并在一起排序</p>
+</li>
+<li><p>Show object by class - With incoming References 显示选中对象被哪些外部对象持有, 这些对象按类合并在一起排序</p>
+</li>
+<li><p>Merge Shortest path to GC root - exclude all phantom/weak/soft etc.references 通常在排查内存泄漏的时候，我们会选择exclude all phantom/weak/soft etc.references,意思是查看排除虚引用/弱引用/软引用等的引用链，因为被虚引用/弱引用/软引用的对象可以直接被GC给回收，我们要看的就是某个对象否还存在Strong 引用链（在导出HeapDump之前要手动出发GC来保证），如果有，则说明存在内存泄漏，然后再去排查具体引用。</p>
+</li>
+</ul>
+<p><strong>Note</strong>：关于使用最短路径，其实最短路径不一定是内存泄漏的路径，实际操作时可以先查看所有incoming Reference查找比较有嫌疑的对象，比如我们自己的代码</p>
+<h1 id="常见内存泄漏和高内存占用原因"><a href="#常见内存泄漏和高内存占用原因" class="headerlink" title="常见内存泄漏和高内存占用原因"></a>常见内存泄漏和高内存占用原因</h1><ol>
+<li>内部类</li>
+</ol>
+<p>非静态内部类中线程生命周期不可控，能否正常回收完全由线程的生命周期决定。如果线程是永久运行的，那么将永远无法释放，因为在Java中线程是垃圾回收机制的根源，在运行系统中DVM虚拟机总会硬件持有所有运行状态的进程的引用，结果导致处于运行状态的线程将永远不会被回收。</p>
+<p><strong>非静态内部类还有一种的情况的内存泄漏</strong> 非静态内部类中创建了一个静态实例，导致该实例的生命周期和应用ClassLoader级别，又因为该静态实例又会隐式持有其外部类的引用，所以导致其外部类无法正常释放，出现了泄漏问题。</p>
+<p><strong>深入分析</strong></p>
+<p>参考这篇文章：</p>
+<p><strong>Android 非静态内部类导致内存泄漏原因深入剖析</strong><a href="http://www.echojb.com/dotnet-report/2016/09/12/205273.html">http://www.echojb.com/dotnet-report/2016/09/12/205273.html</a></p>
+<p><strong>解决思路</strong></p>
+<ul>
+<li><p>去除隐式引用（通过静态内部类来去除隐式引用）</p>
+</li>
+<li><p>手动管理对象引用（修改静态内部类的构造方式，手动引入其外部类引用）</p>
+</li>
+<li><p>当内存不可用时，不执行不可控代码（Android可以结合智能指针，WeakReference包裹外部类实例）</p>
+</li>
+</ul>
+<ol start="2">
+<li>上下文的引用</li>
+</ol>
+<p>对 Activity 等组件的引用应该控制在 Activity 的生命周期之内； 如果不能就考虑使用 getApplicationContext 或者 getApplication，以避免 Activity 被外部长生命周期的对象引用而泄露。</p>
+<p><img src="https://yrc.vlooktech.com/picgo/202409241442075.jpg" alt="Context_use"></p>
+<pre><code>- 数字1：启动Activity在这些类中是可以的，但是需要创建一个新的task，一般情况不推荐；
+
+- 数字2：在这些类中去layout inflate是合法的，但是会使用系统默认的主题样式，如果你自定义了某些样式可能不会被使用；
+
+- 数字3：在Receiver为null时允许，在4.2或以上的版本中，用于获取黏性广播的当前值。（可以无视）；
+
+- ContentProvider、BroadcastReceiver之所以在上述表格中，是因为在其内部方法中都有一个context用于使用。
+</code></pre>
+<ol start="3">
+<li>其他</li>
+</ol>
+<ul>
+<li><p>慎重使用static变量 尽量不要在静态变量或者静态内部类中使用非静态外部成员变量（包括context )，即使要使用，也要考虑适时把外部成员变量置空；也可以在内部类中使用弱引用来引用外部类的变量。</p>
+</li>
+<li><p>长周期内部类、匿名内部类长时间持有外部类引用导致相关资源无法释放（Handler或者内部线程等）</p>
+</li>
+<li><p>BitMap导致内存溢出</p>
+</li>
+<li><p>数据库、文件流等没有关闭</p>
+</li>
+<li><p>监听器、广播注册后没有及时注销</p>
+</li>
+<li><p>字符串拼接尽量使用StringBuilder或者StringBuffer(Java 8 不需要)</p>
+</li>
+<li><p>避免内存抖动，例如不要在onDraw中创建对象。</p>
+</li>
+<li><p>界面不可见时，停止动画和相关线程</p>
+</li>
+<li><p>调用了<code>View.getViewTreeObserver().addOnXXXListener</code> ,而没调用<code>View.getViewTreeObserver().removeXXXListener</code></p>
+</li>
+<li><p>Handler的持有的引用对象最好使用弱引用，资源释放时也可以清空Handler 里面的消息。比如在 Activity onStop 或者 onDestroy 的时候，取消掉该 Handler对象的Message和<code>Runnable.removeCallbacks(Runnable r)</code> 或<code>removeMessages(int what)</code>，或<code>removeCallbacksAndMessages(null)</code>等。</p>
+</li>
+<li><p>线程 Runnable 执行耗时操作，注意在页面返回时及时取消或者把 Runnable 写成静态类。 a) 如果线程类是内部类，改为静态内部类。 b) 线程内如果需要引用外部类对象如 context，需要使用弱引用。</p>
+</li>
+</ul>
+<h1 id="GC的打印"><a href="#GC的打印" class="headerlink" title="GC的打印"></a>GC的打印</h1><p><strong>Reason</strong></p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th align="center">意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Concurrent</td>
+<td align="center">后台回收内存，不暂停用户线程</td>
+</tr>
+<tr>
+<td>Alloc</td>
+<td align="center">当app要申请内存，而堆又快满了的时候，会阻塞用户线程</td>
+</tr>
+<tr>
+<td>Explicit</td>
+<td align="center">调用Systemt.gc()等方法的时候触发，一般不建议使用</td>
+</tr>
+<tr>
+<td>NativeAlloc</td>
+<td align="center">当native内存有压力的时候触发</td>
+</tr>
+</tbody></table>
+<p><strong>Name</strong> </p>
+<p>Concurrent mark sweep—-全部对象的检测回收 Concurrent partial mark sweep—-部分的检测回收 Concurrent sticky mark sweep—-仅检测上次回收后创建的对象，速度快，卡顿少，比较频繁</p>
+<p>比如： <code>I/art: Explicit concurrent mark sweep GC freed 40184(1902KB) AllocSpace objects, 4(61KB) LOS objects, 22% free, 26MB/34MB, paused 840us total 90.643ms</code></p>
+<p>freed 1413K表示GC释放了1902KB的内存 22% free, 26MB/34MB， 22%表示目前可分配内存占的比例，26MB表示当前活动对象所占内存，34MB表示Heap的大小 paused 840us， total 90.643ms,则表示触发GC应用暂停的时间和GC总共消耗的时间</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="http://youli9056.github.io/blog/categories/gc/">Java垃圾回收机制</a><br><a href="http://www.jianshu.com/p/33d3f89f7941">Android应用内存泄露分析、改善经验总结</a><br><a href="https://yq.aliyun.com/articles/3009">Android 内存泄漏总结</a><br><a href="http://blog.csdn.net/gemmem/article/details/13017999">Android内存泄漏分析及调试</a></p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android布局优化</title>
+    <url>/2017/03/08/Android%E5%B8%83%E5%B1%80%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>这里主要介绍两种布局优化的方向：</p>
+<ol>
+<li>重用布局及技巧</li>
+<li>实用懒加载</li>
+</ol>
+<span id="more"></span>
+
+<h2 id="include的使用"><a href="#include的使用" class="headerlink" title="include的使用"></a>include的使用</h2><p>通过此标签来包含一个布局，这适用于一个布局并不包含太多的逻辑和动画，如果这个布局包含了一些逻辑和动画，建议使用一个自定义的ViewGroup来封装，这样能有效的减少代码。</p>
+<h2 id="mergre"><a href="#mergre" class="headerlink" title="mergre"></a>mergre</h2><p>megre是对include的优化，想象这种使用场景： 通常我们去包含一个布局的时候往往要指定这个布局的位置，这样，在你include的那个layout里面有一个根布具，你include又在一个布局里面，这样就没有必要的增加了一个布局，这时侯就可以用megre来解决。</p>
+<p>小技巧：</p>
+<p>使用megre的时候你会发现，英文在megre下你的布局可能缺少父布局，这时候你就没有办法看到预览，这时候你可以使用tools工具来预览，在megre标签加入如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tools:showIn=&quot;@layout/camera_beauty_activity&quot;</span><br></pre></td></tr></table></figure>
+<p>camera_beauty_activity为include这个megre布局的布局</p>
+<p>同时也可以添加<code>tools:ignore=&quot;all&quot;</code>来忽略所有因为缺少父布局而产生的warning</p>
+<p>关于tools的使用：</p>
+<p><a href="http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0309/2567.html">android中xml tools属性详解</a></p>
+<h2 id="ViewStub"><a href="#ViewStub" class="headerlink" title="ViewStub"></a>ViewStub</h2><p>ViewStub默认不显示，可以在一定条件下调用显示，若需要使用ViewStub显示的空间需要添加至少一个id(在要inflate的layout定义或者在ViewStub里面定义，原理同include)，详见下方应用链接 </p>
+<p><a href="http://blog.csdn.net/bboyfeiyu/article/details/45869393">Android布局优化之ViewStub、include、merge使用与源码分析</a></p>
+<h2 id="避免深层次的视图结构"><a href="#避免深层次的视图结构" class="headerlink" title="避免深层次的视图结构"></a>避免深层次的视图结构</h2><p>有时候为了摆放一个视图，你可能尝试添加另一个LinearLayout。你可能使用这种方法解决：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">LinearLayout</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:orientation</span>=<span class="string">&quot;vertical&quot;</span></span></span><br><span class="line"><span class="tag">    &gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">RelativeLayout</span></span></span><br><span class="line"><span class="tag">        <span class="attr">...</span></span></span><br><span class="line"><span class="tag">        &gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">LinearLayout</span></span></span><br><span class="line"><span class="tag">            <span class="attr">...</span></span></span><br><span class="line"><span class="tag">            &gt;</span></span><br><span class="line"></span><br><span class="line">            <span class="tag">&lt;<span class="name">LinearLayout</span></span></span><br><span class="line"><span class="tag">                <span class="attr">...</span></span></span><br><span class="line"><span class="tag">                &gt;</span></span><br><span class="line"></span><br><span class="line">                <span class="tag">&lt;<span class="name">LinearLayout</span></span></span><br><span class="line"><span class="tag">                    <span class="attr">...</span></span></span><br><span class="line"><span class="tag">                    &gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br><span class="line"></span><br><span class="line">            <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">RelativeLayout</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>即使你没有非常明确的在一个layout布局文件中这样使用，如果你在Java文件中从一个view inflate（这个inflate翻译不过去，大家理解就行） 到其他views当中，也是可能会发生的。</p>
+<p>可能会导致一系列的问题。你可能会遇到性能问题，因为处理起需要处理一个复杂的UI树结构。 还可能会导致以下更严重的问题<a href="http://stackoverflow.com/questions/2762924/java-lang-stackoverflow-error-suspected-too-many-views">StackOverflowError</a>.</p>
+<p>因此尽量保持你的视图tree：学习如何使用<a href="https://developer.android.com/guide/topics/ui/layout/relative.html">RelativeLayout</a>, 如何 <a href="http://developer.android.com/training/improving-layouts/optimizing-layout.html">optimize 你的布局</a> 和如何使用 <a href="http://stackoverflow.com/questions/8834898/what-is-the-purpose-of-androids-merge-tag-in-xml-layouts"><code>&lt;merge&gt;</code> 标签</a>.</p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>布局</tag>
+        <tag>优化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android开发的一些零零散散的经验</title>
+    <url>/2019/06/12/Android%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E9%9B%B6%E9%9B%B6%E6%95%A3%E6%95%A3%E7%9A%84%E7%BB%8F%E9%AA%8C/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>Android开发的一些零零散散的经验</p>
+<span id="more"></span>
+
+<h1 id="依赖库的引入"><a href="#依赖库的引入" class="headerlink" title="依赖库的引入"></a>依赖库的引入</h1><p>aar是有依赖树的，避免使用依赖树很多的aar，可以在pom文件查看，比如Google的Guava就很大</p>
+<h1 id="搭建通过的网络框架"><a href="#搭建通过的网络框架" class="headerlink" title="搭建通过的网络框架"></a>搭建通过的网络框架</h1><p>封装线程，对请求进行统一处理，重试等机制</p>
+<h1 id="Fragment使用"><a href="#Fragment使用" class="headerlink" title="Fragment使用"></a>Fragment使用</h1><p> 多使用fragment来呈现ui试图，使用activity只是为了管理Fragment</p>
+<h1 id="样式"><a href="#样式" class="headerlink" title="样式"></a>样式</h1><ul>
+<li><p>可以整合styles来避免使用重复的属性，</p>
+</li>
+<li><p>使用多个style文件来避免单一的一个大style文件</p>
+<p>样式的开发可以参考：</p>
+</li>
+</ul>
+<p><a href="http://keeganlee.me/post/android/20150830">Android样式的开发:shape篇</a></p>
+<p><a href="http://keeganlee.me/post/android/20150905">Android样式的开发:selector篇</a></p>
+<p><a href="http://keeganlee.me/post/android/20150909">Android样式的开发:layer-list篇</a></p>
+<p><a href="http://keeganlee.me/post/android/20150916">Android样式的开发:drawable汇总篇</a></p>
+<p><a href="http://keeganlee.me/post/android/20151003">Android样式的开发:View Animation篇</a></p>
+<p><a href="http://keeganlee.me/post/android/20151026">Android样式的开发:Property Animation篇</a></p>
+<p><a href="http://keeganlee.me/post/android/20151031">Android样式的开发:Style篇</a></p>
+<h1 id="配置位置"><a href="#配置位置" class="headerlink" title="配置位置"></a>配置位置</h1><p>可以将密码配置等放在local.properties文件中，如果代码放在GitHub上</p>
+<h1 id="抓包"><a href="#抓包" class="headerlink" title="抓包"></a>抓包</h1><p>Windows用Fiddler抓包，Mac用的是Chales，靠的是代理的方式，专门用来捕获HTTP，HTTPS的。</p>
+<p><em>备注</em></p>
+<p><em>wireshark能获取HTTP，也能获取HTTPS，但是不能解密HTTPS，所以wireshark看不懂HTTPS中的内容。</em></p>
+<p><em>总结，如果是处理HTTP,HTTPS 还是用Fiddler, 其他协议比如TCP,UDP 就用wireshark。</em></p>
+<h1 id="快速安装apk"><a href="#快速安装apk" class="headerlink" title="快速安装apk"></a>快速安装apk</h1><p>可以简单写个脚本，双击apk自动安装到手机上，我自己写的Windows脚本，可以参考下 <a href="https://gist.github.com/iponkan/2c655d3cbe93f2b63a229b1cf5f42578">install.bat</a></p>
+<p>思想是利用adb命令和批处理来安装apk，在windows上可以直接指定apk的安装方式为install.bat,实现快速安装</p>
+<h1 id="隐藏API"><a href="#隐藏API" class="headerlink" title="隐藏API"></a>隐藏API</h1><p>首先要明白为什么隐藏API（有@hide标记）和Internal包不能使用。</p>
+<p>当我们使用android的SDK进行开发的时候都会用到一个非常重要的jar文件–android.jar（SDK_DIR/platforms /platform-X/android.jar，X是API等级）。这个包中移除了所有被标记的尾@hide的类、方法、枚举、字段和Internal 包。当我们的程序在设备上运行的时候会加载设备上的一个framework.jar的文件，它包含了移除的部分</p>
+<h1 id="Gradle和Gradle插件"><a href="#Gradle和Gradle插件" class="headerlink" title="Gradle和Gradle插件"></a>Gradle和Gradle插件</h1><p>因为Ｇradle仍在发展，在不断更新，自然Ｇradle插件也需要不断更新版本才能提供对新版本Ｇradle的支持，那么它们之间的版本是如何对应的呢？</p>
+<p>官网链接<a href="https://developer.android.com/studio/releases/gradle-plugin?hl=zh-cn">Android Gradle 插件版本说明</a>展示了Gradle插件与Gradle版本间更新的对应关系.顺便说一下,最好让你的Gradle和Gradle插件都更新到最新.</p>
+<p>补充：</p>
+<p><em>gradle-wrapper.properties</em>中配置的是的<strong>Gradle</strong>的版本.</p>
+<p><em>build.gradle</em>中的依赖指定的是<strong>Gradle插件</strong>的版本.</p>
+<h1 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h1><h2 id="AnimatorSet和AnimationSet"><a href="#AnimatorSet和AnimationSet" class="headerlink" title="AnimatorSet和AnimationSet"></a>AnimatorSet和AnimationSet</h2><p>AnimationSet 我们最常用的是调用其 addAnimation 将一个个不一样的动画组织到一起来，然后调用view 的 startAnimation 方法触发这些动画执行。功能较弱不能做到把集合中的动画按一定顺序进行组织然后在执行的定制。</p>
+<p>AnimatorSet 我们最常用的是调用其play、before、with、after 等方法设置动画的执行顺序，然后调用其start 触发动画执行。</p>
+<p>AnimationSet 与 AnimatorSet 最大的不同在于，AnimationSet 使用的是 Animation 子类、AnimatorSet 使用的是 Animator 的子类。</p>
+<p>Animation 是针对视图外观的动画实现，动画被应用时外观改变但视图的触发点不会发生变化，还是在原来定义的位置。</p>
+<p>Animator  是针对视图属性的动画实现，动画被应用时对象属性产生变化，最终导致视图外观变化。</p>
+<h1 id="PopupWindow"><a href="#PopupWindow" class="headerlink" title="PopupWindow"></a>PopupWindow</h1><p>PopupWindow显示的方法有三个,showAsDropDown(anchor),showAsDropDown(anchor, xoff, yoff)和showAtLocation(parent, gravity, x, y)。<br>前两个showAsDropDown方法是让PopupWindow相对于某个控件显示，而showAtLocation是相对于整个窗口的。<br>第一个参数是View类型的parent,虽然这里参数名是parent，其实，不是把PopupWindow放到这个parent里，并不要求这个parent是一个ViewGroup，这个参数名让人误解。官方文档”a parent view to get the android.view.View.getWindowToken() token from<br>“,这个parent的作用应该是调用其getWindowToken()方法获取窗口的Token,所以，只要是该窗口上的控件就可以了。<br>第二个参数是Gravity，可以使用|附加多个属性，如Gravity.LEFT|Gravity.BOTTOM。<br>第三四个参数是x,y偏移。</p>
+<h1 id="广播的使用"><a href="#广播的使用" class="headerlink" title="广播的使用"></a>广播的使用</h1><p>优先使用LocalBroadcastManager管理本地广播。</p>
+<h2 id="BroadcastReceiver安全问题"><a href="#BroadcastReceiver安全问题" class="headerlink" title="BroadcastReceiver安全问题"></a>BroadcastReceiver安全问题</h2><p>BroadcastReceiver设计的初衷是从全局考虑可以方便应用程序和系统、应用程序之间、应用程序内的通信，所以对单个应用程序而言BroadcastReceiver是存在安全性问题的(恶意程序脚本不断的去发送你所接收的广播)。为了解决这个问题LocalBroadcastManager就应运而生了。</p>
+<p><a href="https://www.cnblogs.com/zhaoyanjun/p/6048369.html">Android LocalBroadcastManager 的使用总结</a></p>
+<h1 id="滤镜相机的开发"><a href="#滤镜相机的开发" class="headerlink" title="滤镜相机的开发"></a>滤镜相机的开发</h1><p><a href="https://github.com/CyberAgent/android-gpuimage">android-gpuimage</a></p>
+<p><a href="https://mp.weixin.qq.com/s/R1QcicC14TYNnxJ4s-8SEw">Android OpenGL开发实践 - GLSurfaceView对摄像头数据的再处理</a></p>
+<p><a href="https://github.com/wysaid/android-gpuimage-plus">android-gpuimage-plus</a></p>
+<p><a href="http://tangzm.com/blog/?p=20">Android 高性能图形处理 之 二. OpenGL ES</a></p>
+<p><a href="https://www.polarxiong.com/archives/Android%E7%9B%B8%E6%9C%BA%E5%BC%80%E5%8F%91%E7%B3%BB%E5%88%97.html">Android相机开发系列</a></p>
+<h1 id="ANR"><a href="#ANR" class="headerlink" title="ANR"></a>ANR</h1><p>确实有一些ANR问题很难调查清楚，因为整个系统不稳定的因素很多，例如Linux Kernel本身的bug引起的内存碎片过多、硬件损坏等。这类比较底层的原因引起的ANR问题往往无从查起，并且这根本不是应用程序的问题，浪费了应用开发人员很多时间，如果你从事过整个系统的开发和维护工作的话会深有体会。所以我不能保证了解了本章的所有内容后能够解决一切ANR问题，如果出现了很疑难的ANR问题，我建议最好去和做驱动和内核的朋友聊聊，或者，如果问题只是个十万分之一的偶然现象，不影响程序的正常运行，我倒是建议不去理它。</p>
+<h1 id="开发者选项"><a href="#开发者选项" class="headerlink" title="开发者选项"></a>开发者选项</h1><ul>
+<li><p>打开GPU过度绘制开关查看过度绘制区域</p>
+</li>
+<li><p>可以控制动画执行的时长</p>
+</li>
+</ul>
+<h1 id="屏幕适配"><a href="#屏幕适配" class="headerlink" title="屏幕适配"></a>屏幕适配</h1><p><a href="http://zmywly8866.github.io/2015/03/04/android-multi-resolution-adaptation.html">Android多分辨率适配经验总结</a></p>
+<h1 id="依赖分析"><a href="#依赖分析" class="headerlink" title="依赖分析"></a>依赖分析</h1><p>可以用gradle命令分析依赖</p>
+<p>./gradlew :app:dependencies </p>
+<h1 id="Logcat"><a href="#Logcat" class="headerlink" title="Logcat"></a>Logcat</h1><p>logcat有打印进程id和线程id，不需要手动打印</p>
+<h1 id="LRUCache"><a href="#LRUCache" class="headerlink" title="LRUCache"></a>LRUCache</h1><p>实现原理是一个LinkedHashMap，采用强引用。使用泛型。</p>
+<p>当一个对象被使用时会被移到队列头部，当达到容量限制的时候会移除回收尾部的对象。</p>
+<p>[详细解读LruCache类</p>
+<h1 id="声明式的UI框架"><a href="#声明式的UI框架" class="headerlink" title="声明式的UI框架"></a>声明式的UI框架</h1><p>SwiftUI，Flutter，JetPackcompose</p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo博客搭建的一些经验</title>
+    <url>/2019/06/12/Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%8F%E9%AA%8C/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>Hexo博客搭建的一些经验</p>
+<span id="more"></span>
+
+<h1 id="评论系统"><a href="#评论系统" class="headerlink" title="评论系统"></a>评论系统</h1><p>评论系统的选择比较担心的什么时候会失效。</p>
+<p>用过gittalk每篇文章都要手动新建一个issue很麻烦，韩国的那个又一直申请不上，他们的网站有问题，所以这里选用valine。</p>
+<p>心态要好，添加这种评论系统并不复杂。<a href="https://github.com/iponkan/iponkan.github.io/commit/5ed3a7eda5a04e603686c53e4be83e54b336c9f0">参考</a></p>
+<h1 id="又拍云联盟logo添加"><a href="#又拍云联盟logo添加" class="headerlink" title="又拍云联盟logo添加"></a>又拍云联盟logo添加</h1><p>参考这个<a href="https://github.com/iponkan/iponkan.github.io/commit/5bc96f91115ca013bf92f2ed751f4c538d1f01f7">commit</a></p>
+<p>加入又拍云联盟可以每个月获取免费空间和CDN加速，我现在<a href="https://sonicers.com/">博客</a>就是放在又拍云上，是不是很快呀</p>
+<h1 id="添加备案信息"><a href="#添加备案信息" class="headerlink" title="添加备案信息"></a>添加备案信息</h1><p><a href="https://github.com/iponkan/iponkan.github.io/commit/455fad5af7dc2bc3e34270cf8fb5693df33df2ed">添加备案信息</a></p>
+<h1 id="删除不想要的东西"><a href="#删除不想要的东西" class="headerlink" title="删除不想要的东西"></a>删除不想要的东西</h1><ul>
+<li>删除文章更新时间 ，config.yaml里修改</li>
+<li><a href="https://github.com/theme-next/hexo-theme-next/issues/1652">删除文章总计</a></li>
+</ul>
+<h1 id="微信分享"><a href="#微信分享" class="headerlink" title="微信分享"></a>微信分享</h1><h1 id="关于部署"><a href="#关于部署" class="headerlink" title="关于部署"></a>关于部署</h1><p>GitHub部署是有延迟的，一般会有几分钟。gitee有个发布模式，只要手动发布一下就可以更新，这点我觉得gitee做的比较好。</p>
+<h1 id="添加音乐播放功能"><a href="#添加音乐播放功能" class="headerlink" title="添加音乐播放功能"></a>添加音乐播放功能</h1><p>要在packjson加一个插件aplayer，然后添加音乐的方式很简单,在markdown相应位置加上就行</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">&#123;% aplayer &quot;Cannon In D Major&quot; &quot;dylanf&quot; &quot;https://uss.sonicers.com/blog/cannon.mp3&quot;  &quot;http://uss.sonicers.com/blog/cannon.jpeg&quot; %&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="添加视频播放功能"><a href="#添加视频播放功能" class="headerlink" title="添加视频播放功能"></a>添加视频播放功能</h1><p>视频可以直接引用b站视频</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">&#123;% raw %&#125;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;position: relative; width: 100%; height: 0; padding-bottom: 75%;&quot;</span>&gt;</span></span></span><br><span class="line"><span class="code">    &lt;iframe src=&quot;//player.bilibili.com/player.html?aid=46303362&amp;cid=81124889&amp;page=1&quot; scrolling=&quot;no&quot; border=&quot;0&quot; frameborder=&quot;no&quot; framespacing=&quot;0&quot; allowfullscreen=&quot;true&quot; style=&quot;position: absolute; width: 100%; height: 100%; left: 0; top: 0;&quot;&gt;</span></span><br><span class="line"><span class="code">    &lt;/iframe&gt;</span></span><br><span class="line"><span class="code">&lt;/div&gt;</span></span><br><span class="line"><span class="code"></span></span><br><span class="line">&#123;% endraw %&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="图片与文章放在同一路径做法"><a href="#图片与文章放在同一路径做法" class="headerlink" title="图片与文章放在同一路径做法"></a>图片与文章放在同一路径做法</h1><p>首先要</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>然后参考<a href="https://raw.githubusercontent.com/iponkan/iponkan.github.io/hexo/source/_posts/Android%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%A0%94%E7%A9%B6.md">这篇</a>文章的做法放在同名文件夹下即可。</p>
+]]></content>
+      <categories>
+        <category>Tech</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Http 2.0和OkHttp</title>
+    <url>/2018/05/04/Http%202.0%E5%92%8COkHttp/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>建议花钱，花钱可以少操心。购买的服务越低调越好，越高调的服务越容易被封。</p>
+<p>简要介绍下Http2.0和我们经常接触的使用场景。在Android开发里通常是用OkHttp，分析了OkHttp的使用特点。</p>
+<span id="more"></span>
+
+<h2 id="Http2-0"><a href="#Http2-0" class="headerlink" title="Http2.0"></a>Http2.0</h2><p>Http2.0的优点有多路复用等等。既然有优点，那么现在有多少地方用到了呢。Twitter，Facebook，Google都用上了。</p>
+<p>怎么看访问的链接是否启用了Http2.0？</p>
+<p><em>用Chrome的开发者工具可以看到请求，从request headers如果可以看到viewSource选项一般里面可以看到协议版本，一般是1.1，*<em>如果没有viewSource选项可以默认认为是http2.0</em></em>.另外，用上chrome的一个插件Http2.0/SPDY Indicator可以方便鉴别出来。可以看到淘宝网，腾讯首页都用上了http2.0,而百度还是1.1。这里并不是说百度垃圾，现在其实很多app请求还是用的是http1.1，可能原因是旧服务器迁移和维护的成本。*</p>
+<p>一般现在的CDN和云存储都支持Http2.0，但不一定是默认启动的。可以在配置里找下启用。</p>
+<h2 id="Okhttp"><a href="#Okhttp" class="headerlink" title="Okhttp"></a>Okhttp</h2><p>支持Http2.0是客户端和服务端两方面都得支持。OkHttp现在是支持的，本身会通过连接去判断，可以自行去看源码，是在Connect建立连接的时候判断，值得一提的是，目前OKHttp仅支持在https请求下使用HTTP 2.0。</p>
+<h3 id="拦截器"><a href="#拦截器" class="headerlink" title="拦截器"></a>拦截器</h3><p>Interceptor，这是OkHttp里面一个很好用的东西。你可以给请求都加上log，请求重试，对于一套比较相似的网络请求加上共同的请求头。</p>
+<p>这里有个关键的东西是，它不仅仅针对了请求发出，也可以针对请求结果。请求结果！这可不是简单的加个打印，还有像<strong>重试</strong>这种骚操作。其实我们还经常看这种请求失败后自己去写一堆重试代码，既然你用了OkHttp，这不是脱裤子放屁——多此一举吗！</p>
+<p>拦截器的接口设计,OkHttp的代码风格和Google很像，<strong>在接口中定义接口</strong>，从Google官方中的MVP sample中也可以看到这种设计，Contrate，你懂的(ฅ´ω`ฅ) 。这里的这种设计也有它独特的用法，比如——责任链模式。</p>
+<p>来点真的，看代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Observes, modifies, and potentially short-circuits requests going out and the corresponding</span></span><br><span class="line"><span class="comment"> * responses coming back in. Typically interceptors add, remove, or transform headers on the request</span></span><br><span class="line"><span class="comment"> * or response.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Interceptor</span> &#123;</span><br><span class="line">  Response <span class="title function_">intercept</span><span class="params">(Chain chain)</span> <span class="keyword">throws</span> IOException;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">interface</span> <span class="title class_">Chain</span> &#123;</span><br><span class="line">    Request <span class="title function_">request</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">    Response <span class="title function_">proceed</span><span class="params">(Request request)</span> <span class="keyword">throws</span> IOException;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先，找到Intercepter使用的地方</p>
+<p>这里插一个东西，OkHttpClient有没有必要写成单例？这里在很长一段时间里我都认为是需要的。为了减少创建对象，避免重复创建资源等balabala，但是从这里interceptor添加源码的角度来讲呢，其实如果你用到的请求资源，配置这些，interceptor这些一样的话，只用一个okhttpclient是可以的。如果不一样其实没必要，毕竟如果很多模块之间公用，这里会共用这些interceptor。</p>
+<p>通过使用这些Intercepter的调用可以找到RealInterceptorChain，chain的唯一实现类，这个名字链，其实也说明了这是一个链式调用。通过这种接口里面定义接口的方式，方便，了然地实现了责任链调用。</p>
+<h3 id="调用方式"><a href="#调用方式" class="headerlink" title="调用方式"></a>调用方式</h3><p>RealCall</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Response <span class="title function_">getResponseWithInterceptorChain</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="comment">// Build a full stack of interceptors.</span></span><br><span class="line">    List&lt;Interceptor&gt; interceptors = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    interceptors.addAll(client.interceptors());</span><br><span class="line">    interceptors.add(retryAndFollowUpInterceptor);</span><br><span class="line">    interceptors.add(<span class="keyword">new</span> <span class="title class_">BridgeInterceptor</span>(client.cookieJar()));</span><br><span class="line">    interceptors.add(<span class="keyword">new</span> <span class="title class_">CacheInterceptor</span>(client.internalCache()));</span><br><span class="line">    interceptors.add(<span class="keyword">new</span> <span class="title class_">ConnectInterceptor</span>(client));</span><br><span class="line">    <span class="keyword">if</span> (!forWebSocket) &#123;</span><br><span class="line">      interceptors.addAll(client.networkInterceptors());</span><br><span class="line">    &#125;</span><br><span class="line">    interceptors.add(<span class="keyword">new</span> <span class="title class_">CallServerInterceptor</span>(forWebSocket));</span><br><span class="line"></span><br><span class="line">    Interceptor.<span class="type">Chain</span> <span class="variable">chain</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RealInterceptorChain</span>(interceptors, <span class="literal">null</span>, <span class="literal">null</span>, <span class="literal">null</span>, <span class="number">0</span>,</span><br><span class="line">        originalRequest, <span class="built_in">this</span>, eventListener, client.connectTimeoutMillis(),</span><br><span class="line">        client.readTimeoutMillis(), client.writeTimeoutMillis());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> chain.proceed(originalRequest);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里新建了一个RealInterceptorChain，关键在#proceed方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Call the next interceptor in the chain.</span></span><br><span class="line">    <span class="type">RealInterceptorChain</span> <span class="variable">next</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RealInterceptorChain</span>(interceptors, streamAllocation, httpCodec,</span><br><span class="line">        connection, index + <span class="number">1</span>, request, call, eventListener, connectTimeout, readTimeout,</span><br><span class="line">        writeTimeout);</span><br><span class="line">    <span class="type">Interceptor</span> <span class="variable">interceptor</span> <span class="operator">=</span> interceptors.get(index);</span><br><span class="line">    <span class="type">Response</span> <span class="variable">response</span> <span class="operator">=</span> interceptor.intercept(next);</span><br></pre></td></tr></table></figure>
+
+<p>可以看到</p>
+<p>这里新建了下一个RealInterceptorChain，next，从index中拿出第一个interceptor，然后把next这个chain传递给interceptor处理。责任链调用，我感觉这里有一个小技巧，如果自己写，会怎么去写这个责任链呢。</p>
+<p>1.初始调用</p>
+<p>在外部，新建了一个chain(把interceptor列表穿进去)，调用了proceed方法</p>
+<p>2.内部调用下一个</p>
+<p>内部的proceed方法新建一个chain，然后取出下一个interceptor（index +1），调用下一个的方法，</p>
+<p>其实这边chain’的index和interceptor的index并不一样，需要跳出这个index一样的禁锢。</p>
+<p>如果我们去写一个责任链感觉也可以用这个方法写。</p>
+<p>这边还有一个技巧，怎么保证interceptor都会调用proceed方法呢，看到interceptor接口的intercept方法，这边必须返回一个response，如果你要获得response，就调用了proceed方法</p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>Http</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Handler的写法</title>
+    <url>/2017/05/04/Handler%E7%9A%84%E5%86%99%E6%B3%95/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>对Handler的写法进行的讨论。</p>
+<span id="more"></span>
+
+
+
+<h1 id="作为内部类"><a href="#作为内部类" class="headerlink" title="作为内部类"></a>作为内部类</h1><p>第1种写法：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestView</span> <span class="keyword">extends</span> <span class="title class_">View</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ViewHandler mViewHandler;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">TestView</span><span class="params">(Context context)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(context, <span class="literal">null</span>);</span><br><span class="line">        mViewHandler = <span class="keyword">new</span> <span class="title class_">ViewHandler</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">ViewHandler</span> <span class="keyword">extends</span> <span class="title class_">Handler</span> &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleMessage</span><span class="params">(Message msg)</span> &#123;</span><br><span class="line">            <span class="built_in">super</span>.handleMessage(msg);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>但是Framework的源码如com\android\internal\app\NetInitiatedActivity很多都这么写</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Handler</span> <span class="variable">mHandler</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Handler</span>() &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleMessage</span><span class="params">(Message msg)</span> &#123;</span><br><span class="line">            <span class="keyword">switch</span> (msg.what) &#123;</span><br><span class="line">            <span class="keyword">case</span> GPS_NO_RESPONSE_TIME_OUT: &#123;</span><br><span class="line">                <span class="keyword">if</span> (notificationId != -<span class="number">1</span>) &#123;</span><br><span class="line">                    sendUserResponse(default_response);</span><br><span class="line">                &#125;</span><br><span class="line">                finish();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>第2种写法：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private Handler handler = new Handler(Looper.getMainLooper()) &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void handleMessage(Message msg) &#123;</span><br><span class="line">          //TO DO</span><br><span class="line">        &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>因为内部类会隐式的持有外部类的应用，第1种写法android studio的lint检查就会报有内存泄漏的风险。而第2种写法不会，感觉是android studio没有检查出来</p>
+<p>对于内部类的写法，网上有很多文章都是建议采用静态类加弱引用来解决，如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">ViewHandler</span> <span class="keyword">extends</span> <span class="title class_">Handler</span> &#123;</span><br><span class="line"></span><br><span class="line">        WeakReference&lt;TestView&gt; testViewWeakReference;</span><br><span class="line"></span><br><span class="line">        ViewHandler(TestView testView) &#123;</span><br><span class="line">            testViewWeakReference = <span class="keyword">new</span> <span class="title class_">WeakReference</span>&lt;&gt;(testView);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleMessage</span><span class="params">(Message msg)</span> &#123;</span><br><span class="line">            <span class="comment">// TO DO</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="作为一个变量"><a href="#作为一个变量" class="headerlink" title="作为一个变量"></a>作为一个变量</h1><p>第3种写法：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Handler mHandler = new Handler();</span><br></pre></td></tr></table></figure>
+
+<p>然后去post一个Runnable。比如handler去post一个延时任务，如</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">handler.postDelay(mTask, 3000);</span><br></pre></td></tr></table></figure>
+
+<p>然后在Activity 的onDestroy的方法里调用</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mHandler.removeCallbacksAndMessages(null);</span><br></pre></td></tr></table></figure>
+
+<h1 id="现在的问题是"><a href="#现在的问题是" class="headerlink" title="现在的问题是"></a>现在的问题是</h1><ol>
+<li>为什么android framework可以在这么写，不会造成内存泄漏吗？</li>
+<li>对于new Handler(Looper.getMainLooper())的写法，这个只是声明了在主线程建立Handler，并不能避免内存泄漏的风险，但是Android Studio不会出现警告，因为android studio不是万能的吗？</li>
+<li>对于第3种写法，有必要调用mHandler.removeCallbacksAndMessages(null);吗？ 如果不调用，有没有可能出现延时任务还没执行，activity被销毁，而延时任务持有了activity的引用，从而造成内存泄漏</li>
+<li>什么的写法比较好呢？</li>
+</ol>
+<h1 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h1><p>1.我的理解是：内存泄漏不是必然的，只是会有这种风险</p>
+<p>2.其实就是因为传了参数，而静态分析并没有判断这个参数是不是main thread的looper，而非主线程并没有这个问题的，所以简单化有参数就不报错了。</p>
+<p>3.对于第3种写法，有必要调用mHandler.removeCallbacksAndMessages(null); 吗？ 如果不调用，有没有可能出现延时任务还没执行，activity被销毁，而延时任务持有了activity的引用，从而造成内存泄漏</p>
+<p>如果你需要继续运行handler内未完成的操作，那就不需要调用咯，这时候延时任务还没执行，activity被销毁，那引用activity的一些数据就可能空指针，但是不会内存泄漏，原因参照Java弱引用。当然更多情况下activity destory的情况下并不需要处理接下来的信息了，那就去remove相关的CallbacksAndMessgaes，null只是代表了所有。</p>
+<p>4.哪种写法更好</p>
+<p>参照编译器给你的信息就好：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">If the Handler is using a Looper or MessageQueue for a thread other than the main thread, then there is no issue. If the Handler is using the Looper or MessageQueue of the main thread, you need to fix your Handler declaration, as follows: Declare the Handler as a static class; In the outer class, instantiate a WeakReference to the outer class and pass this object to your Handler when you instantiate the Handler; Make all references to members of the outer class using the WeakReference object.</span><br></pre></td></tr></table></figure>
+
+<h1 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h1><p><a href="http://talkcode.cc/topics/42">关于 Handler 的写法讨论</a></p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Retrofit 最佳实践</title>
+    <url>/2019/10/28/Retrifit%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>本文是Retrofit结合Rxjava的最佳实践。</p>
+<span id="more"></span>
+
+<h2 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h2><figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="comment">// rxJava</span></span><br><span class="line">api <span class="string">&#x27;io.reactivex.rxjava2:rxandroid:2.1.1&#x27;</span></span><br><span class="line">api <span class="string">&#x27;io.reactivex.rxjava2:rxjava:2.2.9&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 网络</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.okhttp3:okhttp:3.12.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.okhttp3:logging-interceptor:4.2.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.retrofit2:retrofit:2.3.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.retrofit2:converter-gson:2.3.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.retrofit2:adapter-rxjava2:2.3.0&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><h3 id="改造Http-Api变成一个Java接口"><a href="#改造Http-Api变成一个Java接口" class="headerlink" title="改造Http Api变成一个Java接口"></a>改造Http Api变成一个Java接口</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取公钥</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@GET(&quot;/smart_platform/logon/getPublicKey&quot;)</span></span><br><span class="line">Observable&lt;PublicKeyBean&gt; <span class="title function_">getPublicKey</span><span class="params">(<span class="meta">@Query(&quot;_&quot;)</span> <span class="type">long</span> systemtime)</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>函数签名可以与服务端接口命名一致</li>
+<li>实体类，如这里的<code>PublicKeyBean</code>代码可以根据服务端返回的json用GsonFormat生成</li>
+</ul>
+<h3 id="定义一个Serveice接口"><a href="#定义一个Serveice接口" class="headerlink" title="定义一个Serveice接口"></a>定义一个Serveice接口</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">ISkyNet</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取公钥</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@GET(&quot;/smart_platform/logon/getPublicKey&quot;)</span></span><br><span class="line">    Observable&lt;PublicKeyBean&gt; <span class="title function_">getPublicKey</span><span class="params">(<span class="meta">@Query(&quot;_&quot;)</span> <span class="type">long</span> systemtime)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建RetrofitManager"><a href="#创建RetrofitManager" class="headerlink" title="创建RetrofitManager"></a>创建RetrofitManager</h3><p> 定义一个<code>RetrofitManager</code>，这个类主要来设置请求的base_url，初始化OkHttp，设置公共请求头，OKHttp基本配置，打印等。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RetrofitManager</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">TAG</span> <span class="operator">=</span> <span class="string">&quot;RetrofitManager&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">SEVER_URL</span> <span class="operator">=</span> <span class="string">&quot;http://dareway.cn:43001&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">DEFAULT_TIME_OUT</span> <span class="operator">=</span> <span class="number">5</span>;<span class="comment">//超时时间 5s</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">DEFAULT_READ_TIME_OUT</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Retrofit mRetrofit;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> RetrofitManager mManager;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> HashSet&lt;String&gt; cookies = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">RetrofitManager</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (mRetrofit == <span class="literal">null</span>) &#123;</span><br><span class="line">            OkHttpClient.<span class="type">Builder</span> <span class="variable">builder</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">OkHttpClient</span>.Builder();</span><br><span class="line">            builder.connectTimeout(DEFAULT_TIME_OUT, TimeUnit.SECONDS);<span class="comment">//连接超时时间</span></span><br><span class="line">            builder.writeTimeout(DEFAULT_READ_TIME_OUT, TimeUnit.SECONDS);<span class="comment">//写操作 超时时间</span></span><br><span class="line">            builder.readTimeout(DEFAULT_READ_TIME_OUT, TimeUnit.SECONDS);<span class="comment">//读操作超时时间</span></span><br><span class="line">            <span class="type">ClearableCookieJar</span> <span class="variable">cookieJar</span> <span class="operator">=</span></span><br><span class="line">                    <span class="keyword">new</span> <span class="title class_">PersistentCookieJar</span>(<span class="keyword">new</span> <span class="title class_">SetCookieCache</span>(), <span class="keyword">new</span> <span class="title class_">SharedPrefsCookiePersistor</span>(MyApplication.getContext()));</span><br><span class="line"></span><br><span class="line">            builder.cookieJar(cookieJar);</span><br><span class="line"></span><br><span class="line">            <span class="type">HttpLoggingInterceptor</span> <span class="variable">loggingInterceptor</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HttpLoggingInterceptor</span>(<span class="keyword">new</span> <span class="title class_">HttpLogger</span>());</span><br><span class="line">            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);</span><br><span class="line">            <span class="comment">//设置 Debug Log 模式</span></span><br><span class="line">            builder.addNetworkInterceptor(loggingInterceptor);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 创建Retrofit</span></span><br><span class="line">            mRetrofit = <span class="keyword">new</span> <span class="title class_">Retrofit</span>.Builder()</span><br><span class="line">                    .baseUrl(SEVER_URL)</span><br><span class="line">                    .addConverterFactory(GsonConverterFactory.create())</span><br><span class="line">                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())</span><br><span class="line">                    .client(builder.build())</span><br><span class="line">                    .build();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取RetrofitManager</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> RetrofitManager</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> RetrofitManager <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (mManager == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (RetrofitManager.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (mManager == <span class="literal">null</span>) &#123;</span><br><span class="line">                    mManager = <span class="keyword">new</span> <span class="title class_">RetrofitManager</span>();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> mManager;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取对应的Service</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> service Service 的 class</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> &lt;T&gt;</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> &lt;T&gt; T <span class="title function_">create</span><span class="params">(Class&lt;T&gt; service)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> mRetrofit.create(service);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">HttpLogger</span> <span class="keyword">implements</span> <span class="title class_">HttpLoggingInterceptor</span>.Logger &#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">log</span><span class="params">(String message)</span> &#123;</span><br><span class="line">            <span class="comment">// 使用Logger打印</span></span><br><span class="line">            Logger.t(<span class="string">&quot;OkHttp&quot;</span>).d(message);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="RetrofitManager生成一个-Service-接口的实现"><a href="#RetrofitManager生成一个-Service-接口的实现" class="headerlink" title="RetrofitManager生成一个 Service 接口的实现"></a>RetrofitManager生成一个 Service 接口的实现</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">ISkyNet</span> <span class="variable">skyNet</span> <span class="operator">=</span> RetrofitManager.getInstance().create(ISkyNet.class);</span><br></pre></td></tr></table></figure>
+
+<h3 id="接口请求"><a href="#接口请求" class="headerlink" title="接口请求"></a>接口请求</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">skyNet.getPublicKey(System.currentTimeMillis())</span><br><span class="line">                .subscribeOn(Schedulers.io())<span class="comment">//在io线程执行</span></span><br><span class="line">                .observeOn(AndroidSchedulers.mainThread())<span class="comment">//在主线程回调</span></span><br><span class="line">                .subscribeWith(<span class="keyword">new</span> <span class="title class_">Observer</span>&lt;PublicKeyBean&gt;() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSubscribe</span><span class="params">(Disposable d)</span> &#123;</span><br><span class="line">                        </span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onNext</span><span class="params">(PublicKeyBean publicKeyBean)</span> &#123;</span><br><span class="line"></span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onError</span><span class="params">(Throwable e)</span> &#123;</span><br><span class="line"></span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onComplete</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>至此，一个请求可以方便的使用Retrofit进行。</p>
+<p>这里我们可以看下Retrofit的优越性</p>
+<ul>
+<li> API 声明：接口方法通过注解的方式及其参数指示如何处理一个请求，请求方式一目了然</li>
+<li> 所有请求采用同一份配置(如Headers，Log打印)，在我们和同一个服务对接的时候不必写很多重复代码</li>
+<li> 结合Rxjava的写法简洁美观，包装了线程切换和异常回调</li>
+<li> 提供各种各样的转换器，支持<code>JSON,protocol buffers</code>等，省去请求返回结果和实体的转换代码</li>
+</ul>
+<h3 id="一些必须知道的事情"><a href="#一些必须知道的事情" class="headerlink" title="一些必须知道的事情"></a>一些必须知道的事情</h3><h4 id="可选参数"><a href="#可选参数" class="headerlink" title="可选参数"></a>可选参数</h4><p>如下接口：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@GET(&quot;index.php?r=default/homepage&quot;)</span></span><br><span class="line">Observable&lt;Response&lt;Exercise&gt;&gt; <span class="title function_">getDataList</span><span class="params">(<span class="meta">@Query(&quot;page&quot;)</span> <span class="type">int</span> page)</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@GET(&quot;index.php?r=default/homepage&quot;)</span></span><br><span class="line">Observable&lt;Response&lt;Exercise&gt;&gt; <span class="title function_">getDataList</span><span class="params">(<span class="meta">@Query(&quot;page&quot;)</span> <span class="type">int</span> page, <span class="meta">@Query(&quot;user_id&quot;)</span> <span class="type">int</span> userId)</span>;</span><br></pre></td></tr></table></figure>
+
+
+<p>两个接口，区别就在于有没有『user_id』参数。</p>
+<p>这样做，总感觉有点罗嗦，体现不出Retrofit的优越性。有没有更好的方法呢？当然有，那就是动态参数（其实很简单）。</p>
+<p>上面的两个接口合并为一个：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@GET(&quot;index.php?r=default/homepage&quot;)</span></span><br><span class="line">Observable&lt;Response&lt;Exercise&gt;&gt; <span class="title function_">getDataList</span><span class="params">(<span class="meta">@Query(&quot;page&quot;)</span> <span class="type">int</span> page,<span class="meta">@Query(&quot;user_id&quot;)</span> Integer userId)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>使用<br>登录：</p>
+<p><code>APIWrapper.getInstance().getDataList(mCurrentPage, 10);</code><br>未登录：</p>
+<p><code>APIWrapper.getInstance().getDataList(mCurrentPage, null);</code></p>
+<p>Retrofit运行null值参数，如果在实际调用的时候传一个null, 系统也不会出错，会把这个参数当作没有。</p>
+<h3 id="混淆配置"><a href="#混淆配置" class="headerlink" title="混淆配置"></a>混淆配置</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">okio</span></span><br><span class="line">-dontwarn org.codehaus.mojo.animal_sniffer.*</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">retrofit</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Platform calls Class.forName on types <span class="built_in">which</span> <span class="keyword">do</span> not exist on Android to determine platform.</span></span><br><span class="line">-dontnote retrofit2.Platform</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Platform used when running on Java 8 VMs. Will not be used at runtime.</span></span><br><span class="line">-dontwarn retrofit2.Platform$Java8</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Retain generic <span class="built_in">type</span> information <span class="keyword">for</span> use by reflection by converters and adapters.</span></span><br><span class="line">-keepattributes Signature</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Retain declared checked exceptions <span class="keyword">for</span> use by a Proxy instance.</span></span><br><span class="line">-keepattributes Exceptions</span><br></pre></td></tr></table></figure>
+
+<h2 id="进阶使用"><a href="#进阶使用" class="headerlink" title="进阶使用"></a>进阶使用</h2><h3 id="更简单的线程封装"><a href="#更简单的线程封装" class="headerlink" title="更简单的线程封装"></a>更简单的线程封装</h3><p>利用compose操作符，可以将</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">.subscribeOn(Schedulers.io())<span class="comment">//在io线程执行</span></span><br><span class="line">.observeOn(AndroidSchedulers.mainThread())<span class="comment">//在主线程回调</span></span><br></pre></td></tr></table></figure>
+
+<p>合并为一行代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">.compose(RxSchedulers.io_main())<span class="comment">//在io线程执行，在主线程回调</span></span><br></pre></td></tr></table></figure>
+
+<p>RxSchedulers的代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RxSchedulers</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; ObservableTransformer&lt;T, T&gt; <span class="title function_">io_main</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> upstream -&gt;</span><br><span class="line">                upstream.subscribeOn(Schedulers.io())</span><br><span class="line">                        .unsubscribeOn(Schedulers.io())</span><br><span class="line">                        .observeOn(AndroidSchedulers.mainThread());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="更简洁的Observer"><a href="#更简洁的Observer" class="headerlink" title="更简洁的Observer"></a>更简洁的Observer</h3><p>我们可以封装一个Observer，用来</p>
+<p>1.处理网络请求接口返回错误码 2.减少回调接口数 3.封装dialog的显示(因为通常dialog都是在onSubscribe的时候显示，onOberver的时候消失)</p>
+<p>RxDataObserver</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">RxDataObserver</span>&lt;M&gt; <span class="keyword">extends</span> <span class="title class_">DisposableObserver</span>&lt;M&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> LoadingDialog mLoadingDialog;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onSuccess</span><span class="params">(M model)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onFailure</span><span class="params">(String msg)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">RxDataObserver</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> dialog may be null,null present not dialog show</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">RxDataObserver</span><span class="params">(<span class="meta">@Nullable</span> LoadingDialog dialog)</span> &#123;</span><br><span class="line">        mLoadingDialog = dialog;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onStart</span><span class="params">()</span> &#123;</span><br><span class="line">        showLoadingDialog();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onError</span><span class="params">(Throwable throwable)</span> &#123;</span><br><span class="line">        throwable.printStackTrace();</span><br><span class="line">        <span class="keyword">if</span> (throwable <span class="keyword">instanceof</span> HttpException) &#123;</span><br><span class="line">            <span class="type">HttpException</span> <span class="variable">httpException</span> <span class="operator">=</span> (HttpException) throwable;</span><br><span class="line">            <span class="type">int</span> <span class="variable">code</span> <span class="operator">=</span> httpException.code();</span><br><span class="line">            <span class="type">String</span> <span class="variable">msg</span> <span class="operator">=</span> httpException.getMessage();</span><br><span class="line">            <span class="keyword">if</span> (code == <span class="number">504</span>) &#123;</span><br><span class="line">                msg = <span class="string">&quot;网络不给力&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (code == <span class="number">502</span> || code == <span class="number">404</span>) &#123;</span><br><span class="line">                msg = <span class="string">&quot;服务器异常，请稍后再试&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            onFailure(msg);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            onFailure(throwable.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">        dismissLoadingDialog();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 直接返回数据给上层</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onNext</span><span class="params">(M m)</span> &#123;</span><br><span class="line">        onSuccess(m);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onComplete</span><span class="params">()</span> &#123;</span><br><span class="line">        dismissLoadingDialog();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">showLoadingDialog</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (mLoadingDialog != <span class="literal">null</span>) &#123;</span><br><span class="line">            mLoadingDialog.show();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">dismissLoadingDialog</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mLoadingDialog != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="type">Activity</span> <span class="variable">activity</span> <span class="operator">=</span> mLoadingDialog.getContext();</span><br><span class="line">            <span class="keyword">if</span> (isInvalidContext(activity)) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            mLoadingDialog.hide();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isInvalidContext</span><span class="params">(Activity activity)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (activity == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (activity.isDestroyed() || activity.isFinishing());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里的话，dialog是由外部传来的(因为界面通常有一个共用的dialog，我们只要控制这个dialog的显示和消失就可以了)</p>
+<p>值得注意的是，如果你有多个异步操作的话，比如说你不仅调用了Retrofit的网络请求还有其他显示dialog的异步操作，可能会在请求结束后这里就把dialog给dismiss掉了，而其他操作并没有完成~，并不应该把dialog消失。这样子的话，如果你想控制这个dialog的显示的话，可以使用RxDataObserver的默认构造函数，这样请求就不会去控制显示dialog。具体的话视业务场景而定，这里封装这个dialog还是很有用的，因为这种情况不算很多。</p>
+<p>这样我们的请求代码变成了</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">skyNet.logout(userName, DeviceUuidFactory.getDeviceUuid())</span><br><span class="line">                .compose(RxSchedulers.io_main())</span><br><span class="line">                .subscribeWith(<span class="keyword">new</span> <span class="title class_">RxDataObserver</span>&lt;TypeContentBean&gt;() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSuccess</span><span class="params">(TypeContentBean model)</span> &#123;</span><br><span class="line">                        <span class="comment">//这里需要对返回结果的code等进行判断，并需要手动获得我们需要的实体类</span></span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onFailure</span><span class="params">(String msg)</span> &#123;</span><br><span class="line">                        </span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="更更简洁的Observer"><a href="#更更简洁的Observer" class="headerlink" title="更更简洁的Observer"></a>更更简洁的Observer</h3><p>在上述的Observer的基础上，我们可以使我们的Observer更加简洁。</p>
+<p>在一些与服务对接的场景下，通常服务返回的数据会有一些自定义的错误码，还有服务固定返回的数据结构的key，比如说data，这样我们这些对错误码和data的处理可以封装在一起。</p>
+<p>封装一个通用返回结构RxRespond，实体类抽象成泛型T</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 网络请求结果 基类,剥离出数据给上层</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BaseRespond</span>&lt;T&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * code : 200</span></span><br><span class="line"><span class="comment">     * status : SUCCESS</span></span><br><span class="line"><span class="comment">     * msg :</span></span><br><span class="line"><span class="comment">     * data : [&#123;&quot;alarmLevel&quot;:1,&quot;alarmTemperature&quot;:75&#125;,&#123;&quot;alarmLevel&quot;:2,&quot;alarmTemperature&quot;:100&#125;,&#123;&quot;alarmLevel&quot;:3,&quot;alarmTemperature&quot;:150&#125;]</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> code;</span><br><span class="line">    <span class="keyword">private</span> String status;</span><br><span class="line">    <span class="keyword">private</span> String msg;</span><br><span class="line">    <span class="keyword">private</span> T data;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getCode</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setCode</span><span class="params">(<span class="type">int</span> code)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.code = code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getStatus</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> status;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setStatus</span><span class="params">(String status)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.status = status;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getMsg</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setMsg</span><span class="params">(String msg)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.msg = msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> T <span class="title function_">getData</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setData</span><span class="params">(T data)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.data = data;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>RxObserver</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 剥离数据的观察者</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">BaseObserver</span>&lt;M&gt; <span class="keyword">extends</span> <span class="title class_">DisposableObserver</span>&lt;BaseRespond&lt;M&gt;&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onSuccess</span><span class="params">(M model)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onFailure</span><span class="params">(String msg)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> LoadingDialog mLoadingDialog;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">BaseObserver</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> dialog null</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">BaseObserver</span><span class="params">(<span class="meta">@Nullable</span> LoadingDialog dialog)</span> &#123;</span><br><span class="line">        mLoadingDialog = dialog;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onStart</span><span class="params">()</span> &#123;</span><br><span class="line">        showLoadingDialog();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onError</span><span class="params">(Throwable throwable)</span> &#123;</span><br><span class="line">        throwable.printStackTrace();</span><br><span class="line">        <span class="keyword">if</span> (throwable <span class="keyword">instanceof</span> HttpException) &#123;</span><br><span class="line">            <span class="type">HttpException</span> <span class="variable">httpException</span> <span class="operator">=</span> (HttpException) throwable;</span><br><span class="line">            <span class="type">int</span> <span class="variable">code</span> <span class="operator">=</span> httpException.code();</span><br><span class="line">            <span class="type">String</span> <span class="variable">msg</span> <span class="operator">=</span> httpException.getMessage();</span><br><span class="line">            <span class="keyword">if</span> (code == <span class="number">504</span>) &#123;</span><br><span class="line">                msg = <span class="string">&quot;网络不给力&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (code == <span class="number">502</span> || code == <span class="number">404</span>) &#123;</span><br><span class="line">                msg = <span class="string">&quot;服务器异常，请稍后再试&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            onFailure(msg);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            onFailure(throwable.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">        dismissLoadingDialog();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 剥离需要的数据返回给上层</span></span><br><span class="line"><span class="comment">     * 接口请求成功 并不代表真正的成功</span></span><br><span class="line"><span class="comment">     * 需要对业务的code 判断  再分情况返回给上层</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onNext</span><span class="params">(BaseRespond&lt;M&gt; mBaseRespond)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;SUCCESS&quot;</span>.endsWith(mBaseRespond.getStatus())) &#123;</span><br><span class="line">            onSuccess(mBaseRespond.getData());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            onFailure(<span class="string">&quot;服务器Status返回Fail&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onComplete</span><span class="params">()</span> &#123;</span><br><span class="line">        dismissLoadingDialog();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">showLoadingDialog</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (mLoadingDialog != <span class="literal">null</span>) &#123;</span><br><span class="line">            mLoadingDialog.show();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">dismissLoadingDialog</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mLoadingDialog != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="type">Activity</span> <span class="variable">activity</span> <span class="operator">=</span> mLoadingDialog.getContext();</span><br><span class="line">            <span class="keyword">if</span> (isInvalidContext(activity)) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            mLoadingDialog.hide();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isInvalidContext</span><span class="params">(Activity activity)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (activity == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (activity.isDestroyed() || activity.isFinishing());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样ISkyNet里面的接口签名变成了这样</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 区域温度</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@GET(&quot;/monitor/region/temperature&quot;)</span></span><br><span class="line">Observable&lt;RxRespond&lt;RegionTemperatureList&gt;&gt; <span class="title function_">regionTemperature</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
+
+<p>我们的接口使用代码变成了这样</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">skyNet.regionTemperature()</span><br><span class="line">    				.compose(RxSchedulers.io_main())</span><br><span class="line">                    .subscribeWith(<span class="keyword">new</span> <span class="title class_">BaseObserver</span>&lt;RegionTemperatureList&gt;() &#123;</span><br><span class="line">                        <span class="meta">@Override</span></span><br><span class="line">                        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSuccess</span><span class="params">(RegionTemperatureList model)</span> &#123;</span><br><span class="line">                            <span class="comment">//这里的数据是有效的</span></span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                        <span class="meta">@Override</span></span><br><span class="line">                        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onFailure</span><span class="params">(String msg)</span> &#123;</span><br><span class="line">                            </span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>当然，这种写法需要服务端返回的结构格式都是一样的，这样可以减少很多重复处理的代码。</p>
+<h3 id="重复-轮询请求"><a href="#重复-轮询请求" class="headerlink" title="重复/轮询请求"></a>重复/轮询请求</h3><p>直接上代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">skyNet.regionTemperature()</span><br><span class="line">                    .repeatWhen(objectObservable -&gt; 		objectObservable.flatMap((Function&lt;Object, ObservableSource&lt;?&gt;&gt;) o -&gt; &#123;</span><br><span class="line">                        <span class="keyword">if</span> (!isMonitoring) &#123;</span><br><span class="line">                            <span class="keyword">return</span> Observable.empty();</span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            <span class="keyword">return</span> Observable.timer(<span class="number">1</span>, TimeUnit.SECONDS);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;))</span><br><span class="line">                    .compose(RxSchedulers.io_main())</span><br><span class="line">                    .subscribeWith(<span class="keyword">new</span> <span class="title class_">BaseObserver</span>&lt;RegionTemperatureList&gt;() &#123;</span><br><span class="line">                        <span class="meta">@Override</span></span><br><span class="line">                        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSuccess</span><span class="params">(RegionTemperatureList model)</span> &#123;</span><br><span class="line">                            </span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                        <span class="meta">@Override</span></span><br><span class="line">                        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onFailure</span><span class="params">(String msg)</span> &#123;</span><br><span class="line">                            </span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>当isMonitoring为false的时候结束重复调用，否则1s执行一次。</p>
+<p>值得注意的是如果请求返回错误的话，这个函数就不会重复执行下去，和我们想要的还有点出入，后续需要改进下</p>
+<h3 id="绑定生命周期"><a href="#绑定生命周期" class="headerlink" title="绑定生命周期"></a>绑定生命周期</h3><p>1.引入依赖</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">api <span class="string">&#x27;com.trello.rxlifecycle3:rxlifecycle:3.0.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.trello.rxlifecycle3:rxlifecycle-android:3.0.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.trello.rxlifecycle3:rxlifecycle-components:3.0.0&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>2.Activity继承RxAppCompatActivity</p>
+<p>使用<code>.compose(bindToLifecycle())</code>将请求绑定到当前Activity的生命周期</p>
+<h3 id="嵌套网络请求处理"><a href="#嵌套网络请求处理" class="headerlink" title="嵌套网络请求处理"></a>嵌套网络请求处理</h3><p>比如说我们要在一个请求成功后再执行另一个请求</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">skyNet.getPublicKey(System.currentTimeMillis())</span><br><span class="line">                .compose(RxSchedulers.io_main())</span><br><span class="line">                .observeOn(Schedulers.io()) <span class="comment">// （新被观察者，同时也是新观察者）切换到IO线程去发起登录请求</span></span><br><span class="line">                <span class="comment">// 特别注意：因为flatMap是对初始被观察者作变换，所以对于旧被观察者，它是新观察者，所以通过observeOn切换线程</span></span><br><span class="line">                <span class="comment">// 但对于初始观察者，它则是新的被观察者</span></span><br><span class="line">                .flatMap(<span class="keyword">new</span> <span class="title class_">Function</span>&lt;PublicKeyBean, ObservableSource&lt;LoginResultBean&gt;&gt;() &#123; <span class="comment">// 作变换，即作嵌套网络请求</span></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> ObservableSource&lt;LoginResultBean&gt; <span class="title function_">apply</span><span class="params">(PublicKeyBean result)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">                        <span class="comment">// 将网络请求1转换成网络请求2，即发送网络请求2</span></span><br><span class="line">                        <span class="keyword">if</span> (result != <span class="literal">null</span>) &#123;</span><br><span class="line">                            <span class="type">String</span> <span class="variable">modulus</span> <span class="operator">=</span> result.getModulus();</span><br><span class="line">                            <span class="type">String</span> <span class="variable">exponent</span> <span class="operator">=</span> result.getExponent();</span><br><span class="line">                            <span class="type">String</span> <span class="variable">cryPasswd</span> <span class="operator">=</span> CrypUtil.encodePass(passwd, modulus, exponent);</span><br><span class="line">                            <span class="keyword">return</span> skyNet.login(userName, cryPasswd, DeviceUuidFactory.getDeviceUuid());</span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Exception</span>(<span class="string">&quot;getPublicKey Fail&quot;</span>);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;)</span><br><span class="line">                .observeOn(AndroidSchedulers.mainThread())  <span class="comment">// （初始观察者）切换到主线程 处理网络请求2的结果</span></span><br><span class="line">                .subscribeWith(<span class="keyword">new</span> <span class="title class_">RxDataObserver</span>&lt;LoginResultBean&gt;() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSuccess</span><span class="params">(LoginResultBean model)</span> &#123;</span><br><span class="line">                        <span class="keyword">if</span> (model != <span class="literal">null</span> &amp;&amp; model.getResult() == <span class="number">1</span>) &#123;</span><br><span class="line">                            callBack.onLogin(<span class="literal">true</span>);</span><br><span class="line">                            login = <span class="literal">true</span>;</span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            callBack.onLogin(<span class="literal">false</span>);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onFailure</span><span class="params">(String msg)</span> &#123;</span><br><span class="line">                        LogUtils.e(TAG, <span class="string">&quot;login fail: &quot;</span> + msg);</span><br><span class="line">                        callBack.onLogin(<span class="literal">false</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>这里是一段常见的登录代码，需要获取公钥，加密后登录，使用flatmap操作符可以将两个网络请求的结果统一在Observer中处理。</p>
+<h3 id="使用Cookie缓存"><a href="#使用Cookie缓存" class="headerlink" title="使用Cookie缓存"></a>使用Cookie缓存</h3><p>1.引入依赖</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="comment">// http cookie管理</span></span><br><span class="line">api <span class="string">&#x27;com.github.franmontiel:PersistentCookieJar:v1.0.1&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>2.在RetrofitManager配置使用</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"> OkHttpClient.<span class="type">Builder</span> <span class="variable">builder</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">OkHttpClient</span>.Builder();</span><br><span class="line"><span class="type">ClearableCookieJar</span> <span class="variable">cookieJar</span> <span class="operator">=</span></span><br><span class="line">                    <span class="keyword">new</span> <span class="title class_">PersistentCookieJar</span>(<span class="keyword">new</span> <span class="title class_">SetCookieCache</span>(), <span class="keyword">new</span> <span class="title class_">SharedPrefsCookiePersistor</span>(MyApplication.getContext()));</span><br><span class="line"></span><br><span class="line">            builder.cookieJar(cookieJar);</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>Retorfit</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>adb常用命令</title>
+    <url>/2017/01/19/adb%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>记住一些adb常用命令可以提高工作效率,以下按adb命令和adb shell分类。</p>
+<span id="more"></span>
+
+<h2 id="adb"><a href="#adb" class="headerlink" title="adb"></a>adb</h2><ol>
+<li><p>获取序列号：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb get-serialno</span><br></pre></td></tr></table></figure></li>
+<li><p>查看连接计算机的设备：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb devices</span><br></pre></td></tr></table></figure></li>
+<li><p>重启机器：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb reboot</span><br></pre></td></tr></table></figure></li>
+<li><p>重启到bootloader，即刷机模式：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb reboot bootloader</span><br></pre></td></tr></table></figure></li>
+<li><p>重启到recovery，即恢复模式：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb reboot recovery</span><br></pre></td></tr></table></figure></li>
+<li><p>查看log：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb logcat</span><br></pre></td></tr></table></figure></li>
+<li><p>终止adb服务进程：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb kill-server</span><br></pre></td></tr></table></figure></li>
+<li><p>重启adb服务进程：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb start-server</span><br></pre></td></tr></table></figure></li>
+<li><p>获取机器MAC地址：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell  cat /sys/class/net/wlan0/address</span><br></pre></td></tr></table></figure>
+<h2 id="adb-shell"><a href="#adb-shell" class="headerlink" title="adb shell"></a>adb shell</h2></li>
+<li><p>获取CPU序列号：</p>
+</li>
+</ol>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell cat /proc/cpuinfo</span><br></pre></td></tr></table></figure>
+
+<ol start="11">
+<li><p>查看屏幕分辨率</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell wm size</span><br></pre></td></tr></table></figure></li>
+<li><p>查看屏幕密度：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell wm density </span><br></pre></td></tr></table></figure></li>
+<li><p>安装apk到sd卡：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb install -s &lt;apkfile&gt; // 比如：adb install -s baidu.apk</span><br></pre></td></tr></table></figure></li>
+<li><p>卸载APK：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb uninstall &lt;package&gt; //比如：adb uninstall com.baidu.search</span><br></pre></td></tr></table></figure></li>
+<li><p>卸载app但保留数据和缓存文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb uninstall -k &lt;package&gt; //比如：adb uninstall -k com.baidu.search</span><br></pre></td></tr></table></figure></li>
+<li><p>启动应用：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell am start -n &lt;package_name&gt;/.&lt;activity_class_name&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>查看设备cpu和内存占用情况：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell top</span><br></pre></td></tr></table></figure></li>
+<li><p>查看占用内存前6的app：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell top -m 6</span><br></pre></td></tr></table></figure></li>
+<li><p>刷新一次内存信息，然后返回：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell top -n 1</span><br></pre></td></tr></table></figure></li>
+<li><p>查询各进程内存使用情况：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell procrank</span><br></pre></td></tr></table></figure></li>
+<li><p>杀死一个进程：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell kill [pid]</span><br></pre></td></tr></table></figure></li>
+<li><p>查看进程列表：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell ps</span><br></pre></td></tr></table></figure></li>
+<li><p>查看指定进程状态：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell ps -x [PID]</span><br></pre></td></tr></table></figure></li>
+<li><p>查看后台services信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell service list</span><br></pre></td></tr></table></figure></li>
+<li><p>查看当前内存占用：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell cat /proc/meminfo</span><br></pre></td></tr></table></figure></li>
+<li><p>查看IO内存分区：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell cat /proc/iomem</span><br></pre></td></tr></table></figure></li>
+<li><p>将system分区重新挂载为可读写分区：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb remount</span><br></pre></td></tr></table></figure></li>
+<li><p>从本地复制文件到设备：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb push &lt;local&gt; &lt;remote&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>从设备复制文件到本地：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb pull &lt;remote&gt;  &lt;local&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>列出目录下的文件和文件夹，等同于dos中的dir命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell ls</span><br></pre></td></tr></table></figure></li>
+<li><p>进入文件夹，等同于dos中的cd 命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell cd &lt;folder&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>重命名文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell rename path/oldfilename path/newfilename</span><br></pre></td></tr></table></figure></li>
+<li><p>删除system/avi.apk：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell rm /system/avi.apk</span><br></pre></td></tr></table></figure></li>
+<li><p>删除文件夹及其下面所有文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell rm -r &lt;folder&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>移动文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell mv path/file newpath/file</span><br></pre></td></tr></table></figure></li>
+<li><p>设置文件权限：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell chmod 777 /system/fonts/DroidSansFallback.ttf</span><br></pre></td></tr></table></figure></li>
+<li><p>新建文件夹：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell mkdir path/foldelname</span><br></pre></td></tr></table></figure></li>
+<li><p>查看文件内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell cat &lt;file&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>查看wifi密码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell cat /data/misc/wifi/*.conf</span><br></pre></td></tr></table></figure></li>
+<li><p>清除log缓存：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb logcat -c</span><br></pre></td></tr></table></figure></li>
+<li><p>查看bug报告：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb bugreport</span><br></pre></td></tr></table></figure></li>
+<li><p>获取设备名称：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell cat /system/build.prop</span><br></pre></td></tr></table></figure></li>
+<li><p>查看ADB帮助：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb help</span><br></pre></td></tr></table></figure></li>
+<li><p>跑monkey：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">adb shell monkey -v -p your.package.name 500</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>参考资料:</strong></p>
+<ul>
+<li><a href="http://blog.csdn.net/shuaihj/article/details/8889465">如何获得Android设备名称(ADB命令详细介绍)</a></li>
+<li><a href="http://developer.android.com/tools/help/adb.html">官方说明</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>adb</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一封遗失的信</title>
+    <url>/2021/03/20/%E4%B8%80%E5%B0%81%E9%81%97%E5%A4%B1%E7%9A%84%E4%BF%A1/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>这是一封寄出去但没被收到的信,balabala。</p>
+<span id="more"></span>
+
+
+
+<p><img src="https://yrc.vlooktech.com/picgo/202409241443963.jpg"></p>
+<h1 id="电影"><a href="#电影" class="headerlink" title="电影"></a>电影</h1><p>因为3月18日扎导版正义联盟上映,重温了BVS（蝙蝠侠大战超人）。这是一部2016年的电影，正是这部电影的失败直接导致了扎导版正义联盟的流产。</p>
+<p>我重新看了一下这部BVS，然后，我发现这部电影并不是印象中的那么差，相反，多看几遍会发现这是一部很用心思的电影。</p>
+<p>虽然是一部超级英雄电影,但是仔细看之后,发现里面有数不清的彩蛋和伏笔。之前看的时候认为剧情有漏洞,看的糊里糊涂。现在倒是对导演有更深的理解,能够去理解导演的叙事结构和表达的理念。尤其是超人和蝙蝠侠这两个角色。</p>
+<p>超人在这部电影里面代表的是一个耶稣的形象,电影里说：”人们害怕自己不理解的东西”,对于人类,超人就是这样一种存在。而蝙蝠侠也不是我之前认知里的那个蝙蝠侠,尤其和诺兰的蝙蝠侠三部曲里面的蝙蝠侠不一样—这是一个步入中年的蝙蝠侠。在这部电影里，蝙蝠侠因为失去家人变得暴戾,残忍，不断堕入黑暗。</p>
+<p>DC的超级英雄其实就是现代的希腊神话,比起古代神话多加了现代科学的设定,现在我们更习惯地将他归于科幻地范畴。DC讨论社会问题,更关心人物的社会性和人性的阴暗面。这是隔壁漫威所缺少的，所以DC的电影更值得回味。</p>
+<h1 id="书"><a href="#书" class="headerlink" title="书"></a>书</h1><p>&lt;&lt;百年孤独&gt;&gt;</p>
+<p>这本书是由哥伦比亚作家加西亚马尔克斯所写。发表在上个世纪50-60年代。哥伦比亚原来是西班牙的殖民地,书原名”Cien años de soledad”,soledad意为孤独,是西班牙语,英文的孤独是solitude,翻译成百年孤独是很贴切的,高中的时候我就看过这本书，那时候正是因为书名看的，书名又酷又看起来很悲伤。</p>
+<p>这本书让我印象比较深的一个是它的魔幻现实主义风格,还有它对孤独的刻画。</p>
+<p>魔幻现实主义风格,我常开玩笑说它就是”行云流水的一本正经的胡说八道”,书里的一个描述也很贴切,”虚无缥缈又不乏细节”。作者的文笔功力是毋庸置疑的，这源于他本身做过记者，社会活动家，从小耳濡目染拉美的离奇古怪的神话故事。马尔克斯博览群书又热爱生活，这本书一出来就引起了拉美的极大共鸣。因为它根植于现实又带有拉美魔幻主义的色彩，时间线错综复杂，讲述七代人与命运的纠葛，包含爱情，婚姻，革命，内战，政治阴谋，冒险等，故事内容十分丰富。</p>
+<p>很多人说看不懂，或者说因为人名很乱看不下去。其实我觉得，当年轻，阅历尚浅的时候有些东西确实看不懂，也得不到乐趣，但你经历了一些事后，也许能在这本书找到共情，找到生活的力量。这本书处处充满生活的气息，细腻又丰富，在我看来，作者并不是在批判孤独，而且要去关注孤独，理解孤独，与孤独和解。这本书至今是当前文学类别种魔幻现实主义最著名，最出色的例子。不好读，但值得一读。</p>
+<p>附上百年孤独的两段话：</p>
+<p><em>你那么憎恨军人，跟他们斗了那么久，琢磨了他们那么久，最终却变得和他们一样。人世间没有任何理想值得以这样的沉沦作为代价。</em></p>
+<p><em>不论在什么地方都要记住，过去都是假的，回忆没有归路，春天总是一去不返，最疯狂执著的爱情也终究是过眼云烟。</em></p>
+<h1 id="一件小事"><a href="#一件小事" class="headerlink" title="一件小事"></a>一件小事</h1><p>我经常上班迟到。</p>
+<p>每次我迟到的时候都会遇到邻居家的小女孩。她由她的妈妈带着上学， 约摸着4,5岁的样子。有时候是在等电梯的时候遇到,睁着好奇的大眼睛看着我。每次从电梯出来我和她”兵分两路”,在走一段路的时候她总会回头,朝我这边看,跟我招手再见。</p>
+<p>今天刚好事下雨天,她撑着小伞,跟我我招手再见。</p>
+<p>我想起了一首泰国童谣唱的:</p>
+<p><em>你如此可爱</em></p>
+<p><em>ให้เคอรี่มาส่งได้บ่</em></p>
+<p><em>可以让克里快递把你寄过来吗</em></p>
+<p><em>สั่งซื้อไสหนอ</em></p>
+<p><em>在哪儿能买到你</em></p>
+<p><em>เป็นตาฮักปานนี่</em></p>
+<p><em>你如此可爱</em></p>
+<p><em>ให้เคอรี่มาส่งได้บ่</em></p>
+<p><em>可以让克里快递把你寄过来吗</em></p>
+<p><em>สั่งซื้อไสหนอ</em></p>
+<p><em>在哪儿能买到你</em></p>
+<p><em>ยี่ห้ออีหยัง</em></p>
+<p><em>什么牌子的啊</em></p>
+<p><em>เป็นตาซังเอาฮ้าย</em></p>
+<p><em>你可爱至极</em></p>
+<p>如果有空,给我写回信吧</p>
+]]></content>
+      <categories>
+        <category>生活</category>
+      </categories>
+      <tags>
+        <tag>电影</tag>
+        <tag>书</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>iOS上架</title>
+    <url>/2021/07/12/iOS%E4%B8%8A%E6%9E%B6/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h1><p>需申请苹果开发者账号，在调试期间，申请iOS开发证书（<strong>iOS Development</strong>）和描述文件。开发期开发完成后成功打出ipa包后再申请发布证书和描述文件，按下述流程上架.</p>
+<span id="more"></span>
+
+
+
+<h1 id="上架"><a href="#上架" class="headerlink" title="上架"></a>上架</h1><p>1、申请iOS发布证书（<strong>iOS Distribution</strong>）</p>
+<p>2、申请iOS发布描述文件</p>
+<p>3、上传ios证书编译打包IPA</p>
+<p>4、上传iTunes Connect</p>
+<p>5、上传好IPA回到iTunes Connect填写APP信息并提交审核</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ul>
+<li>需提供描述和应用截图</li>
+</ul>
+<p>6.5 英寸（1284 x 2778 像素） 和5.5 英寸（ 1242 x 2208  像素）3-5张应用内截屏。这是手机的，如果app支持ipad，也要使用需要上传ipad尺寸的截图。</p>
+<ul>
+<li><p>需要登录的应用需提供测试账号给苹果审核</p>
+</li>
+<li><p>苹果审核需要https协议的域名，如果使用的是http，需要再打包配置里加上http请求的域名进白名单</p>
+</li>
+<li><p>没有用到的权限不能在配置里写明，需要删除</p>
+</li>
+</ul>
+<h1 id="详细步骤"><a href="#详细步骤" class="headerlink" title="详细步骤"></a>详细步骤</h1><h2 id="一、开发者基本知识"><a href="#一、开发者基本知识" class="headerlink" title="一、开发者基本知识"></a>一、开发者基本知识</h2><p>苹果开发者官网：<a href="https://developer.apple.com/account/">https://developer.apple.com/account/</a> ，个人账号688人民币一年。上架app和游戏需要先申请证书，申请证书需要涉及到下面的设置，功能列表:</p>
+<h3 id="1-Certification和p12-证书"><a href="#1-Certification和p12-证书" class="headerlink" title="1. Certification和p12(证书)"></a>1. Certification和p12(证书)</h3><p>证书是对电脑开发资格的认证，每个开发者帐号有一套，分为两种：</p>
+<ol>
+<li>Developer Certification(开发证书)：用于开发测试；</li>
+<li>Distribution Certification(发布证书)：用于打包测试<code>ipa</code>或者<code>Appstore</code>的安装包；</li>
+</ol>
+<p><code>.cer</code>是苹果的默认证书，在<code>xcode</code>开发打包可以使用，如果在<code>lbuilder</code>、<code>phonegap</code>、<code>HBuilder</code>、<code>AppCan</code>、<code>APICloud</code>这些跨平台开发工具打包，就需要用到<code>p12</code>文件。 或者多人开发的时候，本机用<code>.cer</code>，其他人用<code>p12</code>证书。</p>
+<p><code>.cer</code>证书仅包含公钥，<code>.p12</code>证书可能既包含公钥也包含私钥，这就是他们的区别，除开<code>xcode</code>开发工具，其他都需要用<code>p12</code>才能打包。</p>
+<h3 id="2-Identifiers-AppID、应用id"><a href="#2-Identifiers-AppID、应用id" class="headerlink" title="2. Identifiers(AppID、应用id)"></a>2. Identifiers(AppID、应用id)</h3><p>app的标识，例如app的名字描述，包名</p>
+<h3 id="3-Devives-设备"><a href="#3-Devives-设备" class="headerlink" title="3. Devives(设备)"></a>3. Devives(设备)</h3><p>设备列表，表示当app安装调试的时候可以安装在这些机器上面，设备使用udid进行唯一判断，创建描述文件(Profiles)的时候需要选择设备。</p>
+<h3 id="4-Profiles-描述文件"><a href="#4-Profiles-描述文件" class="headerlink" title="4. Profiles(描述文件)"></a>4. Profiles(描述文件)</h3><p>这个文件用来描述App IDs、证书和设备之间的关系，我们一般只用到Development、App Store和Ad Hoc三种，Development和Ad Hoc类型的需要指定可以运行在哪些Devices上，而App Store类型的不需要。授权文件分为两种，对应相应的证书使用：</p>
+<ol>
+<li>Developer Provisioning Profile(开发描述文件)：在装有开发证书或副本的电脑上使用，开发人员选择该描述文件通过电脑将程序安装到授权文件记录的设备中，即可进行真机测试，一般是开发自己做调试的时候用。</li>
+<li>Distribution Provisioning Profile(发布描述文件)：在装有发布证书的电脑上（即配置证书的电脑，只有一台）制做测试版和发布版的程序。</li>
+</ol>
+<ul>
+<li>AppStore发布版就是发布到AppStore上的程序文件，一般是测试完毕之后打AppStore包用；</li>
+<li>AdHoc测试版就是在发布之前交给测试人员可同步到设备上的程序文件，一般是打包给内测的时候用，只有描述文件里面包含了UDID对应的设备才能安装上。</li>
+</ul>
+<h2 id="二、创建Certification-证书"><a href="#二、创建Certification-证书" class="headerlink" title="二、创建Certification(证书)"></a>二、创建Certification(证书)</h2><ol>
+<li>创建证书之前需要现在Mac电脑上面申请certSigningRequest(CSR)文件，打开钥匙串访问程序 - 证书助理 - 从证书颁发机构请求证书<br><img src="https://img-blog.csdnimg.cn/img_convert/6050bb6ae95a4833a1d58c229825c749.png" alt="sOB1Jg.png"></li>
+<li>输入下面两项，保存证书文件到电脑。</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/6eb6376672fb0250ea2acbc7f3d3a540.png" alt="sLNs3t.png"></p>
+<ol>
+<li><a href="https://developer.apple.com/account/resources/certificates/list">打开网站</a>，开始申请证书</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/835ebb6c118ce2489fc7ee9b6a8f5785.png" alt="sLNRHg.png"></p>
+<ol>
+<li>选择Apple Develpment,continue</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/41d91651cac689283e541329532564c8.png" alt="sLNv59.png"></p>
+<ol>
+<li>Choose File选择刚刚创建的文件</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/2c6798a93733fffa790e510a4c9ab495.png" alt="sLUPKK.png"></p>
+<ol>
+<li>确定信息，Download下载证书</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/fb692c82fc4354a86aa8723706a84e60.png" alt="sLUMKf.png"></p>
+<ol>
+<li>接着重复刚刚的步骤创建一个<code>iOS Distribution</code>证书（注意是iOS Distribution，不是Apple Distribution）</li>
+<li>这时候已经下载了两个证书，双击证书，导入到电脑，两个都要。</li>
+</ol>
+<h2 id="三、创建Identifiers"><a href="#三、创建Identifiers" class="headerlink" title="三、创建Identifiers"></a>三、创建Identifiers</h2><ol>
+<li>打开网站：<a href="https://developer.apple.com/account/resources/identifiers/list/bundleId">https://developer.apple.com/account/resources/identifiers/list/bundleId</a></li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/3fcdcca09de07bd8a05b6446d856caa8.png" alt="image"></p>
+<ol>
+<li>选择App IDs，Continue</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/863257ea8e76147e560511fdff1abcc4.png" alt="image"></p>
+<ol>
+<li>选择App</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/828444380fa4913ebceb95f9276b644c.png" alt="sLJXEd.png"></p>
+<ol>
+<li>输入名字描述(注意不能中文)，包名(一般是com.xxxx.xxxx)，选择app里面需要的服务(这个可以后面编辑)。<br><img src="https://img-blog.csdnimg.cn/img_convert/55a76805e624ecd3b1854a0120159ea6.png" alt="sLYfsS.png"></li>
+<li><code>continue</code>之后<code>Resister</code>，然后你会在Idntifiers列表里面看到你创建的<code>Identifier</code></li>
+</ol>
+<h2 id="四、添加测试设备Devices"><a href="#四、添加测试设备Devices" class="headerlink" title="四、添加测试设备Devices"></a>四、添加测试设备Devices</h2><ol>
+<li>在打包的时候需要运行到手机上，然后运行的手机需要在开发者网站添加</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/133a19b1f85e11f0a65eaa8f0b65d697.png" alt="sLwEaF.png"></p>
+<ol>
+<li>输入对应的信息（注意这里需要获取设备的udid，获取方法看下面）</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/bb401161992bbdf6b45a9dc22d359216.png" alt="sLwcGj.png"></p>
+<blockquote>
+<p><strong>获取设备的udid</strong><br><strong>方法1（电脑）</strong>: 电脑连接手机(手机弹窗选择信任)，打开XCode，菜单栏Window-Devices and Simulates-就可以看到对应的udid<br><img src="https://img-blog.csdnimg.cn/img_convert/94dc9bab091aaf1303eadd814b4c6d22.png" alt="sL0YwT.png"></p>
+<p><strong>方法2（电脑）</strong>: 打开访达Fidler，位置栏目点击手机，手机名字下面的信息，即可看到udid，右键即可复制<br><img src="https://img-blog.csdnimg.cn/img_convert/10196061a254965a35d9fcf417b659a2.png" alt="sL0xcn.png"></p>
+<p><strong>方法3（手机</strong>）: 手机打开蒲公英网址 <a href="https://www.pgyer.com/tools/udid">https://www.pgyer.com/tools/udid</a> ,根据提示操作</p>
+</blockquote>
+<ol>
+<li>确定之后确定信息点击Register即可在Devices列表里面看到刚刚创建的手机</li>
+</ol>
+<h2 id="五、创建描述文件-Profiles"><a href="#五、创建描述文件-Profiles" class="headerlink" title="五、创建描述文件(Profiles)"></a>五、创建描述文件(Profiles)</h2><ol>
+<li>打开<a href="https://developer.apple.com/account/resources/profiles/list">https://developer.apple.com/account/resources/profiles/list</a></li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/771367bc5e52262bee11d4a96641d2e8.png" alt="image"></p>
+<ol>
+<li>首先创建开发证书(开发证书类型为iOS Development)，开发调试的使用用这个证书</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/007095b5d1e6f5565a68dbf9df739d75.png" alt="image"></p>
+<ol>
+<li>Continue之后选择之前创建的Identifiers，即AppID</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/af5d1b7a9f963e74fc7497e1e4c3852e.png" alt="sLDws1.png"></p>
+<ol>
+<li>Continue之后选择之前创建的Development开发证书</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/c0016589b837196f0ec747939109dd50.png" alt="sLDzwV.png"></p>
+<ol>
+<li>Continue之后选择测试设备（这些设备就是Deevics设备列表的设备）</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/86d6c59ddb96642dd4d695094417df16.png" alt="sLrmTK.png"></p>
+<ol>
+<li>之后输入描述文件的名字，我一般取名是 项目名+证书类型，例如Project3_Development</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/105ee2974e982ba553e56d4a0a70445a.png" alt="sLrv1H.png"></p>
+<ol>
+<li>生成之后Download下来，文件的后缀名是mobileprovision。</li>
+<li>重复上面的步骤，再创建一个AdHoc的描述文件</li>
+<li>再次重复上面的步骤，再创建一个AppStore的描述文件</li>
+<li>三个描述文件下载下来：<br><img src="https://img-blog.csdnimg.cn/img_convert/56ce69300015a95ee329271b2f512cb2.png" alt="sLs458.png"></li>
+</ol>
+<h2 id="六、导入使用"><a href="#六、导入使用" class="headerlink" title="六、导入使用"></a>六、导入使用</h2><p>在XCode里面新建项目，点击项目 - TARGETS下面的项目 - Siging &amp; Capabilities - Provisioning Profile - 点开选择Import Profile，导入你下载的3个描述文件</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/f1421ea8f69e44c9e02633f4477c3a80.png" alt="sOutq1.png"></p>
+<p>4、上传ios证书编译打包IPA</p>
+<p>用Xcode打开自己的应用后，双击uploadTest.mobileprovision授权文件，它会自己安装到Xcode中。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-80a4f088d4ba4a53f5a9526b77e34e4f_720w.jpg" alt="img"></p>
+<p>如果Team中没有选项：</p>
+<p><img src="https://pic1.zhimg.com/80/v2-5541e3c520a73bacf3ce9bcb926b54d0_720w.jpg" alt="img"></p>
+<p><img src="https://pic1.zhimg.com/80/v2-b1e160e6e9da95ed8c715b16bd1b8430_720w.jpg" alt="img"></p>
+<p>添加你的开发者账号后Team中就会增加一个以你账号命名的选项，选择即可。（有可能会有延时，可能要等会儿出现）</p>
+<p>注意：如果你的账号名下有两个选项，一个是开发证书，一个是发布证书。开发证书后面会带有“(Personal Team)”的字样，选择另外一个即是发布证书（打包上线用）。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-7ec43ba4549f3bd7d2f253196ee09e2a_720w.jpg" alt="img"></p>
+<p>到这里我们就可以开始打包上传了</p>
+<p><img src="https://pic1.zhimg.com/80/v2-e6c0aad85b1bf4c613e785180ccfb0ac_720w.jpg" alt="img"></p>
+<p>打开Product - &gt; Archive 点击</p>
+<p><img src="https://pic4.zhimg.com/80/v2-0d634f9e4c5085badfb7a630b805519f_720w.jpg" alt="img"></p>
+<p><strong>5、上传iTunes Connect</strong></p>
+<p>等Archive成功后会弹出一个窗口如下图，点击Validate验证一下应用</p>
+<p><img src="https://pic2.zhimg.com/80/v2-cd722e5dc6d92c74b030f5390124c9f5_720w.jpg" alt="img"></p>
+<p><img src="https://pic2.zhimg.com/80/v2-1024afbd96701b267a4d5a84e9b4c939_720w.jpg" alt="img"></p>
+<p><img src="https://pic2.zhimg.com/80/v2-933d84d563f7482e4745f2136087e56d_720w.jpg" alt="img"></p>
+<p><img src="https://pic4.zhimg.com/80/v2-4421ee03b0550c8407b28e03aef6cb63_720w.jpg" alt="img"></p>
+<p>验证成功后，点击Upload to App Store上传</p>
+<p><img src="https://pic3.zhimg.com/80/v2-77fc03be36975a929ba31fc12ebe6c5a_720w.jpg" alt="img"></p>
+<p>同Validate时一样，选择开发证书对应的Team，点击Choose</p>
+<p><img src="https://pic2.zhimg.com/80/v2-39e0dee4b45c73f5330b6664984702f9_720w.jpg" alt="img"></p>
+<p>然后点击Upload按钮上传</p>
+<p><img src="https://pic1.zhimg.com/80/v2-5c01f6ef904d07dfde3cb5aa40401f48_720w.jpg" alt="img"></p>
+<p>等上传成功会有Success的提醒，点击Done即可。这时已经说明打包上传App Store成功</p>
+<p><strong>6、上传好IPA回到iTunes Connect填写APP信息并提交审核</strong></p>
+<p>到iTunes Connect后台 - &gt; 你的App - &gt; 准备提交的版本 - &gt; 构建版本旁边的“+”号或选择一个构建版本。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-7345a77fdc652632fe789320dc30090e_720w.jpg" alt="img"></p>
+<p>选择刚才打包上传的版本后，点完成。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-7caecad7eab02db49e518f94a519699e_720w.jpg" alt="img"></p>
+<p>然后按照你们需求吧itunes connect后台的数据填写完毕就好（app名称，副标题，截图，预览视频等）</p>
+<p>最后iTunes后台App中的其它信息可以根据公司的要求来填写，完成之后点击右上角“存储”后，点击“提交以供审核”即可</p>
+<p><img src="https://pic3.zhimg.com/80/v2-78b2c18da60ce8e5b69684ed8c506bf6_720w.jpg" alt="img"></p>
+<p>以上两项，如果公司没有特别说明，都选否然后提交即可。</p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a href="https://blog.csdn.net/niubitianping/article/details/113137555">2021苹果AppleiOS开发证书申请详细图文流程</a></p>
+]]></content>
+      <categories>
+        <category>Tech</category>
+      </categories>
+      <tags>
+        <tag>iOS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>丛林之书</title>
+    <url>/2021/07/10/%E4%B8%9B%E6%9E%97%E4%B9%8B%E4%B9%A6/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>我看这书的时候才想起之前看过《奇幻森林》这部电影，电影到现在没太多印象，印象比较深的是斯嘉丽约翰逊配音的那条大蟒蛇，与电影不同的是书里面的大蟒蛇虽然也叫做卡，性别却是男性。</p>
+<span id="more"></span>
+
+<h1 id="丛林法律"><a href="#丛林法律" class="headerlink" title="丛林法律"></a>丛林法律</h1><p>看书的感觉和看电影很不一样，书里面在讲毛格利故事的时候，可以注意到里面反复提及的“丛林法律”，而电影则没有。我去翻了一下英文原著，找到“丛林法律”的原单词，是“jungle law”。我原来以为也有可能是rule-规则之类的，其实不然，所以这里翻译过来是很准确的。丛林法律在毛格利的故事里非常重要，特别突出在“卡的狩猎”这一篇里。邦达-洛格（那些猴子），“他们没有法律”，所以无序，混乱，不懂得尊重和感恩，丛林里的居民都看不起他们。而毛格利学习巴鲁教给他的丛林法律，在其他狩猎者的领地，对他们说他们的“主人语言”，对狩猎者非常尊重。印象比较深的是在卡救完毛格利对卡表达他的感谢： </p>
+<p><em>“我们同出一条血脉，你和我。”毛格利答道，“今天晚上，你救了我的命。以后，只要你饿了，我的猎物就是你的猎物，哦，卡。”</em></p>
+<p><em>“我什么也不杀——我太小了——但是我能把山羊赶到你们捕杀的地方。你饿了，就来找我，看看我说的是不是真的。我这双手还有些本事（说着，他伸出双手），如果你们落到陷阱里，我就有机会偿还欠你的，欠巴赫拉的，还有欠巴鲁的。祝你们都打猎好运，我的主人们。”</em> </p>
+<p>毛格利在表达自己感激之情的时候是结合自己作为一个人类小孩所能做的力所能及的帮助，非常得体的表达了他的感激之情，而大蟒蛇卡听完也很受用。 </p>
+<h1 id="捕食者视角（强者视角）"><a href="#捕食者视角（强者视角）" class="headerlink" title="捕食者视角（强者视角）"></a>捕食者视角（强者视角）</h1><p>这里面让我引起疑惑的地方，在“老虎，老虎”这一篇讲到的牛群的头儿，叫拉玛，不会说话。毛格利说，“如果我能告诉他我今天需要他干什么，那该多好。”为什么毛格利能和丛林里的动物沟通而不能和人类社会里的动物沟通？是因为他们不是丛林里的动物们吗？也不尽然。丛林里的捕食者会说话，而被捕食者也一句话都不会说。</p>
+<p>后面我去看了一下吉卜林的生平，才有点明白。</p>
+<p>吉卜林信基督，<strong>他用极具浪漫化的眼光看待一切事物背后所蕴含的最高律法的启示，人类追寻者和服从者的角色在这种浪漫化的书写中得到确认，世界秩序在人类对最高律法的服从过程中得以彰显和恢复。</strong>这就解释了他为什么一直强调“丛林法律”。但在他的生平，他是一个帝国主义鼓吹手，有帝国主义倾向，这也在某种意义上解释了他在写丛林之书的时候，巧妙的规避了弱肉强食的规则。他是在强者视角看待问题。他一生都生活在大英帝国强盛时期，维多利亚时代大英帝国土地最广阔的时期，他和英国皇帝乔治五世同一年出生，同一年死亡，十分凑巧。</p>
+<h1 id="史诗，无狗血"><a href="#史诗，无狗血" class="headerlink" title="史诗，无狗血"></a>史诗，无狗血</h1><p>给我强烈的史诗感是白海豹这一篇，从一开始就说他是所有海豹中唯一的一只白海豹就与众不同。在给一个老海豹喂食的时候，老海豹说：听传说会有一只从北方来的白海豹会带领他们走向光明。正所谓“天选之豹”，the chosen one。然后在白海豹找到了一个安全之所后去说服其他海豹跟他走的时候，其他海豹质疑他，他以武力博取威望，以一敌百，所向披靡，英雄主义爆棚。这一篇妥妥的像摩西的出埃及记，虽然没有传统史诗那么庄严，但也是童话中的史诗。紧跟着的后篇，是“瑞基-迪基-台维”的故事，故事在这些剧情上没有任何狗血剧情。主人公都聪明，强壮，温柔，细心，在实行计划的时候没有因为傲慢或智商不在线的原因动摇自己的内心。读起来特别顺畅，尤其在在现在这个社会环境里看到的故事里，时不时都有一些狗血剧情，让我有点反感。丛林之书顺畅无狗血，尤其难得。</p>
+<h1 id="母性的光辉"><a href="#母性的光辉" class="headerlink" title="母性的光辉"></a>母性的光辉</h1><p>有两个地方让我发现到了这些故事里面溢出的母性的光辉。第一个是母狼为毛格利说的话，霸气侧漏之余又让我感动又好笑，第二个是达尔兹的老婆在与瑞基配合“引蛇出洞”情节，作为母亲，在关键时候，达尔兹老婆比达尔兹冷静，聪明，勇敢，比丈夫不知强多少倍。</p>
+<p> 下面这一段是母狼在收养毛格利对老虎谢克汗说的话，这里读的是张炽恒的译本，因为比较霸气，一开口就素质9连。</p>
+<p> <em>老虎的咆哮像雷声一样在洞穴中震响着。狼妈妈甩开幼崽们，跃上前来，她的双眼像黑暗中两个绿莹莹的月亮，直瞪着谢尔可汗灼灼逼人的眼睛。</em></p>
+<p><em>“是我，拉克夏（恶魔），在回答你。人崽儿是我的，浪格离（瘸子）你听好喽，我要定他了！他不会被杀死。他会活下来，和狼群一起奔跑，和狼群一起狩猎。最后，捕猎没毛幼崽的家伙，吃青蛙的货色，猎杀鱼的玩意儿，你瞧好喽，将来他会猎杀你！你这就给我滚，凭着我杀死的黑鹿（我可不吃挨饿的牛）起誓，滚回到你母亲身边去，你这个挨火烧的丛林兽，来到世上就瘸、现在更瘸的瘸子！滚吧！”</em></p>
+<p><em>狼爸爸诧异地看着。他几乎已经忘了，当初他是在公平决斗中胜了五匹狼，才赢得了狼妈妈，而她在狼群里混出的恶魔名号，也绝非恭维之词。</em> </p>
+<p>以上，是我初读这本书的印象。这次我也听到了一些我看书没有想到的东西，也是在多菲内之夜里听到别人的看法后有的感触。</p>
+<h1 id="记忆中的伤痛"><a href="#记忆中的伤痛" class="headerlink" title="记忆中的伤痛"></a>记忆中的伤痛</h1><p>汤老师提到了一个引起我强烈兴趣的问题。为什么吉卜林在成为了一个广富盛名的作家之后，会再来选择童话这一题材来写作。</p>
+<p>译者张新颖在序里面有写到，吉卜林出生在孟买，在孟买度过6年童年时光后，回到英国，但在英国的时光郁郁不乐，20岁左右回到印度工作。那时候的印度作为英属的殖民地，环境并不好，为什么他回到英国反而郁郁不乐。一开始，这个疑惑只是我一个模糊中的一个小点，后面结合他人提到，在毛格利的故事里，吉卜林是有投射自己的经历在毛格利身上的。对于他来讲，丛林可以当作印度，而人类社会当作英国。他对两个地方都有感情，但是他在两个社会摇摆，他很矛盾，他在印度度过了最开始的快乐的时光，反回到英国度过了最没有想象和乐趣的枯燥生活。</p>
+<p>一个人的记忆中伤痛会对他今后的人生道路产生什么影响？这一点我感触颇深，记忆中伤痛经历给人生后面的行为提供了伏笔。我想到两个人物，一个是文艺作品中的蝙蝠侠，一个是现实中的Michael Jackson。因为童年的悲惨经历，蝙蝠侠永远呆在父母被害的小巷子里走不出来，一辈子打击罪恶。而MJ，为小孩子建城堡，不余遗力的到非洲去帮助非洲儿童。吉卜林在生活中很喜欢小孩子，从一些生平可以看到他信守与孩子的承诺，而且很乐意为孩子去写故事。他的文笔这么好，真是给孩子最好的礼物。 </p>
+<p><em>他转过身，和孤狼一起走开了。他抬头仰望星空，感到了幸福。“我再也不用睡在陷阱里了，阿克拉。我们去拿上谢尔可汗的皮走吧。不，我们不会危害这个村子，因为米苏阿待我很好。”</em></p>
+<p><em>月亮在平原上升了起来，使一切都变成了奶白色。吓坏了的村民们看见，毛格利身后跟着两只狼，头上顶着一捆东西，以平稳的狼的步子小跑着，像蔓延的火一样，很快就把长长的距离消灭掉了。他们撞响了神庙里的钟，吹响了海螺号，比以前任何时候要响得多。米苏阿哭了。布尔迪添枝加叶地讲述他在丛林里的历险，讲到最后说，阿克拉用后脚站了起来，像一个人那样说话。</em></p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>在抛开作者的个人写作倾向来说，这本书依然非常精彩。我最近读的书都有点难读，像雄猫穆尔读到开头就没读下去，日瓦戈医生读了一半，读这本书让我有种轻松自在的感觉，也能引起自己的一些思考，可能书还是得搭配着读。最近读书还有一个感触，现在手机里充斥着营销号或者短视频或者xx博主给人灌输的理念，他们把自己的想法强加给别人，有时侯是一种很邪恶的行为，反倒是读最原始的小说文本，通过思考，会发现自己在寻求的东西。现在除了工作时间留给读书的时间都是一天中最疲惫的时光，这也是不能静下来读一些有点门槛的书的原因之一。</p>
+
+
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=409931437&auto=1&height=66"></iframe>
+
+]]></content>
+      <categories>
+        <category>读书</category>
+      </categories>
+      <tags>
+        <tag>丛林之书</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>为何大厂APP如微信、支付宝、淘宝、手Q等只适配了armeabi-v7aarmeabi？</title>
+    <url>/2021/07/10/%E4%B8%BA%E4%BD%95%E5%A4%A7%E5%8E%82APP%E5%A6%82%E5%BE%AE%E4%BF%A1%E3%80%81%E6%94%AF%E4%BB%98%E5%AE%9D%E3%80%81%E6%B7%98%E5%AE%9D%E3%80%81%E6%89%8BQ%E7%AD%89%E5%8F%AA%E9%80%82%E9%85%8D%E4%BA%86armeabi-v7aarmeabi%EF%BC%9F/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>转自<a href="https://segmentfault.com/a/1190000023517574">为何大厂APP如微信、支付宝、淘宝、手Q等只适配了armeabi-v7a/armeabi？</a></p>
+<span id="more"></span>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/5/171e45f6cdb851d2~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"></p>
+<h3 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h3><p>前几天啊，在公众号发了一篇文章《优化 ApK 大小之 ABI Filters 和 APK split》，评论区收到了一些留言说，文章讲得不够深入，关于系统是如何选择不同 abi 下的 so 库的？当前 APP 该如何适配？该去掉哪些该保留哪些？都存在一些疑问。</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/5/171e45cbff89e272~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"></p>
+<p>因此，决定亲自更文一篇，系统地讲一下关于 Android CPU 架构方面的一些东西，以及结合大厂 APP 如微信、支付宝、淘宝等 APP 的适配情况，分析我们开发 APP 中该如何适配。本文涉及以下几个问题：</p>
+<ul>
+<li>  什么是 ABI？</li>
+<li>  ABI 有何作用？</li>
+<li>  目前大厂 APP 是如何适配不同的 CPU 架构的？</li>
+<li>  ABI 是如何工作的？</li>
+<li>  我们自己的 APP 中该如何适配？</li>
+<li>  ABI split - 性能 + 兼容全都要</li>
+</ul>
+<p>本篇文章中，就一一为你解答这些疑问。</p>
+<h3 id="1-什么是-ABI"><a href="#1-什么是-ABI" class="headerlink" title="1. 什么是 ABI?"></a>1. 什么是 ABI?</h3><p>ABI 是英文 Application Binary Interface 的缩写，及应用二进制接口。</p>
+<p>不同 Android 设备，使用的 CPU 架构可能不同，因此支持不同的指令集。 CPU 与指令集的每种组合都有其自己的应用二进制界面（或 ABI）,ABI 非常精确地定义了应用程序的机器代码应如何在运行时与系统交互。您必须为要与您的应用程序一起使用的每种 CPU 架构指定一个 ABI（Application Binary Interface）。</p>
+<p>ABI 包含以下信息：</p>
+<ul>
+<li>  可使用的 CPU 指令集（和扩展指令集）。</li>
+<li>  运行时内存存储和加载的字节顺序。Android 始终是 little-endian。</li>
+<li>  在应用和系统之间传递数据的规范（包括对齐限制），以及系统调用函数时如何使用堆栈和寄存器。</li>
+<li>  可执行二进制文件（例如程序和共享库）的格式，以及它们支持的内容类型。Android 始终使用 ELF。</li>
+<li>  如何重整 C++ 名称。</li>
+</ul>
+<p>Android 目前支持以下 7 种 ABIs:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mips, mips64, X86, X86–64, arm64-v8a, armeabi, armeabi-v7a</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-ABI-有何作用？"><a href="#2-ABI-有何作用？" class="headerlink" title="2. ABI 有何作用？"></a>2. ABI 有何作用？</h3><p>当我们想要在项目中使用 native（C/C++） 类库, 我们必须对要支持的处理器架构提供对应编译包。每个处理器架构需要我们提供一个或多个包含 native 代码的. so 文件。</p>
+<p>默认情况下，为了使 APP 有更好的兼容性，我们使用 Android Studio 或者命令打包时，会默认支持所有的架构，但相应的 APK size 会疯狂的增大。对于用户来说，目标设备只需要其中一个版本，但当用户下载 APK 时，会全部下载（对用户来说相当的不友好）。</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/3/171d9871f97775a2~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"></p>
+<p>怎么办呢？<code>abifilters</code> 为我们提供了解决方案,<code>abifilters</code>为我们提供了选择适配指定 CPU 架构的能力，只需要在 app 下的<code>build.gradle</code>添加如下配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">        defaultConfig &#123;</span><br><span class="line">            ndk &#123;</span><br><span class="line">                abiFilters &#x27;arm64-v8a&#x27;, &#x27;x86_64&#x27;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>你可能看了上面的这些文字，还不能理解 abi 的作用，那么我们就用一个简单的例子来说明一下。</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/3/171d98ccd16d2c6a~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"></p>
+<h5 id="2-1-举例说明-ABI-的作用"><a href="#2-1-举例说明-ABI-的作用" class="headerlink" title="2.1 举例说明 ABI 的作用"></a>2.1 举例说明 ABI 的作用</h5><p>首先，我们创建一个最简单的<code>Hello world</code>应用，只有一个 Activity 和一个启动图标。我们看以下打出来的 apk:</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/3/171d9a4f9852040e~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"></p>
+<p>没有任何的原生库使用，大小为<code>2.1MB</code>，现在我们为它添加多 ABI 原生库支持，我们在项目中集成<code>Realm</code>，然后打包。</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/3/171d9c39394a87b9~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"></p>
+<p>看到没，apk 大小从<code>2.1MB</code>猛增加到<code>11.2MB</code>, 多了一个原生 so 库的文件夹，大小为<code>8.8MB</code>，我们来看一下它的详细信息：</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/3/171d9c65b63dd997~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"></p>
+<p>如上图所示，<code>Realm</code>为 5 种 CPU 架构生成了<code>.so</code>库，分别是<code>mips</code>、<code>x86</code>、<code>x86_64</code>、<code>arm64-v8a</code>、<code>armeabi-v7a</code>。增加了<code>8.8MB</code>包的大小。但是这不是我们想要的，我们只想要适配我们指定的的 CPU 架构，因此，我们需要在 gralde.build 中添加<code>abifilters</code>配置来完成我们想要的效果：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    compileSdkVersion 28 // 编译sdk版本</span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        applicationId &quot;com.example.zhouwei.helloworld&quot;</span><br><span class="line">        minSdkVersion 15</span><br><span class="line">        targetSdkVersion 28</span><br><span class="line">        versionCode 1</span><br><span class="line">        versionName &quot;1.0&quot;</span><br><span class="line">        testInstrumentationRunner &quot;android.support.test.runner.AndroidJUnitRunner&quot;</span><br><span class="line">        // 适配指定CPU架构</span><br><span class="line">        ndk &#123;</span><br><span class="line">            abiFilters &#x27;arm64-v8a&#x27;, &#x27;x86_64&#x27;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/3/171dac017c1f253d~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"></p>
+<p>可以看到，只生成了我们指定 CPU 架构的 so 文件，包的大小也减少了<code>5.3MB</code>。</p>
+<p>这时候，你可能会有一个疑问，Android 共支持 7 种 CPU 架构，那么，我们在实际项目中该适配哪些 CPU 架构能保证最好的兼容，同时又最大限度的减少 APK 的大小？</p>
+<p>在回答这个问题之前，我们不妨看一下这些顶级巨头公司，他们是是如何适配的。</p>
+<h3 id="3-目前大厂-APP-是如何适配不同的-CPU-架构的？"><a href="#3-目前大厂-APP-是如何适配不同的-CPU-架构的？" class="headerlink" title="3. 目前大厂 APP 是如何适配不同的 CPU 架构的？"></a>3. 目前大厂 APP 是如何适配不同的 CPU 架构的？</h3><p>首先，我们下载一些大厂的 APK，看一下他们的适配情况，这里我分析了微信、手机 QQ、支付宝和淘宝这 4 个 APP 的适配情况：</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/3/171dacd5d3bdced0~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"></p>
+<p>可以看到，微信适配的是<code>arm64-v8a</code>(微信应该是最近才适配到<code>arm64-v8a</code>, 以前是<code>armeabi</code>), 支付宝和手 Q 适配的是<code>armeabi</code>，淘宝适配的是<code>armeabi-v7a</code>。各个 APP 适配的平台不太一样，但是他们有一个共同点，那就是它们只指定了一个平台。</p>
+<p>等等，上面这些 APP 只适配了一中 CPU 架构，比如只适配了<code>armeabi-v7a</code>, 那如果 APP 装在其他架构的手机上，如<code>arm64-v8a</code>上，会蹦吗？</p>
+<p>要弄清楚这个问题，我们得先搞清楚，ABI 是如何工作的。</p>
+<h3 id="ABI-是如何工作的呢？"><a href="#ABI-是如何工作的呢？" class="headerlink" title="ABI 是如何工作的呢？"></a>ABI 是如何工作的呢？</h3><p>官方文档解释如下：</p>
+<p>Android 系统在运行时知道它支持哪些 ABI，因为版本特定的系统属性会指示：</p>
+<ul>
+<li>  设备的主要 ABI，与系统映像本身使用的机器代码对应。</li>
+<li>  （可选）与系统映像也支持的其他 ABI 对应的辅助 ABI。</li>
+</ul>
+<p>此机制确保系统在安装时从软件包提取最佳机器代码。</p>
+<p>为实现最佳性能，应直接针对主要 ABI 进行编译。例如，基于 ARMv5TE 的典型设备只会定义主 ABI：armeabi。相反，基于 ARMv7 的典型设备将主 ABI 定义为 armeabi-v7a，并将辅助 ABI 定义为 armeabi，因为它可以运行为每个 ABI 生成的应用原生二进制文件。</p>
+<p>64 位设备也支持其 32 位变体。以 arm64-v8a 设备为例，该设备也可以运行 armeabi 和 armeabi-v7a 代码。但请注意，如果应用以 arm64-v8a 为目标，而非依赖于运行 armeabi-v7a 版应用的设备，则应用在 64 位设备上的性能要好得多。</p>
+<p>许多基于 x86 的设备也可运行 armeabi-v7a 和 armeabi NDK 二进制文件。对于这些设备，主 ABI 将是 x86，辅助 ABI 是 armeabi-v7a。</p>
+<p>上面这一段是不是有点看蒙了，这里我来简单解释以下。<strong>总的来说，就是一个 Android 设备可以支持多种 ABI, 设备主 ABI 和辅助 ABI, 以<code>arm64-v8a</code>为主 ABI 的设备，辅助 ABI 为<code>armeabi-v7a</code>和<code>armeabi</code>，以<code>armeabi-v7a</code>为主 ABI 的设备，辅助 ABI 为<code>armeabi</code>。</strong></p>
+<p>另外，<strong>x86 架构的手机都会包含由 Intel 提供的称为 Houdini 的指令集动态转码工具，实现对 arm .so 的兼容，也就是说有适配 armeabi 平台的 APP 是可以跑在 x86 手机上的。</strong></p>
+<h5 id="3-1-主辅助-ABI-具体适配流程"><a href="#3-1-主辅助-ABI-具体适配流程" class="headerlink" title="3.1 主辅助 ABI 具体适配流程"></a>3.1 主辅助 ABI 具体适配流程</h5><p>前面说了 ABI 的工作原理，一个 Android 设备支持主辅 ABI, 那么他们具体是如何工作的呢？我们以<code>arm64-v8a</code>架构的手机为例：</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/3/171dafefbaac1c42~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"></p>
+<p>对于一个 cpu 是 arm64-v8a 架构的手机，它运行 app 时，进入 jnilibs 去读取库文件时，先看有没有 arm64-v8a 文件夹，如果没有该文件夹，去找 armeabi-v7a 文件夹，如果没有，再去找 armeabi 文件夹，如果连这个文件夹也没有，就抛出异常；</p>
+<p>如果有 arm64-v8a 文件夹，那么就去找特定名称的. so 文件，注意：如果没有找到想要的<code>.so</code>文件，不会再往下（armeabi-v7a 文件夹）找了，而是直接抛出异常。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Exception:Java.lang.UnsatisfiedLinkError: dlopen failed: library “/***.so” not found </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>特别需要注意的情况是在命中了文件夹，而未命中 so 文件这种情况：</p>
+<ul>
+<li>比如命中了<code>arm64-v8a</code>文件夹，没有找到需要的 so 文件，就不会再往下（armeabi-v7a 文件夹）找了，而是直接抛出异常。</li>
+<li>如果你的项目用到了第三方依赖，如果只保留一个 ABI 的时候，建议在 Build 中加入 ndk.abiFilters</li>
+<li>例如：第三方 aar 文件，如果这个 sdk 对 abi 的支持比较全，可能会包含 armeabi、armeabi-v7a、x86、arm64-v8a、x86_64 五种 abi，而你应用的其它 so 只支持 armeabi、armeabi-v7a、x86 三种，直接引用 sdk 的 aar，会自动编译出支持 5 种 abi 的包。但是应用的其它 so 缺少对其它两种 abi 的支持，那么如果应用运行于 arm64-v8a、x86_64 为首选 abi 的设备上时，就会 ==crash== 了哦。</li>
+</ul>
+<p>因此，我们需要在我们的 app 中配置 abiFilter 配置，来避免一些未知的错误。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">defaultConfig &#123;  </span><br><span class="line">    ndk &#123;  </span><br><span class="line">        abiFilters &quot;armeabi&quot;// 指定ndk需要兼容的ABI(这样其他依赖包里x86,armeabi,arm-v8之类的so会被过滤掉) </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h5 id="3-2-Android-7-种-CPU-架构在当前市场的占有率"><a href="#3-2-Android-7-种-CPU-架构在当前市场的占有率" class="headerlink" title="3.2 Android 7 种 CPU 架构在当前市场的占有率"></a>3.2 Android 7 种 CPU 架构在当前市场的占有率</h5><ul>
+<li><code>arm64-v8a</code>: 目前主流版本</li>
+<li><code>armeabi-v7a</code>: 一些老旧的手机</li>
+<li><code>x86 / x86_64</code>: x86 架构的手机都会包含由 Intel 提供的称为 Houdini 的指令集动态转码工具，实现对 arm .so 的兼容，再考虑 x86 1% 以下的市场占有率，x86 相关的两个 .so 也是可以忽略的</li>
+<li><code>armeabi/mips / mips64</code>: NDK 以前支持 ARMv5 (armeabi) 以及 32 位和 64 位 MIPS，但 NDK r17 已不再支持，极少用于手机可以忽。</li>
+</ul>
+<p>目前手机市场上，<code>x86 / x86_64/armeabi/mips / mips6</code> 的架构，基本可以不不考虑了，它们的占有量应很少很少了，<code>arm64-v8a</code><strong>作为最新一代架构，应该是目前的主流</strong>，<code>armeabi-v7a</code>只存在少部分老旧手机。</p>
+<p>我试着在 Google 上查找，具体的市场占有数据，但没找到，但是从国民级应用微信只适配<code>arm64-v8a</code>就可以看出，<code>arm64-v8a</code>是目前的主流，并且还有一点，Google Play 从 2019 年 8 月开始，就强制 APP 适配<code>arm64-v8a</code>，以慢慢淘汰 32 位的<code>armeabi-v7a</code>。</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/4/171dd683207fb41f~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"></p>
+<h3 id="4-我们项目中该如何适配呢？"><a href="#4-我们项目中该如何适配呢？" class="headerlink" title="4. 我们项目中该如何适配呢？"></a>4. 我们项目中该如何适配呢？</h3><p>这里就可以回答前面的两个问题了。</p>
+<p><code>Q1</code>： 只适配了<code>armeabi-v7a</code>, 那如果 APP 装在其他架构的手机上，如<code>arm64-v8a</code>上，会蹦吗？</p>
+<p><code>A:</code> 不会，但是反过来会。</p>
+<p>因为<code>armeabi-v7a</code>和<code>arm64-v8a</code>会向下兼容：</p>
+<ul>
+<li>  只适配<code>armeabi</code>的 APP 可以跑在<code>armeabi</code>,<code>x86</code>,<code>x86_64</code>,<code>armeabi-v7a</code>,<code>arm64-v8</code>上</li>
+<li>  只适配<code>armeabi-v7a</code>可以运行在<code>armeabi-v7a</code>和<code>arm64-v8a</code></li>
+<li>  只适配<code>arm64-v8a</code> 可以运行在<code>arm64-v8a</code>上</li>
+</ul>
+<p>那我们该如何适配呢？给出如下几个方案：</p>
+<p><code>方案一</code>：只适配<code>armeabi</code></p>
+<ul>
+<li><code>优点:</code>基本上适配了全部 CPU 架构（除了淘汰的 mips 和 mips_64）</li>
+<li><code>缺点：</code>性能低，相当于在绝大多数手机上都是需要辅助 ABI 或动态转码来兼容</li>
+</ul>
+<p><code>方案二</code>：只适配 <code>armeabi-v7a</code></p>
+<p>同理方案一，只是又筛掉了一部分老旧设备, 在性能和兼容二者中比较平衡</p>
+<p><code>方案三:</code> 只适配 <code>arm64-v8</code></p>
+<ul>
+<li><code>优点:</code> 性能最佳</li>
+<li><code>缺点：</code> 只能运行在<code>arm64-v8</code>上，要放弃部分老旧设备用户</li>
+</ul>
+<p>这三种方案都是可以的，现在的大厂 APP 适配中，这三种都有，大部分是前 2 种方案。具体选哪一种就看自己的考量了，以性能换兼容就<code>arm64-v8</code>, 以兼容换性能<code>armeabi</code>, 二者稍微平衡一点的就<code>armeabi-v7a</code>。</p>
+<p>目前来说，大多数的大厂 APP 用的都是<code>armeabi</code>或<code>armeabi-v7a</code>，只有像微信这种牛逼的 APP, 为了追求性能和用户体验，放弃了少部分设备，这也说得通吧，毕竟微信也不在乎苍蝇那点肉。</p>
+<h3 id="5-番外篇-性能-兼容能否兼得？"><a href="#5-番外篇-性能-兼容能否兼得？" class="headerlink" title="5. 番外篇 - 性能 + 兼容能否兼得？"></a>5. 番外篇 - 性能 + 兼容能否兼得？</h3><p>其实到上一小节，本文就该结束了，但总感觉优点意犹未尽，除了适配所有全部 CPU 架构外，就特么不能性能和兼容同时兼得吗？其实 Google 早有考虑。也是可以实现的那就是 abi split，分包，实现也很简单，在 gradle 中添加如下配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> android &#123;</span><br><span class="line">      ...</span><br><span class="line">      splits &#123;</span><br><span class="line"></span><br><span class="line">    // Configures multiple APKs based on ABI.</span><br><span class="line"></span><br><span class="line">    abi &#123;</span><br><span class="line"></span><br><span class="line">      // Enables building multiple APKs per ABI.</span><br><span class="line">      enable true</span><br><span class="line"></span><br><span class="line">      // By default all ABIs are included, so use reset() and include to specify that we only</span><br><span class="line">      // want APKs for x86 and x86_64.</span><br><span class="line"></span><br><span class="line">      // Resets the list of ABIs that Gradle should create APKs for to none.</span><br><span class="line">      reset()</span><br><span class="line"></span><br><span class="line">      // Specifies a list of ABIs that Gradle should create APKs for.</span><br><span class="line">      include &quot;x86&quot;, &quot;x86_64&quot;, &quot;arm64-v8a&quot;, &quot;armeabi&quot;, &quot;armeabi-v7a&quot;</span><br><span class="line"></span><br><span class="line">      // Specifies that we do not want to also generate a universal APK that includes all ABIs.</span><br><span class="line">      universalApk false</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    // Configures multiple APKs based on ABI.</span><br></pre></td></tr></table></figure>
+
+<p>然后，就能为每个 CPU 架构单独打一个 APK，该 apk 中就只包含一个平台，如下：</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/4/171dd961869d0cb7~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"></p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/4/171dd96b954c88f0~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"></p>
+<p>这样，又能保证性能，又能不额外增加 APK 的大小，同时又又很完美的兼容，因为可以为所有架构都单独打一个包，一举多得。</p>
+<p>同时，Google Play 支持上传多个 APK:</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/4/171dd9a1a9d722cc~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"></p>
+<p>这样，就能根据不同的 CPU 架构，下载不同的包啦！</p>
+<p>但是，但是，但是，很遗憾，国内的应用商店目前还不支持！</p>
+<p><strong>参考文章</strong></p>
+<ul>
+<li>  <a href="https://www.diycode.cc/topics/691">https://www.diycode.cc/topics/691</a></li>
+<li>  <a href="https://developer.android.com/ndk/guides/abis">https://developer.android.com/ndk/guides/abis</a></li>
+<li>  <a href="https://android.jlelse.eu/controlling-apk-size-when-using-native-libraries-45c6c0e5b70a">https://android.jlelse.eu/controlling-apk-size-when-using-native-libraries-45c6c0e5b70a</a></li>
+</ul>
+<p>以上就是本文的全部内容，如有错误，欢迎评论区指出。原创不易，如果你喜欢本文，欢迎点赞、转发、收藏三连一下。</p>
+<p>另外欢迎关注我的公众号<code>「技术最TOP」</code>, 每天都有优质技术文章推送。</p>
+<p>每天都有干货文章持续更新，可以微信搜索<code>「 技术最TOP 」</code>第一时间阅读，回复【思维导图】【面试】【简历】有我准备一些 Android 进阶路线、面试指导和简历模板送给你</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/9/171f73bb1a39299e~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"></p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>移动端跨平台方案浅析</title>
+    <url>/2021/07/06/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%96%B9%E6%A1%88%E6%B5%85%E6%9E%90/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本文不涉及到任何代码，只讲概念层面的，结合本人在这几种技术中（Hybrid App的WebView，Picasso（美团点评内部动态化方案），小程序，Futter）的开发经验，对这几种跨平台技术进行一个浅析。另外我在一段时间里也接触到了原生网页开发（html+js+css），算是有些前端开发经验。</p>
+<span id="more"></span>
+
+<p><strong>跨平台技术的由来：</strong></p>
+<p>传统的纯原生开发已经不能满足日益增长的业务需求。主要表现在如下两个方面：</p>
+<p>1)<strong>动态化内容需求增大</strong>。当需求发生变化时，纯原生应用需要通过版本升级来更新内容，但应用上架、审核是需要周期的，这个周期对高速变化的互联网时代来说是很难接受的，所以，对应用动态化(不发版也可以更新应用内容)的需求就变得迫在眉睫了。</p>
+<p>2)<strong>业务需求变化快，开发成本变大</strong>。由于原生开发一般都要维护 Android、iOS两个。</p>
+<p>本质上<strong>跨平台开发是为了增加代码复用，减少开发者对多个平台适配的工作量，降低开发成本，提高业务专注的同时，提供比 web 更好的体验</strong>。</p>
+<h1 id="常见的移动端跨平台方案"><a href="#常见的移动端跨平台方案" class="headerlink" title="常见的移动端跨平台方案"></a>常见的移动端跨平台方案</h1><h2 id="Webview"><a href="#Webview" class="headerlink" title="Webview"></a>Webview</h2><p>Webview的主要原理是将APP需要动态变动的一部分内容通过H5来实现，通过原生的网页加载控件 Webview( Android)或 WK Webview(iOS)来加载。这样，H5部分就可以随时改变而不用发版，动态化需求得到满足;同时，由于H5代码只需要一次开发，就能同时在 Android和OS两个平台上正常运行，这也可以降低开发成本，也就是说，H5部分的功能越多，开发成本就越小。我们称这种H5+原生的开发模式为混合开发，对于采用混合模式开发的APP，我们称之为混合应用或 Hybrid APP。</p>
+<p><em>html在移动时代到来以后已经有了很多移动端的适配技术，比如Bootstrap，媒体查询等。所以在一些App弹出的广告页面经常是用html写的。</em></p>
+<h2 id="小程序"><a href="#小程序" class="headerlink" title="小程序"></a>小程序</h2><p>包含了RN，Weex，MTRN，Picasso，UniApp，快应用，这些大同小异。核心都是受益于Jscore强大的渲染能力。目前来看小程序是最成功的，其他的在公司中都有应用，但一般都在公司内部用，而且成熟的公司不止一套跨平台js方案。</p>
+<p>拿小程序来举例</p>
+<p>小程序开发本质上还是前端 <code>HTML + CSS + JS</code> 那一套逻辑，它基于 WebView 和微信自己定义的一套 <code>JS/WXML/WXSS/JSON</code> 来开发和渲染页面。微信官方文档里提到，小程序运行在三端：iOS、Android 和用于调试的开发者工具，三端的脚本执行环境以及用于渲染非原生组件的环境是各不相同的:</p>
+<ol>
+<li>在 iOS 上，小程序的 JavaScript 代码是运行在 <code>JavaScriptCore</code> 中，是由 <code>WKWebView</code> 来渲染的，环境有 iOS 8+；</li>
+<li>在 Android 上，小程序的 JavaScript 代码是通过 <code>X5 JSCore</code> 来解析，是由 X5 基于 <code>Mobile Chrome 53/57</code> 内核来渲染的；</li>
+<li>在 开发工具上， 小程序的 JavaScript 代码是运行在 <code>nwjs</code> 中，是由 <code>Chrome Webview</code> 来渲染的。</li>
+</ol>
+<h2 id="Flutter"><a href="#Flutter" class="headerlink" title="Flutter"></a>Flutter</h2><p>Flutter与用于构建移动应用程序的其他大多数框架不同，因为 Flutter既不使用Webview，也不使用操作系统的原生控件。相反， Flutter使用自己的高性能渲染引擎来绘制 Widget。这样不仅可以保证在 Android和iOS上UI的一致性，而且可以避免因对原生控件依赖而带来的限制及高昂的维护成本。</p>
+<p>Flutter使用ska作为其2D渲染引擎，Skia是 Google的一个2D图形处理函数库，包含字形、坐标转换，以及点阵图，且都有高效能且简洁的表现，Skia是跨平台的，并且其还提供了非常友好的API，目前 Google Chrome浏览器和 Android均采用Skia作为其绘图引擎。目前， Flutter默认支持iOS、 Android、 Fuchsia( Google新的自研操作系统)三个移动平台。但 Flutter亦可支持Web开发( Flutter for Web)和PC开发。</p>
+<p><strong>高性能</strong></p>
+<p>Flutter的高性能主要靠两点来保证，首先， Flutter APP采用Dart语言开发。 <strong>Dart</strong> 语言比较特殊，因为它可以通过 <code>AOT(Ahead Of Time)</code> 编译成快速、可预测的本地代码，也可以通过 <code>JIT(Just In Time)</code> 即时编译。开发周期快，工作流颠覆常规(包括 Flutter 流行的秒级有状态热重载)。其次， Flutter使用自己的渲染引擎来绘制UI，布局数据等由Dart语言直接控制，所以在布局过程中不需要像RN那样要在 Javascript和 Native之间通信。</p>
+<p>这一点在一些滑动和拖动的场景下具有明显的优势，因为滑动和拖动的过程往往会引起布局发生变化，所以 Javascript需要与 Native不停地同步布局信息，这与在浏览器中要 Javascript频繁操作DOM所带来的问题是相同的，都会带来比较可观的性能开销。</p>
+<p>重点：Flutter自己有自己的渲染引擎，这样避免了以上几种跨平台技术的通过中间层通信带来的性能开销，但是依然避免不了写原生代码，因为涉及到平台差异性如相机的调用，权限的调用仍然要写代码来兼容。</p>
+<h1 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h1><table>
+<thead>
+<tr>
+<th>比较内容</th>
+<th>WebView</th>
+<th>小程序等</th>
+<th>flutter</th>
+<th>native</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>语言</td>
+<td>JS</td>
+<td>以JS为基础</td>
+<td>Dart</td>
+<td>Android：Java/Kotlin/iOS：OC/Swift</td>
+</tr>
+<tr>
+<td>平台实现</td>
+<td>JS 引擎解释执行JS代码</td>
+<td>JS 引擎解释执行JS代码</td>
+<td>开发版本：Dart 虚拟机解释执行 发布版本：Dart 代码编译成目标机器码</td>
+<td>Android：安装时编译成目标机器码/iOS：构建时编译成目标机器码</td>
+</tr>
+<tr>
+<td>绘制</td>
+<td>1、Html+css 2、浏览器引擎绘制</td>
+<td>1、JS 生成 DOM 树 2、Native 端解析 DOM 树，转换成原生 View 显示</td>
+<td>1、使用 Dart 实现 UI 组件 2、Skia Engine 渲染</td>
+<td>原生 View</td>
+</tr>
+<tr>
+<td>控件效果</td>
+<td>1、样式一致 2、交互效果和原生控件有差距</td>
+<td>1、不同平台样式不一致 2、本身就是原生控件</td>
+<td>1、样式一致 2、交互效果和原生控件很接近</td>
+<td>/</td>
+</tr>
+<tr>
+<td>流畅度</td>
+<td>一般</td>
+<td>较好</td>
+<td>和原生相同</td>
+<td>好</td>
+</tr>
+<tr>
+<td>动画</td>
+<td>差</td>
+<td>一般</td>
+<td>和原生相同</td>
+<td>好</td>
+</tr>
+<tr>
+<td>动态更新</td>
+<td>支持</td>
+<td>支持</td>
+<td>不支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>页面开发</td>
+<td>整体 APP、模块、单页面</td>
+<td>RN：整体 APP、模块、单页面/Weex：单页面</td>
+<td>整体 APP、模块、单页面</td>
+<td>/</td>
+</tr>
+<tr>
+<td>社区支持</td>
+<td>丰富</td>
+<td>第三方库多，但质量良莠不齐</td>
+<td>第三方库较少</td>
+<td>丰富</td>
+</tr>
+<tr>
+<td>原生UI组件</td>
+<td>不能桥接</td>
+<td>可以桥接</td>
+<td>可以桥接（性能差）</td>
+<td>/</td>
+</tr>
+<tr>
+<td>安装包大小增加</td>
+<td>1MB</td>
+<td>8MB/10MB</td>
+<td>10MB</td>
+<td>/</td>
+</tr>
+</tbody></table>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>移动端的跨平台似乎是大势所趋，但没有一个方案是得到很大的推广，只能根据自身的业务需要去选择合适的方案。在我的开发体验上，Flutter的开发体验比小程序类的好很多，主要是 1.在控件使用上不必去写双端控件适配代码 2.Flutter没有js native通信的代码，在开发效率和性能上较好。在产品开发的快速试错上，flutter开发速度跟小程序差不多，实现功能的能力上比小程序上好，小程序毕竟跳不出微信的框架。</p>
+<p>另外，关于我对跨平台方案的看法，如果从使用上来说，每种方案学一学就会用了，做一做ui工程师，如果要深入的话,在工具链以及类似纵向的能力比如webgl或者如weex上有一些深入的理解，这个深入打个比方，weex的深入在于你能理解他的整个渲染机制，比如他的大框架用的是什么，过程中怎么计算布局，怎么做task的调度的，另外，它存在的这些问题，知道不知道是为什么产生，有没有尝试解决和完善这个体系。这个可能是我认为的深度。还是希望能有一专多能的能力，当然如果是好奇心，执行力都很好的情况下，暂时只有广度也是可以的。</p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p> <a href="https://www.jianshu.com/p/ab734656ee77">微信小程序背后运行原理及技术分析 - 简书</a> </p>
+<p> <a href="https://www.oschina.net/translate/how-to-choose-a-javascript-engine-for-ios-and-android-apps?print">第一部分:如何在iOS和Android上选择一个JavaScript 引擎进行应用开发 - 技术翻译 - OSCHINA 社区</a> </p>
+<p> <a href="https://www.infoq.cn/article/2017/10/wangyue-interview">王跃：关于微信小程序的技术，也许你想错了-InfoQ</a> </p>
+<p> <a href="https://annatarhe.github.io/2018/10/23/why-i-left-flutter.html">为什么我放弃了 Flutter | AnnatarHe’s blog</a> </p>
+<p><a href="https://zhuanlan.zhihu.com/p/55466963">uniapp与flutter，跨平台解决方案你该如何选择</a></p>
+<p><a href="https://tate-young.github.io/2020/04/30/mobile-cross-platform-solution.html">移动端跨平台方案</a></p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>移动端跨平台</tag>
+        <tag>Flutter</tag>
+        <tag>WebView</tag>
+        <tag>小程序</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何提高效率</title>
+    <url>/2018/03/20/%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98%E6%95%88%E7%8E%87/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>转自：<a href="https://www.mifengtd.cn/articles/how-to-be-productive-aaron-swartz.html">如何提高效率</a></p>
+<p>Aaron Swartz写过一篇很有名的文章，叫做《<a href="http://www.aaronsw.com/weblog/productivity">HOWTO: Be more productive</a>》（如何提高效率）。这篇文章写的实在是太好了，我看了好多遍，很赞同作者的观点。我借鉴了作者提到的一些方法并运用到自己的生活中，发现确实有效果，所以我愿意让更多的人看到这篇文章。<a href="http://www.aaronsw.com/">Aaron Swartz</a>这个人绝对是大牛人，他14时就参与了RSS1.0的制定，他在Stanford读了一年就主动退学了，成为了YC的一员，他的公司后来与reddit合并了，他还是web.py框架的创始人。</p>
+<span id="more"></span>
+
+<p>废话少说，下面就是译文:</p>
+<p>肯定有人跟你说过这样的话“你有看电视的那么长时间，都可以用来写一本书了”，不可否认写书肯定比看电视更好的利用了时间，但是这个结论的成立需要一个假设：“时间是可互换的”，也就是说看电视的时间可以轻松的用来写书。但是很遗憾，事实并非如此。</p>
+<p>不同的时间有不同的质量等级。如果我在走向地铁站的路上发现自己的笔记本忘带了，我就很难集中<a href="http://www.mifengtd.cn/articles/8-tips-for-razor-sharp-concentration.html">注意力</a>写文章。同样，当你不停的被打断的时候，你也很难集中注意力。这里还有一些心理和情感上的因素，有的时候我心情很好，愿意<a href="http://www.mifengtd.cn/articles/be-proactive-1.html">主动</a>去做一些事，但还有一些时候我感到很抑郁和疲惫，就只能看看电视了。</p>
+<p>如果你想变的更加有效率，你必须意识到这个事实，并且很好的处理它。首先，你必须很好的利用不同种类的时间。其次，你必须让你的时间更有效率。</p>
+<h3 id="更有效的利用你的时间"><a href="#更有效的利用你的时间" class="headerlink" title="更有效的利用你的时间"></a>更有效的利用你的时间</h3><ul>
+<li><strong>选择合适的问题</strong></li>
+</ul>
+<p>生命是如此的短暂，为什么浪费时间做一些没意义的事呢？做一些让你感到舒适的事很容易，但是你应该问问自己为什么要做这些事呢？有没有一些<a href="http://www.mifengtd.cn/articles/double_productivity_this_week.html">更重要的事</a>等着你去做？为什么你不去做那些事呢？这些问题很难回答，但是每解决一个都会让你更有效率。</p>
+<p>这不是说你所有的时间都应该用来做那些最重要的事。我的时间就肯定不是这样（否则，我现在就不会在写这篇文章了）。但是，这是我衡量自己的生活是否充实的重要标准。</p>
+<ul>
+<li><strong>收集很多问题</strong></li>
+</ul>
+<p>另一个很多人都知道的秘密是：如果你认准一个问题，投入全部精力去解决它，这样你的效率是最高的。我发现这却是很难实现的。以现在为例，我正在<a href="http://www.mifengtd.cn/articles/how-to-make-exercise-a-daily-habit-with-30-day-challenge.html">锻炼</a>身体，喝橙汁，<a href="http://www.mifengtd.cn/articles/the-art-of-filling.html">整理桌面</a>，和我弟弟聊天，同时在写现在这篇文章。今天一整天，我写了现在这篇文章，读了一本书，吃了点东西，回复了几封邮件，和一些朋友聊了聊天，买了点东西，改了改其他几篇文章，备份了硬盘，还整理了一下图书列表。</p>
+<p>有很多不同的项目让我能够在不同质量的时间下做不同的工作。更重要的是，在你卡壳或是厌烦的时候有其他的一些事可以做。</p>
+<p>这同时会让你变得更加有<a href="http://www.mifengtd.cn/articles/9-ways-of-cultivating-creativity.html">创造力</a>。创造力就是你把自己从其他地方学到的东西能够用到你的工作中。如果你同时做许多不同方向的工作，那你就会得到更多的想法和创意。</p>
+<ul>
+<li><strong>列一个清单</strong></li>
+</ul>
+<p>找一些不同的事同时做并不困难，大部分人都有很多很多的<a href="http://www.mifengtd.cn/articles/building-a-smarter-to-do-list-part-1-43folders.html">待办事项</a>。但是如果你想把它们全记在脑袋里的话，它们就会慢慢消失。要记住所有这些事所给你带来的心智上的<a href="http://www.mifengtd.cn/articles/5-exercises-to-reduce-stress.html">压力</a>会把你压垮。解决办法仍然是很简单：把它们写下来。</p>
+<p>一旦你把要做的事列成了一个清单，你就可以更好的分类组织它们了。比如说，我的清单包括：编程，思考，差事，读书，娱乐休息。</p>
+<p>大部分项目都包括很多不同的任务。以写这篇文章为例，除了真正的写作过程，还包括了阅读其他关于<a href="http://www.mifengtd.cn/articles/how-to-correct-procrastination.html">拖沓</a>的文章，考虑文章的各个部分，整理语句，向别人请教问题等等。每一项任务都属于清单的不同部分，所以你可以在合适的时间才去做某一部分。</p>
+<ul>
+<li><strong>把任务清单和你的生活结合起来</strong></li>
+</ul>
+<p>一旦你有了这样一个任务清单，你需要做的事就是时常记得它，而记住它的最好方法是把它放在你能看到的地方。比如说，我总在我桌子上放一摞书，最上面的那一本就是我最近在读的。当我想要读书的时候，我就直接从上面拿一本书来读。</p>
+<p>对于看电视/电影我也这么做。当我对某一个电影感兴趣的时候，我会把它放在电脑中一个特殊的文件夹内。每当我想休息一下，看看电影的时候，我就会打开那个文件夹。</p>
+<p>我也想过一些更深入的方式，比如说我把一些想看的文章标记为“待读”，当我想要上网的时候就看看那些从前积累下来的未读文章。</p>
+<h3 id="提高你时间的质量"><a href="#提高你时间的质量" class="headerlink" title="提高你时间的质量"></a>提高你时间的质量</h3><p>像上面那样最大限度的利用时间还远远不够，更重要的是提高你自己的时间的质量。那你究竟该怎样做呢？</p>
+<p><strong>减轻身体上的约束</strong></p>
+<ul>
+<li><strong>携带纸和笔：</strong>我认识的很多人的口袋里都有记事簿之类的东西。纸和笔在很多时候都是非常有用的，你可以随时随刻的记录自己的想法，我甚至通过这种方法在地铁上写过整篇文章。</li>
+<li><strong>避免被打扰：</strong>对于那些需要集中注意力的任务，你应该尽量避免被打扰。一个很简单的方法是去一个没人能打扰你的地方，另一个方法是告诉周围的人未来一段时间不要打扰你。关于这点不要过犹不及。当你在浪费时间的时候你反倒应该被打扰一下，帮助别人解决问题肯定比坐在那里看新闻更好的利用了时间。</li>
+</ul>
+<p><strong>减轻心理上的约束</strong></p>
+<ul>
+<li><strong>吃，睡，运动：</strong>当你感到很饿，很累，很焦躁的时候，你的时间的质量会很低。解决这个问题很简单，就是：去吃，去睡，去运动。对自己说“虽然我很累了，但我不能休息，因为我必须要工作”会让你感到自己很努力，但事实上<a href="http://www.mifengtd.cn/articles/the-most-effective-way-to-have-a-rest.html">休息</a>之后你的效率会更高。既然你迟早都要睡觉，还不如先休息好，来提高剩余时间内的效率。</li>
+<li><strong>与快乐的人相处：</strong>跟<a href="http://www.mifengtd.cn/articles/seek-a-happy-story-today-activity.html">快乐</a>的人相处会也会让你变得快乐，也会让你心态更放松。也许很多人愿意躲在屋子里，不与其他人接触，埋头干活，他们觉得这样的话时间才没有被“浪费”，但事实上这会让他们变得情绪低落，工作效率也会大大下降。</li>
+<li><strong>与朋友分担你的压力：</strong>即使你的朋友并不是能够感染他人，给你带来快乐的那种人，和其他的人一起解决复杂的问题也会让问题变得简单。一方面，精神上的压力大家可以互相分担，另一方面，和其他人在一起可以让你专注于工作而不是时常分心。</li>
+</ul>
+<h3 id="拖沓"><a href="#拖沓" class="headerlink" title="拖沓"></a><strong>拖沓</strong></h3><p>上面所说的那些并不是问题的重点，关于效率大家最大的问题还是“<a href="http://www.mifengtd.cn/articles/how-to-correct-procrastination.html">拖沓</a>”。虽然很多人不承认，但是几乎所有人都或多或少的会拖沓。那又该如何避免呢？</p>
+<p>拖沓是什么？从旁观者来看，你在做好玩的事（如玩游戏，看新闻）而不是做真正的工作。但问题的关键是：你究竟为什么会这样？你的脑子里究竟是怎么想的？</p>
+<p>我花了很多时间来研究这件事，我能给出的最好解释是在大脑会给每一项任务赋予一个“脑力场”。你玩过两块磁铁相互作用吗？如果你让它们异极相对，他们就会相互排斥，你会感到他们之间的磁场力。你越是想要把它们和在一起，越会感到它们之间的排斥力。</p>
+<p>心智和精神上也是类似的。它是看不见摸不着的，但你却可以感受到它的存在。并且你越是想要接近它，它会离你越远。</p>
+<p>你不可能通过蛮力来克服两个场之间的排斥力，相反，你应该做的是调转方向。</p>
+<p>那又是什么产生了“精神力场”呢？似乎有两个主要原因：任务是否艰巨，任务是否是被指派的。</p>
+<h3 id="艰巨的任务"><a href="#艰巨的任务" class="headerlink" title="艰巨的任务"></a>艰巨的任务</h3><ul>
+<li><strong>把任务细分</strong></li>
+</ul>
+<p>一个任务很艰巨的原因之一是这个任务很宏大。比如说你想要做一个菜谱构造程序，没有人能一下子完成它，这是一个目标而不是一项任务。一项任务是使你能够朝向目标更进一步的具体概念。一个好的任务是你能够立即拿来实施的，比如“画一个展示菜谱的草图”。</p>
+<p>当你完成了上一个任务后，下一步就会变得更加清晰。你将会考虑一个菜谱有什么构成，你需要什么样的搜索机制，如何构建菜谱的数据库，等等。这样你就构建了一个引擎，每一个任务都会通向下一个任务。</p>
+<p>对于每一个比较大的项目，我都会考虑我需要完成一连串什么样的任务，并且将这些任务加入到我的<a href="http://www.mifengtd.cn/articles/building-a-smarter-to-do-list-part-1-43folders.html">待办事项</a>列表中去。同样，当我做完一些任务之后我会把接下来需要完成的任务再加入任务列表中去。</p>
+<ul>
+<li><strong>简化任务</strong></li>
+</ul>
+<p>另一个让任务变得艰巨的原因就是它太复杂了。“写一本书”这个任务会放你感到无从下手，那么就先从写一篇文章开始吧。如果一篇文章也觉得太多了，那么就先写一个段落的概要吧。最重要的是真正做了一些工作，真正的有进展。</p>
+<p>一旦你明确了你的任务之后，你就可以更清楚的判断它，更容易的理解它。提高完善一些已有的东西比从头创建东西更容易。如果你的一个段落写好了，那么一点一点积累，它会变成一篇文章，最终变成一本书。</p>
+<ul>
+<li><strong>认真考虑它</strong></li>
+</ul>
+<p>通常来说解决一个困难问题需要一些灵感。如果你对那个领域并不熟悉，你应该从研究这个领域开始，借鉴一下其他人的经验，慢慢的研究理解这个领域，并且做一些小的尝试看看你能否搞定这个领域。</p>
+<h3 id="被指派的任务"><a href="#被指派的任务" class="headerlink" title="被指派的任务"></a><strong>被指派的任务</strong></h3><p>被指派的任务是那些你被要求完成的任务。很多心理学实验都表明:当你”刺激”其他人做什么事的时候，他们反倒不容易做好那个事。奖励，惩罚等外部刺激会扼杀”内在动机”–你对于某个问题发自内心的兴趣。人类的大脑对于被要求做的事有先天的抗拒力。<br>这种现象不仅局限于其他人要求你做的事，当你向自己分配任务时仍然会出现这种现象。如果你对自己说”我应该好好做X工作了，这是我现在最重要的事”，之后你就会感到X突然变成了世界上最困难的事情了。然而一旦当Y变成了”最重要的事”，原来的那个X又变得简单了。</p>
+<ul>
+<li><strong>虚构一个任务</strong></li>
+</ul>
+<p>如果你要完成X，那就告诉自己做Y。然而不幸的是，这样欺骗自己却很难，因为你清楚你究竟要做什么。</p>
+<ul>
+<li><strong>不要自己给自己布置任务</strong></li>
+</ul>
+<p>给自己布置任务看起来很诱人，比如对自己说“我要写完这篇文章才去吃饭”，更糟糕的是让别人假装布置给你一些任务。但是这两种方式都会让你变得更没有效率，事实上你还是在给自己布置任务，你的大脑只会去逃避它。</p>
+<ul>
+<li><strong>把事情变得有趣</strong></li>
+</ul>
+<p>困难的工作听起来不会令人感到愉悦，但事实上这可能就是最能让我感到高兴的事。一个困难的问题不但能让你集中全部注意力，而且当你完成它的时候你会感到非常棒，非常有成就感。</p>
+<p>所以帮助自己完成一件事的秘密不是<a href="http://www.mifengtd.cn/articles/becoming-a-master-of-persuasion.html">说服</a>自己必须完成它，而是说服自己这件事确实非常有意思。如果一件事没有意思的话，你需要做的就是让它变得有意思</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>效率的真正秘密在于“聆听自己”，在你饿的时候吃饭，在你疲惫的时候睡觉，当你厌烦的时候休息一下，做那些有趣好玩的项目。</p>
+<p>这看起来很容易，但是社会上的一些观念正在把我们向相反的方向引导。要想变得更加有效率，我们需要做的就是转过头来“聆听自己”。</p>
+]]></content>
+      <categories>
+        <category>效率</category>
+      </categories>
+      <tags>
+        <tag>效率</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>自学前端开发之一-Javascript和Node.js</title>
+    <url>/2021/07/13/%E8%87%AA%E5%AD%A6%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B9%8B%E4%B8%80-Javascript%E5%92%8CNode.js/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>前端的基础知识，Javascript和Node.js.</p>
+<span id="more"></span>
+
+<p>我学习前端初衷是想在在微信上开发一个H5页面。我没有从基础的html+js+css开始学起，反而一开始就去使用尝试使用React和Vue框架，最后先选择了Vue。现在想想确实给自己加了一些难度上去，没有规划好循序渐进的学习路线。好在，前端的技术和移动端有很多相似之处，之前在搭建Hexo博客的时候也对脚手架有所了解，所以，第一篇在学会使用Vue之前，梳理一下Vue脚手架搭建的基础，Javascript和Node.js.</p>
+<h1 id="Javascript"><a href="#Javascript" class="headerlink" title="Javascript"></a>Javascript</h1><p>定义：Javascript是一种web<strong>前端语言</strong>，主要用于web开发中，由浏览器解析执行。</p>
+<p>Javascript是一门脚本语言，但也不妨将它与Java做一下对比。（更快掌握新知识的方法之一，就是与老知识对比。）</p>
+<p><em>Javascript和java的关系就像雷峰塔和雷锋之间的关系。</em></p>
+<p>意思是，只差了几个字母，但是可以说是毫无关系！</p>
+<h1 id="Node-js"><a href="#Node-js" class="headerlink" title="Node.js"></a>Node.js</h1><p>定义：<a href="https://nodejs.org/en/">Node.js</a>是一个可以快速构建网络服务及应用的平台，是用Javascript语言构建的服务平台，可用于后端建立服务器。</p>
+<p>Node.js是怎么发展起来的呢。首先要先了解的一点是，原来javascript只是运行在浏览器上的脚本语言，主要用于前端页面的逻辑处理。得益于前端的蓬勃发展，javascript不断发展和完善，后来出现了一个转折点。</p>
+<p>Google的V8引擎的出现！</p>
+<p>得益于V8引擎执行Javascript的速度非常快，性能非常好，JavaScript开始用来写后端代码，Node.js 就是运行在服务端的 JavaScript，你可以理解成java中的JDK。这样子其实前后端的技术在一定程度上实现了融合。</p>
+<h1 id="JavaScript和Node-js的关系"><a href="#JavaScript和Node-js的关系" class="headerlink" title="JavaScript和Node.js的关系"></a>JavaScript和Node.js的关系</h1><p>Javascript 主要应用前端    是<strong>编程语言</strong>    客户端编程语言(需要浏览器的javascript解释器进行解释执行)</p>
+<p>node.js   主要应用后端      是1个<strong>平台</strong>        运行环境(一个基于Chrome JavaScript运行时建立的平台，它是对Google V8引擎进行了封装的运行环境)</p>
+<p>简单的说node.js就是把浏览器的解释器封装起来作为服务器运行平台，用类似javascript的结构语法进行编程，在node.js上运行。</p>
+<h1 id="Node-js的使用"><a href="#Node-js的使用" class="headerlink" title="Node.js的使用"></a>Node.js的使用</h1><p>Node.js有很多版本，推荐使用nvm来下载Node.js并实现版本管理，nvm同时支持Windows和Mac。</p>
+<p>成功下载Node.js后可以使用npm进行依赖库软件包的管理（也可以用yarn，比npm好用），npm继承了传统包管理工具，如curl，wget，homebrew，apt-get等的优良传统，可以方便管理依赖库，软件包等。但也是因为仓库都在外网所以下载速度慢，可以通过设置国内镜像来加快速度，完整设置可以参考我的<a href="https://gist.github.com/iponkan/b82c53bfdfa58469d5127108c932be03">gist</a>，不过我建议你参考我之前科学上网的文章，一劳永逸。</p>
+<h2 id="npx"><a href="#npx" class="headerlink" title="npx"></a>npx</h2><p>npx的概念就是你可以执行网上的npm工程，得到输出结果。其实可以看出，node的应用通常js库都是npm拉取，然后运行。npx就是把这两步步骤结合起来，这样子不必将1.项目clone下来 2.npm install 3.npm run .例如</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npx https://gist.github.com/zkat/4bc19503fe9e9309e2bfaa2c58074d32</span><br><span class="line">git@gist.github.com:4bc19503fe9e9309e2bfaa2c58074d32.git</span><br></pre></td></tr></table></figure>
+
+<p>注意：这里的例子是用gist，应该也可以用github，这里最好是设置代理，因为npx命令无非是通过下载package.json里面的依赖包，然后执行脚本的类似于run的命令。所以，科学上网多么的重要！</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p> <a href="https://www.cnblogs.com/thinkam/p/8262743.html">node.js和JavaScript的关系</a></p>
+<p> <a href="https://www.jianshu.com/p/21d3130ca059">Node.js 是什么？Node.js与JavaScript的区别是什么？</a></p>
+]]></content>
+      <categories>
+        <category>Tech</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>读书会分享-红楼梦之林黛玉</title>
+    <url>/2020/01/04/%E8%AF%BB%E4%B9%A6%E4%BC%9A%E5%88%86%E4%BA%AB-%E7%BA%A2%E6%A5%BC%E6%A2%A6%E4%B9%8B%E6%9E%97%E9%BB%9B%E7%8E%89/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>大家好，今天的读书会我要讲的是红楼梦中的的林黛玉。</p>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>林黛玉是红楼梦中的女主角，十二金钗之首，绛珠仙草的转世化身。</p>
+<p>小时候因为母亲早早去世了，所以被接到贾府来住，和贾宝玉生活在一起，从小两人青梅竹马。</p>
+<span id="more"></span>
+
+<h1 id="形象"><a href="#形象" class="headerlink" title="形象"></a>形象</h1><p>红楼梦第三回是这样描述林黛玉的外貌的： ‘两弯似蹙非蹙罥（juàn）烟眉，一双似喜非喜含情目。态生两靥之愁，娇袭一身之病。泪光点点，娇喘微微。闲静时如姣花照水，行动处似弱柳扶风，心较比干多一窍，病如西子胜三分。’</p>
+<p>宝玉是这样描述黛玉的</p>
+<p>“神仙似的”</p>
+<p> “秉绝代之姿容，具稀世之俊美” </p>
+<p>“颦儿才貌应世稀”</p>
+<p>我看红楼梦的时候，很少看到描写她身上戴什么花，穿什么样的衣服，头饰，书里面描写的林黛玉像是一个飘飘白衣，有点像一个仙子。具体起来，五官大概就是柳叶眉，杏仁眼，樱桃小嘴一点点。这段话是我们高中音乐老师说的，因为念起来很顺口，所以一直记到现在。</p>
+<h1 id="性格"><a href="#性格" class="headerlink" title="性格"></a>性格</h1><p>林黛玉是一个很有个性的人，她心里不高兴的时候她就会表现。比如出来在宝钗住处看到宝玉，说话含酸，说早知他来我就不来了；打趣湘云把二哥哥说成‘爱哥哥’；经常拿，‘金锁，金麒麟’说事；周瑞家的最后一个给她送宫花，被黛玉呛了一顿。这让有些人认为她说话尖酸刻薄，但从读书的角度我感觉十分有趣，这种怼人的话看起来会看的很爽。</p>
+<p>林黛玉爱说俏皮话，段子一箩筐。在贾府的日常茶话会中，妙语连珠，怼人成趣。现在网友已经戏称她为“林怼怼”，黛玉曾调侃探春是只鹿，刘姥姥是母蝗虫，还戏称宝钗把自己的嫁妆单子都写上了，把众人都给逗乐了。宝钗也曾忍不住拧脸，笑道：“真真这个颦丫头的一张嘴，叫人恨又不是，喜欢又不是。”</p>
+<p>但我看书印象特别深的是林怼怼也有吃瘪的一个情节。</p>
+<p>第四十一回，贾母领着刘姥姥逛到栊翠庵。妙玉私下拉了黛玉宝钗到她的耳房里喝茶。林黛玉因问起这煮茶的水是否也是旧年的雨水，妙玉冷笑着回答：“你竟是个大俗人，连水都尝不出来”，然后她告诉林黛玉这煮茶的水是收藏的梅花上的雪。</p>
+<p>当着宝钗和宝玉的面被妙玉贬斥为“大俗人”，林黛玉竟然无言以对，只是喝完了茶，拉了宝钗出来了。</p>
+<p>虽然黛玉吃瘪了，但我总是觉得林黛玉对妙玉有一种异乎寻常的宽容和体谅，她甚至一直是在忍让着妙玉。所以，对待妙玉出乎人意料的谦逊和温和。而且不仅仅是妙玉，黛玉对紫娟，香菱都是很温和的，所以她骨子里并不是一个尖酸刻薄之人。</p>
+<p>事实上，林黛玉是最真诚的人。</p>
+<p>第三十三回宝玉挨打，薛宝钗拖着一丸药袅袅婷婷走过来，说了一番冠冕堂皇的大道理，对着贾宝玉掉了几滴眼泪。林黛玉则哭得肝肠寸断，眼睛肿了如桃子一般，听说有人来了，却慌忙躲开。她心里有宝玉，爱宝玉，她的爱只要宝玉知道就好，并不是在惺惺作态，不需要让别人知道。</p>
+<p>第四十五回，林黛玉生病，宝钗亲自来看望她，她很感动，说出肺腑之言：“你素日待人，固然是极好的，然我最是个多心的人，只当你心里藏奸。从前日你说看杂书不好，又劝我那些好话，竟大感激你。往日竟是我错了，实在误到如今。” 这个时候，黛玉拿宝钗当亲人。</p>
+<h1 id="才情"><a href="#才情" class="headerlink" title="才情"></a>才情</h1><p>林黛玉身上有诗人气质。</p>
+<p>《红楼梦》第二十七回，林黛玉写就凄绝的《葬花词》。这时候黛玉12岁。</p>
+<p>《红楼梦》第三十七回，在探春的提议下，众人结了诗社，诗社第一次作诗活动，就是《咏白海棠》，于是诗社也得名《海棠诗社》。林黛玉的“偷来梨蕊三分白，借得梅花一缕魂”，极致的比喻和巧思，被众人赞赏不已。</p>
+<p>《红楼梦》第三十八回，大观园众人共赴螃蟹宴，宴后，湘云宝钗等人共做菊花诗。林黛玉的《咏菊》、《问菊》、《菊梦》夺得前三名。林黛玉凭借出众才华，在菊花诗上夺魁。</p>
+<p>《红楼梦》第四十五回，正值秋天，黛玉劳神犯病，在潇湘馆将养，这一晚正下雨，便觉凄凉，写下《秋窗风雨夕》。等等。</p>
+<p>林黛玉的才情，从元妃省亲时的代笔，到后来的诗社建立，林黛玉始终是才思敏捷，她的诗总是风流别致，新颖飘逸，没有一点世俗的尘埃。</p>
+<h1 id="爱情"><a href="#爱情" class="headerlink" title="爱情"></a>爱情</h1><p>小说中两个人的爱情既是一见钟情，也是互为知己。书里有很多描述他们两人细腻的互动描写。</p>
+<p>二人在读西厢记的时候。</p>
+<p>宝玉说“我就是个多愁多病的身，你就是那倾国倾城的貌”，使得林黛玉是竖起两道似蹙非蹙的眉，瞪了两只似睁非睁的眼，微腮带怒，薄面含嗔，要去告状，在宝玉千央万告之下，却以一句“呸，原来也是苗而不秀，是个银样镴（là）枪头。”</p>
+<p>这一段读来，就感觉很甜，结结实实被撒了一把狗粮。</p>
+<p>而在第二十六回，贾宝玉到潇湘馆，走到窗外正听到林黛玉的细声长叹：“每日里家睡昏昏。”，贾宝玉听后心内痒将起来，而林黛玉的这句也让贾宝玉想起了西厢记。掀帘进屋再见黛玉，星眼微饧，香腮带赤，不觉神魂早荡，一歪身坐在椅子上，笑道：“你才说什么？”黛玉道：“我没说什么。”宝玉笑道：“我给你个榧（fěi）子吃。”</p>
+<p>这一段读来，不仅绽放出姨父的微笑。</p>
+<p>贾宝玉无心仕途，对于宝钗等人的劝解，视为钓名沽玉，而林黛玉自幼就不曾劝他立身扬名，这是他与黛玉的志趣相投，也是他视黛玉为知音的一点。</p>
+<p>后来薛宝钗逐渐成为黛玉和宝玉之间的障碍。黛玉虽然和宝玉两情相悦，但见面就会不停的争吵，最后在薛宝钗大婚的日子，黛玉哭了很久，伤心而死。</p>
+<p>黛玉和宝玉的爱情，起源于一个很美的故事，绛珠仙草来到人间不断的哭，是为了还眼泪。这里我感觉是一个爱情的设定，如果你这一世有个人让你心甘情愿地还眼泪，大概那就是爱。</p>
+<p>所以林黛玉在眼泪哭完之后，她觉得把该还的水都还完了，她就走了。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>而我，毫无疑问的是喜欢黛玉的。因为她不似宝钗般心机深重，不似湘云般草率鲁莽。喜欢她的才学，她的为人甚至她的小性子。她纯真，烂漫，敏感，细腻，浪漫，真诚，敢于面对自己的心，表现自己的喜怒哀乐，敢于追求自己的爱情。</p>
+
+
+<div style="position: relative; width: 100%; height: 0; padding-bottom: 75%;">
+    <iframe src="//player.bilibili.com/player.html?aid=46303362&cid=81124889&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;">
+    </iframe>
+</div>
+
+
+
+
+        <div id="aplayer-ZohcAFSq" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-ZohcAFSq"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "Cannon In D Major",
+              author: "dylanf",
+              url: "https://uss.sonicers.com/blog/cannon.mp3",
+              pic: "http://uss.sonicers.com/blog/cannon.jpeg",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>]]></content>
+      <categories>
+        <category>读书</category>
+      </categories>
+      <tags>
+        <tag>红楼梦</tag>
+      </tags>
+  </entry>
+</search>

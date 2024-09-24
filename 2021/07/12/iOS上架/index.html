@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yrc.vlooktech.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="准备需申请苹果开发者账号，在调试期间，申请iOS开发证书（iOS Development）和描述文件。开发期开发完成后成功打出ipa包后再申请发布证书和描述文件，按下述流程上架.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS上架">
+<meta property="og:url" content="https://yrc.vlooktech.com/2021/07/12/iOS%E4%B8%8A%E6%9E%B6/index.html">
+<meta property="og:site_name" content="Ponkan&#39;s Blog">
+<meta property="og:description" content="准备需申请苹果开发者账号，在调试期间，申请iOS开发证书（iOS Development）和描述文件。开发期开发完成后成功打出ipa包后再申请发布证书和描述文件，按下述流程上架.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/6050bb6ae95a4833a1d58c229825c749.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/6eb6376672fb0250ea2acbc7f3d3a540.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/835ebb6c118ce2489fc7ee9b6a8f5785.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/41d91651cac689283e541329532564c8.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/2c6798a93733fffa790e510a4c9ab495.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/fb692c82fc4354a86aa8723706a84e60.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/3fcdcca09de07bd8a05b6446d856caa8.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/863257ea8e76147e560511fdff1abcc4.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/828444380fa4913ebceb95f9276b644c.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/55a76805e624ecd3b1854a0120159ea6.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/133a19b1f85e11f0a65eaa8f0b65d697.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/bb401161992bbdf6b45a9dc22d359216.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/94dc9bab091aaf1303eadd814b4c6d22.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/10196061a254965a35d9fcf417b659a2.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/771367bc5e52262bee11d4a96641d2e8.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/007095b5d1e6f5565a68dbf9df739d75.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/af5d1b7a9f963e74fc7497e1e4c3852e.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/c0016589b837196f0ec747939109dd50.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/86d6c59ddb96642dd4d695094417df16.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/105ee2974e982ba553e56d4a0a70445a.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/56ce69300015a95ee329271b2f512cb2.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/f1421ea8f69e44c9e02633f4477c3a80.png">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-80a4f088d4ba4a53f5a9526b77e34e4f_720w.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-5541e3c520a73bacf3ce9bcb926b54d0_720w.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-b1e160e6e9da95ed8c715b16bd1b8430_720w.jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-7ec43ba4549f3bd7d2f253196ee09e2a_720w.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-e6c0aad85b1bf4c613e785180ccfb0ac_720w.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-0d634f9e4c5085badfb7a630b805519f_720w.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-cd722e5dc6d92c74b030f5390124c9f5_720w.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-1024afbd96701b267a4d5a84e9b4c939_720w.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-933d84d563f7482e4745f2136087e56d_720w.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-4421ee03b0550c8407b28e03aef6cb63_720w.jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-77fc03be36975a929ba31fc12ebe6c5a_720w.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-39e0dee4b45c73f5330b6664984702f9_720w.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-5c01f6ef904d07dfde3cb5aa40401f48_720w.jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-7345a77fdc652632fe789320dc30090e_720w.jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-7caecad7eab02db49e518f94a519699e_720w.jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-78b2c18da60ce8e5b69684ed8c506bf6_720w.jpg">
+<meta property="article:published_time" content="2021-07-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-24T07:18:03.869Z">
+<meta property="article:author" content="iponkan">
+<meta property="article:tag" content="iOS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/img_convert/6050bb6ae95a4833a1d58c229825c749.png">
+
+<link rel="canonical" href="https://yrc.vlooktech.com/2021/07/12/iOS%E4%B8%8A%E6%9E%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>iOS上架 | Ponkan's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+  <script src="/js/axios.min.js"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Ponkan's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yrc.vlooktech.com/2021/07/12/iOS%E4%B8%8A%E6%9E%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="iponkan">
+      <meta itemprop="description" content="Developer,Reader,Thinker">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ponkan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          iOS上架
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-12 00:00:00" itemprop="dateCreated datePublished" datetime="2021-07-12T00:00:00+08:00">2021-07-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/07/12/iOS%E4%B8%8A%E6%9E%B6/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/07/12/iOS%E4%B8%8A%E6%9E%B6/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h1><p>需申请苹果开发者账号，在调试期间，申请iOS开发证书（<strong>iOS Development</strong>）和描述文件。开发期开发完成后成功打出ipa包后再申请发布证书和描述文件，按下述流程上架.</p>
+<span id="more"></span>
+
+
+
+<h1 id="上架"><a href="#上架" class="headerlink" title="上架"></a>上架</h1><p>1、申请iOS发布证书（<strong>iOS Distribution</strong>）</p>
+<p>2、申请iOS发布描述文件</p>
+<p>3、上传ios证书编译打包IPA</p>
+<p>4、上传iTunes Connect</p>
+<p>5、上传好IPA回到iTunes Connect填写APP信息并提交审核</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ul>
+<li>需提供描述和应用截图</li>
+</ul>
+<p>6.5 英寸（1284 x 2778 像素） 和5.5 英寸（ 1242 x 2208  像素）3-5张应用内截屏。这是手机的，如果app支持ipad，也要使用需要上传ipad尺寸的截图。</p>
+<ul>
+<li><p>需要登录的应用需提供测试账号给苹果审核</p>
+</li>
+<li><p>苹果审核需要https协议的域名，如果使用的是http，需要再打包配置里加上http请求的域名进白名单</p>
+</li>
+<li><p>没有用到的权限不能在配置里写明，需要删除</p>
+</li>
+</ul>
+<h1 id="详细步骤"><a href="#详细步骤" class="headerlink" title="详细步骤"></a>详细步骤</h1><h2 id="一、开发者基本知识"><a href="#一、开发者基本知识" class="headerlink" title="一、开发者基本知识"></a>一、开发者基本知识</h2><p>苹果开发者官网：<a target="_blank" rel="noopener" href="https://developer.apple.com/account/">https://developer.apple.com/account/</a> ，个人账号688人民币一年。上架app和游戏需要先申请证书，申请证书需要涉及到下面的设置，功能列表:</p>
+<h3 id="1-Certification和p12-证书"><a href="#1-Certification和p12-证书" class="headerlink" title="1. Certification和p12(证书)"></a>1. Certification和p12(证书)</h3><p>证书是对电脑开发资格的认证，每个开发者帐号有一套，分为两种：</p>
+<ol>
+<li>Developer Certification(开发证书)：用于开发测试；</li>
+<li>Distribution Certification(发布证书)：用于打包测试<code>ipa</code>或者<code>Appstore</code>的安装包；</li>
+</ol>
+<p><code>.cer</code>是苹果的默认证书，在<code>xcode</code>开发打包可以使用，如果在<code>lbuilder</code>、<code>phonegap</code>、<code>HBuilder</code>、<code>AppCan</code>、<code>APICloud</code>这些跨平台开发工具打包，就需要用到<code>p12</code>文件。 或者多人开发的时候，本机用<code>.cer</code>，其他人用<code>p12</code>证书。</p>
+<p><code>.cer</code>证书仅包含公钥，<code>.p12</code>证书可能既包含公钥也包含私钥，这就是他们的区别，除开<code>xcode</code>开发工具，其他都需要用<code>p12</code>才能打包。</p>
+<h3 id="2-Identifiers-AppID、应用id"><a href="#2-Identifiers-AppID、应用id" class="headerlink" title="2. Identifiers(AppID、应用id)"></a>2. Identifiers(AppID、应用id)</h3><p>app的标识，例如app的名字描述，包名</p>
+<h3 id="3-Devives-设备"><a href="#3-Devives-设备" class="headerlink" title="3. Devives(设备)"></a>3. Devives(设备)</h3><p>设备列表，表示当app安装调试的时候可以安装在这些机器上面，设备使用udid进行唯一判断，创建描述文件(Profiles)的时候需要选择设备。</p>
+<h3 id="4-Profiles-描述文件"><a href="#4-Profiles-描述文件" class="headerlink" title="4. Profiles(描述文件)"></a>4. Profiles(描述文件)</h3><p>这个文件用来描述App IDs、证书和设备之间的关系，我们一般只用到Development、App Store和Ad Hoc三种，Development和Ad Hoc类型的需要指定可以运行在哪些Devices上，而App Store类型的不需要。授权文件分为两种，对应相应的证书使用：</p>
+<ol>
+<li>Developer Provisioning Profile(开发描述文件)：在装有开发证书或副本的电脑上使用，开发人员选择该描述文件通过电脑将程序安装到授权文件记录的设备中，即可进行真机测试，一般是开发自己做调试的时候用。</li>
+<li>Distribution Provisioning Profile(发布描述文件)：在装有发布证书的电脑上（即配置证书的电脑，只有一台）制做测试版和发布版的程序。</li>
+</ol>
+<ul>
+<li>AppStore发布版就是发布到AppStore上的程序文件，一般是测试完毕之后打AppStore包用；</li>
+<li>AdHoc测试版就是在发布之前交给测试人员可同步到设备上的程序文件，一般是打包给内测的时候用，只有描述文件里面包含了UDID对应的设备才能安装上。</li>
+</ul>
+<h2 id="二、创建Certification-证书"><a href="#二、创建Certification-证书" class="headerlink" title="二、创建Certification(证书)"></a>二、创建Certification(证书)</h2><ol>
+<li>创建证书之前需要现在Mac电脑上面申请certSigningRequest(CSR)文件，打开钥匙串访问程序 - 证书助理 - 从证书颁发机构请求证书<br><img src="https://img-blog.csdnimg.cn/img_convert/6050bb6ae95a4833a1d58c229825c749.png" alt="sOB1Jg.png"></li>
+<li>输入下面两项，保存证书文件到电脑。</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/6eb6376672fb0250ea2acbc7f3d3a540.png" alt="sLNs3t.png"></p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/account/resources/certificates/list">打开网站</a>，开始申请证书</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/835ebb6c118ce2489fc7ee9b6a8f5785.png" alt="sLNRHg.png"></p>
+<ol>
+<li>选择Apple Develpment,continue</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/41d91651cac689283e541329532564c8.png" alt="sLNv59.png"></p>
+<ol>
+<li>Choose File选择刚刚创建的文件</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/2c6798a93733fffa790e510a4c9ab495.png" alt="sLUPKK.png"></p>
+<ol>
+<li>确定信息，Download下载证书</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/fb692c82fc4354a86aa8723706a84e60.png" alt="sLUMKf.png"></p>
+<ol>
+<li>接着重复刚刚的步骤创建一个<code>iOS Distribution</code>证书（注意是iOS Distribution，不是Apple Distribution）</li>
+<li>这时候已经下载了两个证书，双击证书，导入到电脑，两个都要。</li>
+</ol>
+<h2 id="三、创建Identifiers"><a href="#三、创建Identifiers" class="headerlink" title="三、创建Identifiers"></a>三、创建Identifiers</h2><ol>
+<li>打开网站：<a target="_blank" rel="noopener" href="https://developer.apple.com/account/resources/identifiers/list/bundleId">https://developer.apple.com/account/resources/identifiers/list/bundleId</a></li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/3fcdcca09de07bd8a05b6446d856caa8.png" alt="image"></p>
+<ol>
+<li>选择App IDs，Continue</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/863257ea8e76147e560511fdff1abcc4.png" alt="image"></p>
+<ol>
+<li>选择App</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/828444380fa4913ebceb95f9276b644c.png" alt="sLJXEd.png"></p>
+<ol>
+<li>输入名字描述(注意不能中文)，包名(一般是com.xxxx.xxxx)，选择app里面需要的服务(这个可以后面编辑)。<br><img src="https://img-blog.csdnimg.cn/img_convert/55a76805e624ecd3b1854a0120159ea6.png" alt="sLYfsS.png"></li>
+<li><code>continue</code>之后<code>Resister</code>，然后你会在Idntifiers列表里面看到你创建的<code>Identifier</code></li>
+</ol>
+<h2 id="四、添加测试设备Devices"><a href="#四、添加测试设备Devices" class="headerlink" title="四、添加测试设备Devices"></a>四、添加测试设备Devices</h2><ol>
+<li>在打包的时候需要运行到手机上，然后运行的手机需要在开发者网站添加</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/133a19b1f85e11f0a65eaa8f0b65d697.png" alt="sLwEaF.png"></p>
+<ol>
+<li>输入对应的信息（注意这里需要获取设备的udid，获取方法看下面）</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/bb401161992bbdf6b45a9dc22d359216.png" alt="sLwcGj.png"></p>
+<blockquote>
+<p><strong>获取设备的udid</strong><br><strong>方法1（电脑）</strong>: 电脑连接手机(手机弹窗选择信任)，打开XCode，菜单栏Window-Devices and Simulates-就可以看到对应的udid<br><img src="https://img-blog.csdnimg.cn/img_convert/94dc9bab091aaf1303eadd814b4c6d22.png" alt="sL0YwT.png"></p>
+<p><strong>方法2（电脑）</strong>: 打开访达Fidler，位置栏目点击手机，手机名字下面的信息，即可看到udid，右键即可复制<br><img src="https://img-blog.csdnimg.cn/img_convert/10196061a254965a35d9fcf417b659a2.png" alt="sL0xcn.png"></p>
+<p><strong>方法3（手机</strong>）: 手机打开蒲公英网址 <a target="_blank" rel="noopener" href="https://www.pgyer.com/tools/udid">https://www.pgyer.com/tools/udid</a> ,根据提示操作</p>
+</blockquote>
+<ol>
+<li>确定之后确定信息点击Register即可在Devices列表里面看到刚刚创建的手机</li>
+</ol>
+<h2 id="五、创建描述文件-Profiles"><a href="#五、创建描述文件-Profiles" class="headerlink" title="五、创建描述文件(Profiles)"></a>五、创建描述文件(Profiles)</h2><ol>
+<li>打开<a target="_blank" rel="noopener" href="https://developer.apple.com/account/resources/profiles/list">https://developer.apple.com/account/resources/profiles/list</a></li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/771367bc5e52262bee11d4a96641d2e8.png" alt="image"></p>
+<ol>
+<li>首先创建开发证书(开发证书类型为iOS Development)，开发调试的使用用这个证书</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/007095b5d1e6f5565a68dbf9df739d75.png" alt="image"></p>
+<ol>
+<li>Continue之后选择之前创建的Identifiers，即AppID</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/af5d1b7a9f963e74fc7497e1e4c3852e.png" alt="sLDws1.png"></p>
+<ol>
+<li>Continue之后选择之前创建的Development开发证书</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/c0016589b837196f0ec747939109dd50.png" alt="sLDzwV.png"></p>
+<ol>
+<li>Continue之后选择测试设备（这些设备就是Deevics设备列表的设备）</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/86d6c59ddb96642dd4d695094417df16.png" alt="sLrmTK.png"></p>
+<ol>
+<li>之后输入描述文件的名字，我一般取名是 项目名+证书类型，例如Project3_Development</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/105ee2974e982ba553e56d4a0a70445a.png" alt="sLrv1H.png"></p>
+<ol>
+<li>生成之后Download下来，文件的后缀名是mobileprovision。</li>
+<li>重复上面的步骤，再创建一个AdHoc的描述文件</li>
+<li>再次重复上面的步骤，再创建一个AppStore的描述文件</li>
+<li>三个描述文件下载下来：<br><img src="https://img-blog.csdnimg.cn/img_convert/56ce69300015a95ee329271b2f512cb2.png" alt="sLs458.png"></li>
+</ol>
+<h2 id="六、导入使用"><a href="#六、导入使用" class="headerlink" title="六、导入使用"></a>六、导入使用</h2><p>在XCode里面新建项目，点击项目 - TARGETS下面的项目 - Siging &amp; Capabilities - Provisioning Profile - 点开选择Import Profile，导入你下载的3个描述文件</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/f1421ea8f69e44c9e02633f4477c3a80.png" alt="sOutq1.png"></p>
+<p>4、上传ios证书编译打包IPA</p>
+<p>用Xcode打开自己的应用后，双击uploadTest.mobileprovision授权文件，它会自己安装到Xcode中。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-80a4f088d4ba4a53f5a9526b77e34e4f_720w.jpg" alt="img"></p>
+<p>如果Team中没有选项：</p>
+<p><img src="https://pic1.zhimg.com/80/v2-5541e3c520a73bacf3ce9bcb926b54d0_720w.jpg" alt="img"></p>
+<p><img src="https://pic1.zhimg.com/80/v2-b1e160e6e9da95ed8c715b16bd1b8430_720w.jpg" alt="img"></p>
+<p>添加你的开发者账号后Team中就会增加一个以你账号命名的选项，选择即可。（有可能会有延时，可能要等会儿出现）</p>
+<p>注意：如果你的账号名下有两个选项，一个是开发证书，一个是发布证书。开发证书后面会带有“(Personal Team)”的字样，选择另外一个即是发布证书（打包上线用）。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-7ec43ba4549f3bd7d2f253196ee09e2a_720w.jpg" alt="img"></p>
+<p>到这里我们就可以开始打包上传了</p>
+<p><img src="https://pic1.zhimg.com/80/v2-e6c0aad85b1bf4c613e785180ccfb0ac_720w.jpg" alt="img"></p>
+<p>打开Product - &gt; Archive 点击</p>
+<p><img src="https://pic4.zhimg.com/80/v2-0d634f9e4c5085badfb7a630b805519f_720w.jpg" alt="img"></p>
+<p><strong>5、上传iTunes Connect</strong></p>
+<p>等Archive成功后会弹出一个窗口如下图，点击Validate验证一下应用</p>
+<p><img src="https://pic2.zhimg.com/80/v2-cd722e5dc6d92c74b030f5390124c9f5_720w.jpg" alt="img"></p>
+<p><img src="https://pic2.zhimg.com/80/v2-1024afbd96701b267a4d5a84e9b4c939_720w.jpg" alt="img"></p>
+<p><img src="https://pic2.zhimg.com/80/v2-933d84d563f7482e4745f2136087e56d_720w.jpg" alt="img"></p>
+<p><img src="https://pic4.zhimg.com/80/v2-4421ee03b0550c8407b28e03aef6cb63_720w.jpg" alt="img"></p>
+<p>验证成功后，点击Upload to App Store上传</p>
+<p><img src="https://pic3.zhimg.com/80/v2-77fc03be36975a929ba31fc12ebe6c5a_720w.jpg" alt="img"></p>
+<p>同Validate时一样，选择开发证书对应的Team，点击Choose</p>
+<p><img src="https://pic2.zhimg.com/80/v2-39e0dee4b45c73f5330b6664984702f9_720w.jpg" alt="img"></p>
+<p>然后点击Upload按钮上传</p>
+<p><img src="https://pic1.zhimg.com/80/v2-5c01f6ef904d07dfde3cb5aa40401f48_720w.jpg" alt="img"></p>
+<p>等上传成功会有Success的提醒，点击Done即可。这时已经说明打包上传App Store成功</p>
+<p><strong>6、上传好IPA回到iTunes Connect填写APP信息并提交审核</strong></p>
+<p>到iTunes Connect后台 - &gt; 你的App - &gt; 准备提交的版本 - &gt; 构建版本旁边的“+”号或选择一个构建版本。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-7345a77fdc652632fe789320dc30090e_720w.jpg" alt="img"></p>
+<p>选择刚才打包上传的版本后，点完成。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-7caecad7eab02db49e518f94a519699e_720w.jpg" alt="img"></p>
+<p>然后按照你们需求吧itunes connect后台的数据填写完毕就好（app名称，副标题，截图，预览视频等）</p>
+<p>最后iTunes后台App中的其它信息可以根据公司的要求来填写，完成之后点击右上角“存储”后，点击“提交以供审核”即可</p>
+<p><img src="https://pic3.zhimg.com/80/v2-78b2c18da60ce8e5b69684ed8c506bf6_720w.jpg" alt="img"></p>
+<p>以上两项，如果公司没有特别说明，都选否然后提交即可。</p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/niubitianping/article/details/113137555">2021苹果AppleiOS开发证书申请详细图文流程</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/iOS/" rel="tag"># iOS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/07/10/%E4%B8%9B%E6%9E%97%E4%B9%8B%E4%B9%A6/" rel="prev" title="丛林之书">
+      <i class="fa fa-chevron-left"></i> 丛林之书
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/07/13/%E8%87%AA%E5%AD%A6%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B9%8B%E4%B8%80-Javascript%E5%92%8CNode.js/" rel="next" title="自学前端开发之一-Javascript和Node.js">
+      自学前端开发之一-Javascript和Node.js <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%86%E5%A4%87"><span class="nav-number">1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%8A%E6%9E%B6"><span class="nav-number">2.</span> <span class="nav-text">上架</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">2.1.</span> <span class="nav-text">注意事项</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%A6%E7%BB%86%E6%AD%A5%E9%AA%A4"><span class="nav-number">3.</span> <span class="nav-text">详细步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%BC%80%E5%8F%91%E8%80%85%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86"><span class="nav-number">3.1.</span> <span class="nav-text">一、开发者基本知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Certification%E5%92%8Cp12-%E8%AF%81%E4%B9%A6"><span class="nav-number">3.1.1.</span> <span class="nav-text">1. Certification和p12(证书)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Identifiers-AppID%E3%80%81%E5%BA%94%E7%94%A8id"><span class="nav-number">3.1.2.</span> <span class="nav-text">2. Identifiers(AppID、应用id)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Devives-%E8%AE%BE%E5%A4%87"><span class="nav-number">3.1.3.</span> <span class="nav-text">3. Devives(设备)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Profiles-%E6%8F%8F%E8%BF%B0%E6%96%87%E4%BB%B6"><span class="nav-number">3.1.4.</span> <span class="nav-text">4. Profiles(描述文件)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%88%9B%E5%BB%BACertification-%E8%AF%81%E4%B9%A6"><span class="nav-number">3.2.</span> <span class="nav-text">二、创建Certification(证书)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%88%9B%E5%BB%BAIdentifiers"><span class="nav-number">3.3.</span> <span class="nav-text">三、创建Identifiers</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%B7%BB%E5%8A%A0%E6%B5%8B%E8%AF%95%E8%AE%BE%E5%A4%87Devices"><span class="nav-number">3.4.</span> <span class="nav-text">四、添加测试设备Devices</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%88%9B%E5%BB%BA%E6%8F%8F%E8%BF%B0%E6%96%87%E4%BB%B6-Profiles"><span class="nav-number">3.5.</span> <span class="nav-text">五、创建描述文件(Profiles)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E5%AF%BC%E5%85%A5%E4%BD%BF%E7%94%A8"><span class="nav-number">3.6.</span> <span class="nav-text">六、导入使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="nav-number">4.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">iponkan</p>
+  <div class="site-description" itemprop="description">Developer,Reader,Thinker</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://rustfisher.com/" title="https:&#x2F;&#x2F;rustfisher.com" rel="noopener" target="_blank">RustFisher</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://an.rustfisher.com/" title="https:&#x2F;&#x2F;an.rustfisher.com" rel="noopener" target="_blank">Android应用开发技术</a>
+        </li>
+    </ul>
+  </div>
+<style>
+    .custom-sidebar {
+        margin-top: 20px;
+    }
+    .custom-sidebar-title {
+        font-size: 14px;
+        font-weight: 600;
+        text-align: center;
+        border-top: 1px dotted #ccc;
+    }
+</style>
+<div class="custom-sidebar">
+    <div class="custom-sidebar-title"><i class="fa fa-fw fa-cloud"></i> CDN By<br></div>
+    <a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral">
+        <img src="/images/upyun.png" alt="又拍云联盟"/>
+    </a>
+</div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">iponkan</span>
+  <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn">闽ICP备19021186号</a>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">61k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">55 分钟</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'NryIlaaOlJS8IxRoRzxpQw0p-gzGzoHsz',
+      appKey     : 'yHYCBjPUYuqS201h8vyiT29I',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <!-- 微信分享 -->
+	<script type="text/javascript" src="https://res2.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+	<script type="text/javascript" src="/js/wxshare.js"></script>
+</body>
+</html>
