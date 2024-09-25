@@ -1620,10 +1620,11 @@
       </tags>
   </entry>
   <entry>
-    <title></title>
+    <title>非对称加密</title>
     <url>/2024/09/25/%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><hr>
-<h2 id="title-非对称加密"><a href="#title-非对称加密" class="headerlink" title="title:非对称加密"></a>title:非对称加密</h2><p>非对称加密，也称为公开密钥加密，是一种加密技术，使用一对密钥：公钥和私钥。<strong>公钥可以公开分享（但不意味着发送方和接收方的公钥相同！），而私钥则必须严格保密。</strong></p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>非对称加密，也称为公开密钥加密，是一种加密技术，使用一对密钥：公钥和私钥。<strong>公钥可以公开分享（但不意味着发送方和接收方的公钥相同！），而私钥则必须严格保密。</strong></p>
+<span id="more"></span>
+
 <h1 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h1><p>非对称加密就是加密和解密使用的不是相同的密钥：只有同一个公钥-私钥对才能正常加解密。非对称加密的典型算法就是RSA算法，它是由Ron Rivest，Adi Shamir，Leonard Adleman这三个哥们一起发明的，所以用他们仨的姓的首字母缩写表示（<strong>RSA</strong>）。</p>
 <h1 id="非对称加密的工作原理"><a href="#非对称加密的工作原理" class="headerlink" title="非对称加密的工作原理"></a>非对称加密的工作原理</h1><h2 id="原理1：公钥加密，私钥解密"><a href="#原理1：公钥加密，私钥解密" class="headerlink" title="原理1：公钥加密，私钥解密"></a>原理1：公钥加密，私钥解密</h2><ol>
 <li><strong>密钥生成</strong>：接收方生成一对密钥，包括公钥和私钥。</li>
@@ -1661,5 +1662,11 @@
 </ul>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://liaoxuefeng.com/books/java/security/rsa/">非对称加密算法</a></p>
 ]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>非对称加密</tag>
+      </tags>
   </entry>
 </search>
