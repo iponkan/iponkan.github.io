@@ -153,66 +153,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Android上传aar到jcenter的正确姿势</title>
-    <url>/2019/08/08/Android%E4%B8%8A%E4%BC%A0aar%E5%88%B0jcenter%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>Android上传aar到jcenter的正确姿势</p>
-<span id="more"></span>
-
-<h2 id="常规操作"><a href="#常规操作" class="headerlink" title="常规操作"></a>常规操作</h2><p><a href="https://www.jianshu.com/p/77894c3bc0d6">Android Studio 上传aar(Library)到JCenter - 简书</a></p>
-<p>完成上述操作后可以成功把aar上传到jcenter。但是有个问题——aar的依赖传递问题，下面会详细描述，这里以我的<a href="https://github.com/sonicers/commonlib">commonlib项目</a>为例。</p>
-<p>这个库用于快速构建android工程，如果想快速构建一个app而不在意依赖的aar细节时，可以使用本库进行快速开发。</p>
-<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>按照上述的方式打包aar后我们可以在工程里方便使用：</p>
-<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">implementation <span class="string">&#x27;com.sonicers:commonlib:0.0.8&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>但是sync后会发现，ide报出没找到OkHttp包等的问题，因为这个库依赖了OkHttp等包</p>
-<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 网络</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.okhttp3:okhttp:3.10.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.okhttp3:logging-interceptor:3.10.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.retrofit2:retrofit:2.3.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.retrofit2:converter-gson:2.3.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.retrofit2:adapter-rxjava2:2.3.0&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>gradle默认是不会把lib里面的依赖传递进来的，这就是<strong>依赖传递</strong>问题</p>
-<p>我们需要添加一个属性：</p>
-<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">implementation(<span class="string">&#x27;com.sonicers:commonlib:0.0.8&#x27;</span>) &#123;</span><br><span class="line">    transitive = <span class="literal">true</span><span class="comment">//依赖传递为true时才能把依赖的库打进去</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>加了以后，嗯，发现没什么卵用  (⊙ө⊙)，嗯，基本操作，程序员天天遇到。。。</p>
-<p>原因在于使用上述上传aar到jcenter的常规操作，<strong>没有把依赖信息打进pom.xml</strong>。关于pom文件的用处，可以网上自己搜搜。可以参考</p>
-<p><a href="%5Bhttps://drprincess.github.io/2018/01/31/Android-%E5%B0%91%E4%B8%8D%E4%BA%86%E7%9A%84AAR%E6%96%87%E4%BB%B6/%5D(https://drprincess.github.io/2018/01/31/Android-%E5%B0%91%E4%B8%8D%E4%BA%86%E7%9A%84AAR%E6%96%87%E4%BB%B6/)">Android-少不了的 AAR 文件常识，最好知道的注意事项</a></p>
-<blockquote>
-<p>Google Android Studio 的负责人在 stackoverflow 上解释了 <a href="https://stackoverflow.com/questions/20700581/android-studio-how-to-package-single-aar-from-multiple-library-projects/20715155#20715155">为什么 Android Studio 不能将多个依赖打包进一个 AAR 文件</a>的原因，是因为将不同的library打包在一起，涉及到资源和配置文件智能合并，所以是个比较复杂的问题，同时也容易造成相同的依赖冲突。</p>
-</blockquote>
-<p>虽然Google爸爸这么说，但是加入依赖信息会使我们使用起来方便很多，只要引用我们的库，就可以把其他依赖的库引用进来。那怎么把依赖信息打进pom文件呢？ (๑•̀ㅂ•́)و✧ </p>
-<h2 id="骚操作"><a href="#骚操作" class="headerlink" title="骚操作"></a>骚操作</h2><p>首先看下常规操作所用的插件</p>
-<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">classpath <span class="string">&#x27;com.jfrog.bintray.gradle:gradle-bintray-plugin:1.0&#x27;</span></span><br><span class="line">classpath <span class="string">&#x27;com.github.dcendents:android-maven-gradle-plugin:1.4.1&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>这两个插件的官网</p>
-<p><a href="https://github.com/bintray/gradle-bintray-plugin">jfrog.bintray</a>，这个个人理解是上传到jcenter的插件</p>
-<p><a href="https://github.com/dcendents/android-maven-gradle-plugin">android-maven-gradle-plugin</a>，maven adnroid aar打包插件</p>
-<p>可以看到android-maven-gradle-plugin对这个插件的描述是已经过时的，这个插件默认是不把dependency信息打进pom文件的。</p>
-<p>so，我们抛弃android-maven-gradle-plugin插件，使用maven插件，这是关键，对于jfrog.bintray如何结合maven使用,在<a href="https://github.com/bintray/gradle-bintray-plugin">jfrog.bintray</a>上有详细的描述和demo。</p>
-<p>直接看gradle pluin 3.0的<a href="https://github.com/bintray/bintray-examples/blob/master/gradle-bintray-plugin-examples/android-gradle-3.0.0-maven-example/app/publish.gradle">demo</a>，这个demo有两个坑。</p>
-<h3 id="第一，"><a href="#第一，" class="headerlink" title="第一，"></a>第一，</h3><p>使用</p>
-<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">user = project.hasProperty(<span class="string">&#x27;bintrayUser&#x27;</span>) ?: System.getenv(<span class="string">&#x27;BINTRAY_USER&#x27;</span>)</span><br><span class="line">key = project.hasProperty(<span class="string">&#x27;bintrayApiKey&#x27;</span>) ?: System.getenv(<span class="string">&#x27;BINTRAY_API_KEY&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-<p>是读取不到local.properties里面的内容的</p>
-<p>正确姿势：</p>
-<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">Properties propertyReader = <span class="keyword">new</span> Properties()</span><br><span class="line">propertyReader.load(<span class="keyword">new</span> FileInputStream(<span class="string">&quot;$&#123;rootDir&#125;$&#123;File.separator&#125;local.properties&quot;</span>))</span><br><span class="line">user = propertyReader.bintrayUser.toString()</span><br><span class="line">key = propertyReader.bintrayApiKey.toString()</span><br></pre></td></tr></table></figure>
-
-<h3 id="第二"><a href="#第二" class="headerlink" title="第二,"></a>第二,</h3><p>需要把<code>dryRun = true</code>去掉,文档解释：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">dryRun = false //[Default: false] Whether to run this as dry-run, without deploying</span><br></pre></td></tr></table></figure>
-
-<p>这个demo仔细看应该是开发人员随便写的，没有验证过，这两个坑需要改过来，可以直接参照我的commonlib的<a href="https://github.com/sonicers/commonlib/blob/master/upload.gradle">upload.gradle</a>,这个脚本还额外加了sources和javadoc的上传，符合jcenter的规范。另外一些路径的东西需要根据自己的具体配置修改，这里不赘述。</p>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>使用maven插件可以自定义写pom文件，通过一些本地配置去控制写dependency或者不写，这里没有示例，有兴趣可以自行研究。</p>
-<p>如果是上传到自己的pixel仓库需要自己去修改一些脚本的配置，暂时没做过，我就不吹牛逼了。</p>
-<p>另外，非常感谢文中链接的作者。站在巨人的肩膀上٩(•̤̀ᵕ•̤́๑)ᵒᵏᵎᵎᵎᵎ </p>
-<h2 id="扩展链接"><a href="#扩展链接" class="headerlink" title="扩展链接"></a>扩展链接</h2><p><a href="https://xiaozhuanlan.com/topic/2981475360">利用 gradle 多 aar 发布私有 maven</a></p>
-]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>gradle</tag>
-        <tag>aar</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Android性能优化之内存泄漏</title>
     <url>/2017/04/05/Android%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%A0%94%E7%A9%B6/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>内存空间使用完毕之后未回收, 会导致内存泄漏。有人会问：Java不是有垃圾自动回收机制么？不幸的是，在Java中仍存在很多容易导致内存泄漏的逻辑(logical leak)。虽然垃圾回收器会帮我们干掉大部分无用的内存空间，但是对于还保持着引用，但逻辑上已经不会再用到的对象，垃圾回收器不会回收它们。</p>
@@ -397,40 +337,63 @@
       </tags>
   </entry>
   <entry>
-    <title>Android布局优化</title>
-    <url>/2017/03/08/Android%E5%B8%83%E5%B1%80%E4%BC%98%E5%8C%96/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>这里主要介绍两种布局优化的方向：</p>
-<ol>
-<li>重用布局及技巧</li>
-<li>实用懒加载</li>
-</ol>
+    <title>Android上传aar到jcenter的正确姿势</title>
+    <url>/2019/08/08/Android%E4%B8%8A%E4%BC%A0aar%E5%88%B0jcenter%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>Android上传aar到jcenter的正确姿势</p>
 <span id="more"></span>
 
-<h2 id="include的使用"><a href="#include的使用" class="headerlink" title="include的使用"></a>include的使用</h2><p>通过此标签来包含一个布局，这适用于一个布局并不包含太多的逻辑和动画，如果这个布局包含了一些逻辑和动画，建议使用一个自定义的ViewGroup来封装，这样能有效的减少代码。</p>
-<h2 id="mergre"><a href="#mergre" class="headerlink" title="mergre"></a>mergre</h2><p>megre是对include的优化，想象这种使用场景： 通常我们去包含一个布局的时候往往要指定这个布局的位置，这样，在你include的那个layout里面有一个根布具，你include又在一个布局里面，这样就没有必要的增加了一个布局，这时侯就可以用megre来解决。</p>
-<p>小技巧：</p>
-<p>使用megre的时候你会发现，英文在megre下你的布局可能缺少父布局，这时候你就没有办法看到预览，这时候你可以使用tools工具来预览，在megre标签加入如下代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tools:showIn=&quot;@layout/camera_beauty_activity&quot;</span><br></pre></td></tr></table></figure>
-<p>camera_beauty_activity为include这个megre布局的布局</p>
-<p>同时也可以添加<code>tools:ignore=&quot;all&quot;</code>来忽略所有因为缺少父布局而产生的warning</p>
-<p>关于tools的使用：</p>
-<p><a href="http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0309/2567.html">android中xml tools属性详解</a></p>
-<h2 id="ViewStub"><a href="#ViewStub" class="headerlink" title="ViewStub"></a>ViewStub</h2><p>ViewStub默认不显示，可以在一定条件下调用显示，若需要使用ViewStub显示的空间需要添加至少一个id(在要inflate的layout定义或者在ViewStub里面定义，原理同include)，详见下方应用链接 </p>
-<p><a href="http://blog.csdn.net/bboyfeiyu/article/details/45869393">Android布局优化之ViewStub、include、merge使用与源码分析</a></p>
-<h2 id="避免深层次的视图结构"><a href="#避免深层次的视图结构" class="headerlink" title="避免深层次的视图结构"></a>避免深层次的视图结构</h2><p>有时候为了摆放一个视图，你可能尝试添加另一个LinearLayout。你可能使用这种方法解决：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">LinearLayout</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:orientation</span>=<span class="string">&quot;vertical&quot;</span></span></span><br><span class="line"><span class="tag">    &gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">RelativeLayout</span></span></span><br><span class="line"><span class="tag">        <span class="attr">...</span></span></span><br><span class="line"><span class="tag">        &gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">LinearLayout</span></span></span><br><span class="line"><span class="tag">            <span class="attr">...</span></span></span><br><span class="line"><span class="tag">            &gt;</span></span><br><span class="line"></span><br><span class="line">            <span class="tag">&lt;<span class="name">LinearLayout</span></span></span><br><span class="line"><span class="tag">                <span class="attr">...</span></span></span><br><span class="line"><span class="tag">                &gt;</span></span><br><span class="line"></span><br><span class="line">                <span class="tag">&lt;<span class="name">LinearLayout</span></span></span><br><span class="line"><span class="tag">                    <span class="attr">...</span></span></span><br><span class="line"><span class="tag">                    &gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br><span class="line"></span><br><span class="line">            <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">RelativeLayout</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="常规操作"><a href="#常规操作" class="headerlink" title="常规操作"></a>常规操作</h2><p><a href="https://www.jianshu.com/p/77894c3bc0d6">Android Studio 上传aar(Library)到JCenter - 简书</a></p>
+<p>完成上述操作后可以成功把aar上传到jcenter。但是有个问题——aar的依赖传递问题，下面会详细描述，这里以我的<a href="https://github.com/sonicers/commonlib">commonlib项目</a>为例。</p>
+<p>这个库用于快速构建android工程，如果想快速构建一个app而不在意依赖的aar细节时，可以使用本库进行快速开发。</p>
+<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>按照上述的方式打包aar后我们可以在工程里方便使用：</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">implementation <span class="string">&#x27;com.sonicers:commonlib:0.0.8&#x27;</span></span><br></pre></td></tr></table></figure>
 
-<p>即使你没有非常明确的在一个layout布局文件中这样使用，如果你在Java文件中从一个view inflate（这个inflate翻译不过去，大家理解就行） 到其他views当中，也是可能会发生的。</p>
-<p>可能会导致一系列的问题。你可能会遇到性能问题，因为处理起需要处理一个复杂的UI树结构。 还可能会导致以下更严重的问题<a href="http://stackoverflow.com/questions/2762924/java-lang-stackoverflow-error-suspected-too-many-views">StackOverflowError</a>.</p>
-<p>因此尽量保持你的视图tree：学习如何使用<a href="https://developer.android.com/guide/topics/ui/layout/relative.html">RelativeLayout</a>, 如何 <a href="http://developer.android.com/training/improving-layouts/optimizing-layout.html">optimize 你的布局</a> 和如何使用 <a href="http://stackoverflow.com/questions/8834898/what-is-the-purpose-of-androids-merge-tag-in-xml-layouts"><code>&lt;merge&gt;</code> 标签</a>.</p>
+<p>但是sync后会发现，ide报出没找到OkHttp包等的问题，因为这个库依赖了OkHttp等包</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 网络</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.okhttp3:okhttp:3.10.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.okhttp3:logging-interceptor:3.10.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.retrofit2:retrofit:2.3.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.retrofit2:converter-gson:2.3.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.retrofit2:adapter-rxjava2:2.3.0&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>gradle默认是不会把lib里面的依赖传递进来的，这就是<strong>依赖传递</strong>问题</p>
+<p>我们需要添加一个属性：</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">implementation(<span class="string">&#x27;com.sonicers:commonlib:0.0.8&#x27;</span>) &#123;</span><br><span class="line">    transitive = <span class="literal">true</span><span class="comment">//依赖传递为true时才能把依赖的库打进去</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>加了以后，嗯，发现没什么卵用  (⊙ө⊙)，嗯，基本操作，程序员天天遇到。。。</p>
+<p>原因在于使用上述上传aar到jcenter的常规操作，<strong>没有把依赖信息打进pom.xml</strong>。关于pom文件的用处，可以网上自己搜搜。可以参考</p>
+<p><a href="%5Bhttps://drprincess.github.io/2018/01/31/Android-%E5%B0%91%E4%B8%8D%E4%BA%86%E7%9A%84AAR%E6%96%87%E4%BB%B6/%5D(https://drprincess.github.io/2018/01/31/Android-%E5%B0%91%E4%B8%8D%E4%BA%86%E7%9A%84AAR%E6%96%87%E4%BB%B6/)">Android-少不了的 AAR 文件常识，最好知道的注意事项</a></p>
+<blockquote>
+<p>Google Android Studio 的负责人在 stackoverflow 上解释了 <a href="https://stackoverflow.com/questions/20700581/android-studio-how-to-package-single-aar-from-multiple-library-projects/20715155#20715155">为什么 Android Studio 不能将多个依赖打包进一个 AAR 文件</a>的原因，是因为将不同的library打包在一起，涉及到资源和配置文件智能合并，所以是个比较复杂的问题，同时也容易造成相同的依赖冲突。</p>
+</blockquote>
+<p>虽然Google爸爸这么说，但是加入依赖信息会使我们使用起来方便很多，只要引用我们的库，就可以把其他依赖的库引用进来。那怎么把依赖信息打进pom文件呢？ (๑•̀ㅂ•́)و✧ </p>
+<h2 id="骚操作"><a href="#骚操作" class="headerlink" title="骚操作"></a>骚操作</h2><p>首先看下常规操作所用的插件</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">classpath <span class="string">&#x27;com.jfrog.bintray.gradle:gradle-bintray-plugin:1.0&#x27;</span></span><br><span class="line">classpath <span class="string">&#x27;com.github.dcendents:android-maven-gradle-plugin:1.4.1&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>这两个插件的官网</p>
+<p><a href="https://github.com/bintray/gradle-bintray-plugin">jfrog.bintray</a>，这个个人理解是上传到jcenter的插件</p>
+<p><a href="https://github.com/dcendents/android-maven-gradle-plugin">android-maven-gradle-plugin</a>，maven adnroid aar打包插件</p>
+<p>可以看到android-maven-gradle-plugin对这个插件的描述是已经过时的，这个插件默认是不把dependency信息打进pom文件的。</p>
+<p>so，我们抛弃android-maven-gradle-plugin插件，使用maven插件，这是关键，对于jfrog.bintray如何结合maven使用,在<a href="https://github.com/bintray/gradle-bintray-plugin">jfrog.bintray</a>上有详细的描述和demo。</p>
+<p>直接看gradle pluin 3.0的<a href="https://github.com/bintray/bintray-examples/blob/master/gradle-bintray-plugin-examples/android-gradle-3.0.0-maven-example/app/publish.gradle">demo</a>，这个demo有两个坑。</p>
+<h3 id="第一，"><a href="#第一，" class="headerlink" title="第一，"></a>第一，</h3><p>使用</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">user = project.hasProperty(<span class="string">&#x27;bintrayUser&#x27;</span>) ?: System.getenv(<span class="string">&#x27;BINTRAY_USER&#x27;</span>)</span><br><span class="line">key = project.hasProperty(<span class="string">&#x27;bintrayApiKey&#x27;</span>) ?: System.getenv(<span class="string">&#x27;BINTRAY_API_KEY&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>是读取不到local.properties里面的内容的</p>
+<p>正确姿势：</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">Properties propertyReader = <span class="keyword">new</span> Properties()</span><br><span class="line">propertyReader.load(<span class="keyword">new</span> FileInputStream(<span class="string">&quot;$&#123;rootDir&#125;$&#123;File.separator&#125;local.properties&quot;</span>))</span><br><span class="line">user = propertyReader.bintrayUser.toString()</span><br><span class="line">key = propertyReader.bintrayApiKey.toString()</span><br></pre></td></tr></table></figure>
+
+<h3 id="第二"><a href="#第二" class="headerlink" title="第二,"></a>第二,</h3><p>需要把<code>dryRun = true</code>去掉,文档解释：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">dryRun = false //[Default: false] Whether to run this as dry-run, without deploying</span><br></pre></td></tr></table></figure>
+
+<p>这个demo仔细看应该是开发人员随便写的，没有验证过，这两个坑需要改过来，可以直接参照我的commonlib的<a href="https://github.com/sonicers/commonlib/blob/master/upload.gradle">upload.gradle</a>,这个脚本还额外加了sources和javadoc的上传，符合jcenter的规范。另外一些路径的东西需要根据自己的具体配置修改，这里不赘述。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>使用maven插件可以自定义写pom文件，通过一些本地配置去控制写dependency或者不写，这里没有示例，有兴趣可以自行研究。</p>
+<p>如果是上传到自己的pixel仓库需要自己去修改一些脚本的配置，暂时没做过，我就不吹牛逼了。</p>
+<p>另外，非常感谢文中链接的作者。站在巨人的肩膀上٩(•̤̀ᵕ•̤́๑)ᵒᵏᵎᵎᵎᵎ </p>
+<h2 id="扩展链接"><a href="#扩展链接" class="headerlink" title="扩展链接"></a>扩展链接</h2><p><a href="https://xiaozhuanlan.com/topic/2981475360">利用 gradle 多 aar 发布私有 maven</a></p>
 ]]></content>
       <categories>
         <category>Android</category>
       </categories>
       <tags>
         <tag>Android</tag>
-        <tag>布局</tag>
-        <tag>优化</tag>
+        <tag>gradle</tag>
+        <tag>aar</tag>
       </tags>
   </entry>
   <entry>
@@ -505,6 +468,101 @@
       </categories>
       <tags>
         <tag>Android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android布局优化</title>
+    <url>/2017/03/08/Android%E5%B8%83%E5%B1%80%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>这里主要介绍两种布局优化的方向：</p>
+<ol>
+<li>重用布局及技巧</li>
+<li>实用懒加载</li>
+</ol>
+<span id="more"></span>
+
+<h2 id="include的使用"><a href="#include的使用" class="headerlink" title="include的使用"></a>include的使用</h2><p>通过此标签来包含一个布局，这适用于一个布局并不包含太多的逻辑和动画，如果这个布局包含了一些逻辑和动画，建议使用一个自定义的ViewGroup来封装，这样能有效的减少代码。</p>
+<h2 id="mergre"><a href="#mergre" class="headerlink" title="mergre"></a>mergre</h2><p>megre是对include的优化，想象这种使用场景： 通常我们去包含一个布局的时候往往要指定这个布局的位置，这样，在你include的那个layout里面有一个根布具，你include又在一个布局里面，这样就没有必要的增加了一个布局，这时侯就可以用megre来解决。</p>
+<p>小技巧：</p>
+<p>使用megre的时候你会发现，英文在megre下你的布局可能缺少父布局，这时候你就没有办法看到预览，这时候你可以使用tools工具来预览，在megre标签加入如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tools:showIn=&quot;@layout/camera_beauty_activity&quot;</span><br></pre></td></tr></table></figure>
+<p>camera_beauty_activity为include这个megre布局的布局</p>
+<p>同时也可以添加<code>tools:ignore=&quot;all&quot;</code>来忽略所有因为缺少父布局而产生的warning</p>
+<p>关于tools的使用：</p>
+<p><a href="http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0309/2567.html">android中xml tools属性详解</a></p>
+<h2 id="ViewStub"><a href="#ViewStub" class="headerlink" title="ViewStub"></a>ViewStub</h2><p>ViewStub默认不显示，可以在一定条件下调用显示，若需要使用ViewStub显示的空间需要添加至少一个id(在要inflate的layout定义或者在ViewStub里面定义，原理同include)，详见下方应用链接 </p>
+<p><a href="http://blog.csdn.net/bboyfeiyu/article/details/45869393">Android布局优化之ViewStub、include、merge使用与源码分析</a></p>
+<h2 id="避免深层次的视图结构"><a href="#避免深层次的视图结构" class="headerlink" title="避免深层次的视图结构"></a>避免深层次的视图结构</h2><p>有时候为了摆放一个视图，你可能尝试添加另一个LinearLayout。你可能使用这种方法解决：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">LinearLayout</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:orientation</span>=<span class="string">&quot;vertical&quot;</span></span></span><br><span class="line"><span class="tag">    &gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">RelativeLayout</span></span></span><br><span class="line"><span class="tag">        <span class="attr">...</span></span></span><br><span class="line"><span class="tag">        &gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">LinearLayout</span></span></span><br><span class="line"><span class="tag">            <span class="attr">...</span></span></span><br><span class="line"><span class="tag">            &gt;</span></span><br><span class="line"></span><br><span class="line">            <span class="tag">&lt;<span class="name">LinearLayout</span></span></span><br><span class="line"><span class="tag">                <span class="attr">...</span></span></span><br><span class="line"><span class="tag">                &gt;</span></span><br><span class="line"></span><br><span class="line">                <span class="tag">&lt;<span class="name">LinearLayout</span></span></span><br><span class="line"><span class="tag">                    <span class="attr">...</span></span></span><br><span class="line"><span class="tag">                    &gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br><span class="line"></span><br><span class="line">            <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">RelativeLayout</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>即使你没有非常明确的在一个layout布局文件中这样使用，如果你在Java文件中从一个view inflate（这个inflate翻译不过去，大家理解就行） 到其他views当中，也是可能会发生的。</p>
+<p>可能会导致一系列的问题。你可能会遇到性能问题，因为处理起需要处理一个复杂的UI树结构。 还可能会导致以下更严重的问题<a href="http://stackoverflow.com/questions/2762924/java-lang-stackoverflow-error-suspected-too-many-views">StackOverflowError</a>.</p>
+<p>因此尽量保持你的视图tree：学习如何使用<a href="https://developer.android.com/guide/topics/ui/layout/relative.html">RelativeLayout</a>, 如何 <a href="http://developer.android.com/training/improving-layouts/optimizing-layout.html">optimize 你的布局</a> 和如何使用 <a href="http://stackoverflow.com/questions/8834898/what-is-the-purpose-of-androids-merge-tag-in-xml-layouts"><code>&lt;merge&gt;</code> 标签</a>.</p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>布局</tag>
+        <tag>优化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Handler的写法</title>
+    <url>/2017/05/04/Handler%E7%9A%84%E5%86%99%E6%B3%95/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>对Handler的写法进行的讨论。</p>
+<span id="more"></span>
+
+
+
+<h1 id="作为内部类"><a href="#作为内部类" class="headerlink" title="作为内部类"></a>作为内部类</h1><p>第1种写法：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestView</span> <span class="keyword">extends</span> <span class="title class_">View</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ViewHandler mViewHandler;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">TestView</span><span class="params">(Context context)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(context, <span class="literal">null</span>);</span><br><span class="line">        mViewHandler = <span class="keyword">new</span> <span class="title class_">ViewHandler</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">ViewHandler</span> <span class="keyword">extends</span> <span class="title class_">Handler</span> &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleMessage</span><span class="params">(Message msg)</span> &#123;</span><br><span class="line">            <span class="built_in">super</span>.handleMessage(msg);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>但是Framework的源码如com\android\internal\app\NetInitiatedActivity很多都这么写</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Handler</span> <span class="variable">mHandler</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Handler</span>() &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleMessage</span><span class="params">(Message msg)</span> &#123;</span><br><span class="line">            <span class="keyword">switch</span> (msg.what) &#123;</span><br><span class="line">            <span class="keyword">case</span> GPS_NO_RESPONSE_TIME_OUT: &#123;</span><br><span class="line">                <span class="keyword">if</span> (notificationId != -<span class="number">1</span>) &#123;</span><br><span class="line">                    sendUserResponse(default_response);</span><br><span class="line">                &#125;</span><br><span class="line">                finish();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>第2种写法：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private Handler handler = new Handler(Looper.getMainLooper()) &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void handleMessage(Message msg) &#123;</span><br><span class="line">          //TO DO</span><br><span class="line">        &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>因为内部类会隐式的持有外部类的应用，第1种写法android studio的lint检查就会报有内存泄漏的风险。而第2种写法不会，感觉是android studio没有检查出来</p>
+<p>对于内部类的写法，网上有很多文章都是建议采用静态类加弱引用来解决，如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">ViewHandler</span> <span class="keyword">extends</span> <span class="title class_">Handler</span> &#123;</span><br><span class="line"></span><br><span class="line">        WeakReference&lt;TestView&gt; testViewWeakReference;</span><br><span class="line"></span><br><span class="line">        ViewHandler(TestView testView) &#123;</span><br><span class="line">            testViewWeakReference = <span class="keyword">new</span> <span class="title class_">WeakReference</span>&lt;&gt;(testView);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleMessage</span><span class="params">(Message msg)</span> &#123;</span><br><span class="line">            <span class="comment">// TO DO</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="作为一个变量"><a href="#作为一个变量" class="headerlink" title="作为一个变量"></a>作为一个变量</h1><p>第3种写法：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Handler mHandler = new Handler();</span><br></pre></td></tr></table></figure>
+
+<p>然后去post一个Runnable。比如handler去post一个延时任务，如</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">handler.postDelay(mTask, 3000);</span><br></pre></td></tr></table></figure>
+
+<p>然后在Activity 的onDestroy的方法里调用</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mHandler.removeCallbacksAndMessages(null);</span><br></pre></td></tr></table></figure>
+
+<h1 id="现在的问题是"><a href="#现在的问题是" class="headerlink" title="现在的问题是"></a>现在的问题是</h1><ol>
+<li>为什么android framework可以在这么写，不会造成内存泄漏吗？</li>
+<li>对于new Handler(Looper.getMainLooper())的写法，这个只是声明了在主线程建立Handler，并不能避免内存泄漏的风险，但是Android Studio不会出现警告，因为android studio不是万能的吗？</li>
+<li>对于第3种写法，有必要调用mHandler.removeCallbacksAndMessages(null);吗？ 如果不调用，有没有可能出现延时任务还没执行，activity被销毁，而延时任务持有了activity的引用，从而造成内存泄漏</li>
+<li>什么的写法比较好呢？</li>
+</ol>
+<h1 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h1><p>1.我的理解是：内存泄漏不是必然的，只是会有这种风险</p>
+<p>2.其实就是因为传了参数，而静态分析并没有判断这个参数是不是main thread的looper，而非主线程并没有这个问题的，所以简单化有参数就不报错了。</p>
+<p>3.对于第3种写法，有必要调用mHandler.removeCallbacksAndMessages(null); 吗？ 如果不调用，有没有可能出现延时任务还没执行，activity被销毁，而延时任务持有了activity的引用，从而造成内存泄漏</p>
+<p>如果你需要继续运行handler内未完成的操作，那就不需要调用咯，这时候延时任务还没执行，activity被销毁，那引用activity的一些数据就可能空指针，但是不会内存泄漏，原因参照Java弱引用。当然更多情况下activity destory的情况下并不需要处理接下来的信息了，那就去remove相关的CallbacksAndMessgaes，null只是代表了所有。</p>
+<p>4.哪种写法更好</p>
+<p>参照编译器给你的信息就好：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">If the Handler is using a Looper or MessageQueue for a thread other than the main thread, then there is no issue. If the Handler is using the Looper or MessageQueue of the main thread, you need to fix your Handler declaration, as follows: Declare the Handler as a static class; In the outer class, instantiate a WeakReference to the outer class and pass this object to your Handler when you instantiate the Handler; Make all references to members of the outer class using the WeakReference object.</span><br></pre></td></tr></table></figure>
+
+<h1 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h1><p><a href="http://talkcode.cc/topics/42">关于 Handler 的写法讨论</a></p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -602,173 +660,6 @@
       <tags>
         <tag>Android</tag>
         <tag>Http</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Handler的写法</title>
-    <url>/2017/05/04/Handler%E7%9A%84%E5%86%99%E6%B3%95/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>对Handler的写法进行的讨论。</p>
-<span id="more"></span>
-
-
-
-<h1 id="作为内部类"><a href="#作为内部类" class="headerlink" title="作为内部类"></a>作为内部类</h1><p>第1种写法：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestView</span> <span class="keyword">extends</span> <span class="title class_">View</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ViewHandler mViewHandler;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">TestView</span><span class="params">(Context context)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(context, <span class="literal">null</span>);</span><br><span class="line">        mViewHandler = <span class="keyword">new</span> <span class="title class_">ViewHandler</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">ViewHandler</span> <span class="keyword">extends</span> <span class="title class_">Handler</span> &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleMessage</span><span class="params">(Message msg)</span> &#123;</span><br><span class="line">            <span class="built_in">super</span>.handleMessage(msg);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<p>但是Framework的源码如com\android\internal\app\NetInitiatedActivity很多都这么写</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Handler</span> <span class="variable">mHandler</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Handler</span>() &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleMessage</span><span class="params">(Message msg)</span> &#123;</span><br><span class="line">            <span class="keyword">switch</span> (msg.what) &#123;</span><br><span class="line">            <span class="keyword">case</span> GPS_NO_RESPONSE_TIME_OUT: &#123;</span><br><span class="line">                <span class="keyword">if</span> (notificationId != -<span class="number">1</span>) &#123;</span><br><span class="line">                    sendUserResponse(default_response);</span><br><span class="line">                &#125;</span><br><span class="line">                finish();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
-
-<p>第2种写法：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private Handler handler = new Handler(Looper.getMainLooper()) &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void handleMessage(Message msg) &#123;</span><br><span class="line">          //TO DO</span><br><span class="line">        &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>因为内部类会隐式的持有外部类的应用，第1种写法android studio的lint检查就会报有内存泄漏的风险。而第2种写法不会，感觉是android studio没有检查出来</p>
-<p>对于内部类的写法，网上有很多文章都是建议采用静态类加弱引用来解决，如下：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">ViewHandler</span> <span class="keyword">extends</span> <span class="title class_">Handler</span> &#123;</span><br><span class="line"></span><br><span class="line">        WeakReference&lt;TestView&gt; testViewWeakReference;</span><br><span class="line"></span><br><span class="line">        ViewHandler(TestView testView) &#123;</span><br><span class="line">            testViewWeakReference = <span class="keyword">new</span> <span class="title class_">WeakReference</span>&lt;&gt;(testView);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleMessage</span><span class="params">(Message msg)</span> &#123;</span><br><span class="line">            <span class="comment">// TO DO</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="作为一个变量"><a href="#作为一个变量" class="headerlink" title="作为一个变量"></a>作为一个变量</h1><p>第3种写法：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Handler mHandler = new Handler();</span><br></pre></td></tr></table></figure>
-
-<p>然后去post一个Runnable。比如handler去post一个延时任务，如</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">handler.postDelay(mTask, 3000);</span><br></pre></td></tr></table></figure>
-
-<p>然后在Activity 的onDestroy的方法里调用</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mHandler.removeCallbacksAndMessages(null);</span><br></pre></td></tr></table></figure>
-
-<h1 id="现在的问题是"><a href="#现在的问题是" class="headerlink" title="现在的问题是"></a>现在的问题是</h1><ol>
-<li>为什么android framework可以在这么写，不会造成内存泄漏吗？</li>
-<li>对于new Handler(Looper.getMainLooper())的写法，这个只是声明了在主线程建立Handler，并不能避免内存泄漏的风险，但是Android Studio不会出现警告，因为android studio不是万能的吗？</li>
-<li>对于第3种写法，有必要调用mHandler.removeCallbacksAndMessages(null);吗？ 如果不调用，有没有可能出现延时任务还没执行，activity被销毁，而延时任务持有了activity的引用，从而造成内存泄漏</li>
-<li>什么的写法比较好呢？</li>
-</ol>
-<h1 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h1><p>1.我的理解是：内存泄漏不是必然的，只是会有这种风险</p>
-<p>2.其实就是因为传了参数，而静态分析并没有判断这个参数是不是main thread的looper，而非主线程并没有这个问题的，所以简单化有参数就不报错了。</p>
-<p>3.对于第3种写法，有必要调用mHandler.removeCallbacksAndMessages(null); 吗？ 如果不调用，有没有可能出现延时任务还没执行，activity被销毁，而延时任务持有了activity的引用，从而造成内存泄漏</p>
-<p>如果你需要继续运行handler内未完成的操作，那就不需要调用咯，这时候延时任务还没执行，activity被销毁，那引用activity的一些数据就可能空指针，但是不会内存泄漏，原因参照Java弱引用。当然更多情况下activity destory的情况下并不需要处理接下来的信息了，那就去remove相关的CallbacksAndMessgaes，null只是代表了所有。</p>
-<p>4.哪种写法更好</p>
-<p>参照编译器给你的信息就好：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">If the Handler is using a Looper or MessageQueue for a thread other than the main thread, then there is no issue. If the Handler is using the Looper or MessageQueue of the main thread, you need to fix your Handler declaration, as follows: Declare the Handler as a static class; In the outer class, instantiate a WeakReference to the outer class and pass this object to your Handler when you instantiate the Handler; Make all references to members of the outer class using the WeakReference object.</span><br></pre></td></tr></table></figure>
-
-<h1 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h1><p><a href="http://talkcode.cc/topics/42">关于 Handler 的写法讨论</a></p>
-]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Retrofit 最佳实践</title>
-    <url>/2019/10/28/Retrifit%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>本文是Retrofit结合Rxjava的最佳实践。</p>
-<span id="more"></span>
-
-<h2 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h2><figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="comment">// rxJava</span></span><br><span class="line">api <span class="string">&#x27;io.reactivex.rxjava2:rxandroid:2.1.1&#x27;</span></span><br><span class="line">api <span class="string">&#x27;io.reactivex.rxjava2:rxjava:2.2.9&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 网络</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.okhttp3:okhttp:3.12.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.okhttp3:logging-interceptor:4.2.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.retrofit2:retrofit:2.3.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.retrofit2:converter-gson:2.3.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.retrofit2:adapter-rxjava2:2.3.0&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><h3 id="改造Http-Api变成一个Java接口"><a href="#改造Http-Api变成一个Java接口" class="headerlink" title="改造Http Api变成一个Java接口"></a>改造Http Api变成一个Java接口</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取公钥</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@GET(&quot;/smart_platform/logon/getPublicKey&quot;)</span></span><br><span class="line">Observable&lt;PublicKeyBean&gt; <span class="title function_">getPublicKey</span><span class="params">(<span class="meta">@Query(&quot;_&quot;)</span> <span class="type">long</span> systemtime)</span>;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>函数签名可以与服务端接口命名一致</li>
-<li>实体类，如这里的<code>PublicKeyBean</code>代码可以根据服务端返回的json用GsonFormat生成</li>
-</ul>
-<h3 id="定义一个Serveice接口"><a href="#定义一个Serveice接口" class="headerlink" title="定义一个Serveice接口"></a>定义一个Serveice接口</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">ISkyNet</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取公钥</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@GET(&quot;/smart_platform/logon/getPublicKey&quot;)</span></span><br><span class="line">    Observable&lt;PublicKeyBean&gt; <span class="title function_">getPublicKey</span><span class="params">(<span class="meta">@Query(&quot;_&quot;)</span> <span class="type">long</span> systemtime)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="创建RetrofitManager"><a href="#创建RetrofitManager" class="headerlink" title="创建RetrofitManager"></a>创建RetrofitManager</h3><p> 定义一个<code>RetrofitManager</code>，这个类主要来设置请求的base_url，初始化OkHttp，设置公共请求头，OKHttp基本配置，打印等。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RetrofitManager</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">TAG</span> <span class="operator">=</span> <span class="string">&quot;RetrofitManager&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">SEVER_URL</span> <span class="operator">=</span> <span class="string">&quot;http://dareway.cn:43001&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">DEFAULT_TIME_OUT</span> <span class="operator">=</span> <span class="number">5</span>;<span class="comment">//超时时间 5s</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">DEFAULT_READ_TIME_OUT</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Retrofit mRetrofit;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> RetrofitManager mManager;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> HashSet&lt;String&gt; cookies = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">RetrofitManager</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (mRetrofit == <span class="literal">null</span>) &#123;</span><br><span class="line">            OkHttpClient.<span class="type">Builder</span> <span class="variable">builder</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">OkHttpClient</span>.Builder();</span><br><span class="line">            builder.connectTimeout(DEFAULT_TIME_OUT, TimeUnit.SECONDS);<span class="comment">//连接超时时间</span></span><br><span class="line">            builder.writeTimeout(DEFAULT_READ_TIME_OUT, TimeUnit.SECONDS);<span class="comment">//写操作 超时时间</span></span><br><span class="line">            builder.readTimeout(DEFAULT_READ_TIME_OUT, TimeUnit.SECONDS);<span class="comment">//读操作超时时间</span></span><br><span class="line">            <span class="type">ClearableCookieJar</span> <span class="variable">cookieJar</span> <span class="operator">=</span></span><br><span class="line">                    <span class="keyword">new</span> <span class="title class_">PersistentCookieJar</span>(<span class="keyword">new</span> <span class="title class_">SetCookieCache</span>(), <span class="keyword">new</span> <span class="title class_">SharedPrefsCookiePersistor</span>(MyApplication.getContext()));</span><br><span class="line"></span><br><span class="line">            builder.cookieJar(cookieJar);</span><br><span class="line"></span><br><span class="line">            <span class="type">HttpLoggingInterceptor</span> <span class="variable">loggingInterceptor</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HttpLoggingInterceptor</span>(<span class="keyword">new</span> <span class="title class_">HttpLogger</span>());</span><br><span class="line">            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);</span><br><span class="line">            <span class="comment">//设置 Debug Log 模式</span></span><br><span class="line">            builder.addNetworkInterceptor(loggingInterceptor);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 创建Retrofit</span></span><br><span class="line">            mRetrofit = <span class="keyword">new</span> <span class="title class_">Retrofit</span>.Builder()</span><br><span class="line">                    .baseUrl(SEVER_URL)</span><br><span class="line">                    .addConverterFactory(GsonConverterFactory.create())</span><br><span class="line">                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())</span><br><span class="line">                    .client(builder.build())</span><br><span class="line">                    .build();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取RetrofitManager</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> RetrofitManager</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> RetrofitManager <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (mManager == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (RetrofitManager.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (mManager == <span class="literal">null</span>) &#123;</span><br><span class="line">                    mManager = <span class="keyword">new</span> <span class="title class_">RetrofitManager</span>();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> mManager;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取对应的Service</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> service Service 的 class</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> &lt;T&gt;</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> &lt;T&gt; T <span class="title function_">create</span><span class="params">(Class&lt;T&gt; service)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> mRetrofit.create(service);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">HttpLogger</span> <span class="keyword">implements</span> <span class="title class_">HttpLoggingInterceptor</span>.Logger &#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">log</span><span class="params">(String message)</span> &#123;</span><br><span class="line">            <span class="comment">// 使用Logger打印</span></span><br><span class="line">            Logger.t(<span class="string">&quot;OkHttp&quot;</span>).d(message);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="RetrofitManager生成一个-Service-接口的实现"><a href="#RetrofitManager生成一个-Service-接口的实现" class="headerlink" title="RetrofitManager生成一个 Service 接口的实现"></a>RetrofitManager生成一个 Service 接口的实现</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">ISkyNet</span> <span class="variable">skyNet</span> <span class="operator">=</span> RetrofitManager.getInstance().create(ISkyNet.class);</span><br></pre></td></tr></table></figure>
-
-<h3 id="接口请求"><a href="#接口请求" class="headerlink" title="接口请求"></a>接口请求</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">skyNet.getPublicKey(System.currentTimeMillis())</span><br><span class="line">                .subscribeOn(Schedulers.io())<span class="comment">//在io线程执行</span></span><br><span class="line">                .observeOn(AndroidSchedulers.mainThread())<span class="comment">//在主线程回调</span></span><br><span class="line">                .subscribeWith(<span class="keyword">new</span> <span class="title class_">Observer</span>&lt;PublicKeyBean&gt;() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSubscribe</span><span class="params">(Disposable d)</span> &#123;</span><br><span class="line">                        </span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onNext</span><span class="params">(PublicKeyBean publicKeyBean)</span> &#123;</span><br><span class="line"></span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onError</span><span class="params">(Throwable e)</span> &#123;</span><br><span class="line"></span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onComplete</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br></pre></td></tr></table></figure>
-
-<p>至此，一个请求可以方便的使用Retrofit进行。</p>
-<p>这里我们可以看下Retrofit的优越性</p>
-<ul>
-<li> API 声明：接口方法通过注解的方式及其参数指示如何处理一个请求，请求方式一目了然</li>
-<li> 所有请求采用同一份配置(如Headers，Log打印)，在我们和同一个服务对接的时候不必写很多重复代码</li>
-<li> 结合Rxjava的写法简洁美观，包装了线程切换和异常回调</li>
-<li> 提供各种各样的转换器，支持<code>JSON,protocol buffers</code>等，省去请求返回结果和实体的转换代码</li>
-</ul>
-<h3 id="一些必须知道的事情"><a href="#一些必须知道的事情" class="headerlink" title="一些必须知道的事情"></a>一些必须知道的事情</h3><h4 id="可选参数"><a href="#可选参数" class="headerlink" title="可选参数"></a>可选参数</h4><p>如下接口：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@GET(&quot;index.php?r=default/homepage&quot;)</span></span><br><span class="line">Observable&lt;Response&lt;Exercise&gt;&gt; <span class="title function_">getDataList</span><span class="params">(<span class="meta">@Query(&quot;page&quot;)</span> <span class="type">int</span> page)</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@GET(&quot;index.php?r=default/homepage&quot;)</span></span><br><span class="line">Observable&lt;Response&lt;Exercise&gt;&gt; <span class="title function_">getDataList</span><span class="params">(<span class="meta">@Query(&quot;page&quot;)</span> <span class="type">int</span> page, <span class="meta">@Query(&quot;user_id&quot;)</span> <span class="type">int</span> userId)</span>;</span><br></pre></td></tr></table></figure>
-
-
-<p>两个接口，区别就在于有没有『user_id』参数。</p>
-<p>这样做，总感觉有点罗嗦，体现不出Retrofit的优越性。有没有更好的方法呢？当然有，那就是动态参数（其实很简单）。</p>
-<p>上面的两个接口合并为一个：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@GET(&quot;index.php?r=default/homepage&quot;)</span></span><br><span class="line">Observable&lt;Response&lt;Exercise&gt;&gt; <span class="title function_">getDataList</span><span class="params">(<span class="meta">@Query(&quot;page&quot;)</span> <span class="type">int</span> page,<span class="meta">@Query(&quot;user_id&quot;)</span> Integer userId)</span>;</span><br></pre></td></tr></table></figure>
-
-<p>使用<br>登录：</p>
-<p><code>APIWrapper.getInstance().getDataList(mCurrentPage, 10);</code><br>未登录：</p>
-<p><code>APIWrapper.getInstance().getDataList(mCurrentPage, null);</code></p>
-<p>Retrofit运行null值参数，如果在实际调用的时候传一个null, 系统也不会出错，会把这个参数当作没有。</p>
-<h3 id="混淆配置"><a href="#混淆配置" class="headerlink" title="混淆配置"></a>混淆配置</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">okio</span></span><br><span class="line">-dontwarn org.codehaus.mojo.animal_sniffer.*</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">retrofit</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Platform calls Class.forName on types <span class="built_in">which</span> <span class="keyword">do</span> not exist on Android to determine platform.</span></span><br><span class="line">-dontnote retrofit2.Platform</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Platform used when running on Java 8 VMs. Will not be used at runtime.</span></span><br><span class="line">-dontwarn retrofit2.Platform$Java8</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Retain generic <span class="built_in">type</span> information <span class="keyword">for</span> use by reflection by converters and adapters.</span></span><br><span class="line">-keepattributes Signature</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Retain declared checked exceptions <span class="keyword">for</span> use by a Proxy instance.</span></span><br><span class="line">-keepattributes Exceptions</span><br></pre></td></tr></table></figure>
-
-<h2 id="进阶使用"><a href="#进阶使用" class="headerlink" title="进阶使用"></a>进阶使用</h2><h3 id="更简单的线程封装"><a href="#更简单的线程封装" class="headerlink" title="更简单的线程封装"></a>更简单的线程封装</h3><p>利用compose操作符，可以将</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">.subscribeOn(Schedulers.io())<span class="comment">//在io线程执行</span></span><br><span class="line">.observeOn(AndroidSchedulers.mainThread())<span class="comment">//在主线程回调</span></span><br></pre></td></tr></table></figure>
-
-<p>合并为一行代码</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">.compose(RxSchedulers.io_main())<span class="comment">//在io线程执行，在主线程回调</span></span><br></pre></td></tr></table></figure>
-
-<p>RxSchedulers的代码</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RxSchedulers</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; ObservableTransformer&lt;T, T&gt; <span class="title function_">io_main</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> upstream -&gt;</span><br><span class="line">                upstream.subscribeOn(Schedulers.io())</span><br><span class="line">                        .unsubscribeOn(Schedulers.io())</span><br><span class="line">                        .observeOn(AndroidSchedulers.mainThread());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="更简洁的Observer"><a href="#更简洁的Observer" class="headerlink" title="更简洁的Observer"></a>更简洁的Observer</h3><p>我们可以封装一个Observer，用来</p>
-<p>1.处理网络请求接口返回错误码 2.减少回调接口数 3.封装dialog的显示(因为通常dialog都是在onSubscribe的时候显示，onOberver的时候消失)</p>
-<p>RxDataObserver</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">RxDataObserver</span>&lt;M&gt; <span class="keyword">extends</span> <span class="title class_">DisposableObserver</span>&lt;M&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> LoadingDialog mLoadingDialog;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onSuccess</span><span class="params">(M model)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onFailure</span><span class="params">(String msg)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">RxDataObserver</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> dialog may be null,null present not dialog show</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">RxDataObserver</span><span class="params">(<span class="meta">@Nullable</span> LoadingDialog dialog)</span> &#123;</span><br><span class="line">        mLoadingDialog = dialog;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onStart</span><span class="params">()</span> &#123;</span><br><span class="line">        showLoadingDialog();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onError</span><span class="params">(Throwable throwable)</span> &#123;</span><br><span class="line">        throwable.printStackTrace();</span><br><span class="line">        <span class="keyword">if</span> (throwable <span class="keyword">instanceof</span> HttpException) &#123;</span><br><span class="line">            <span class="type">HttpException</span> <span class="variable">httpException</span> <span class="operator">=</span> (HttpException) throwable;</span><br><span class="line">            <span class="type">int</span> <span class="variable">code</span> <span class="operator">=</span> httpException.code();</span><br><span class="line">            <span class="type">String</span> <span class="variable">msg</span> <span class="operator">=</span> httpException.getMessage();</span><br><span class="line">            <span class="keyword">if</span> (code == <span class="number">504</span>) &#123;</span><br><span class="line">                msg = <span class="string">&quot;网络不给力&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (code == <span class="number">502</span> || code == <span class="number">404</span>) &#123;</span><br><span class="line">                msg = <span class="string">&quot;服务器异常，请稍后再试&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            onFailure(msg);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            onFailure(throwable.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">        dismissLoadingDialog();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 直接返回数据给上层</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onNext</span><span class="params">(M m)</span> &#123;</span><br><span class="line">        onSuccess(m);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onComplete</span><span class="params">()</span> &#123;</span><br><span class="line">        dismissLoadingDialog();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">showLoadingDialog</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (mLoadingDialog != <span class="literal">null</span>) &#123;</span><br><span class="line">            mLoadingDialog.show();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">dismissLoadingDialog</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mLoadingDialog != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="type">Activity</span> <span class="variable">activity</span> <span class="operator">=</span> mLoadingDialog.getContext();</span><br><span class="line">            <span class="keyword">if</span> (isInvalidContext(activity)) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            mLoadingDialog.hide();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isInvalidContext</span><span class="params">(Activity activity)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (activity == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (activity.isDestroyed() || activity.isFinishing());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这里的话，dialog是由外部传来的(因为界面通常有一个共用的dialog，我们只要控制这个dialog的显示和消失就可以了)</p>
-<p>值得注意的是，如果你有多个异步操作的话，比如说你不仅调用了Retrofit的网络请求还有其他显示dialog的异步操作，可能会在请求结束后这里就把dialog给dismiss掉了，而其他操作并没有完成~，并不应该把dialog消失。这样子的话，如果你想控制这个dialog的显示的话，可以使用RxDataObserver的默认构造函数，这样请求就不会去控制显示dialog。具体的话视业务场景而定，这里封装这个dialog还是很有用的，因为这种情况不算很多。</p>
-<p>这样我们的请求代码变成了</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">skyNet.logout(userName, DeviceUuidFactory.getDeviceUuid())</span><br><span class="line">                .compose(RxSchedulers.io_main())</span><br><span class="line">                .subscribeWith(<span class="keyword">new</span> <span class="title class_">RxDataObserver</span>&lt;TypeContentBean&gt;() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSuccess</span><span class="params">(TypeContentBean model)</span> &#123;</span><br><span class="line">                        <span class="comment">//这里需要对返回结果的code等进行判断，并需要手动获得我们需要的实体类</span></span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onFailure</span><span class="params">(String msg)</span> &#123;</span><br><span class="line">                        </span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br></pre></td></tr></table></figure>
-
-<h3 id="更更简洁的Observer"><a href="#更更简洁的Observer" class="headerlink" title="更更简洁的Observer"></a>更更简洁的Observer</h3><p>在上述的Observer的基础上，我们可以使我们的Observer更加简洁。</p>
-<p>在一些与服务对接的场景下，通常服务返回的数据会有一些自定义的错误码，还有服务固定返回的数据结构的key，比如说data，这样我们这些对错误码和data的处理可以封装在一起。</p>
-<p>封装一个通用返回结构RxRespond，实体类抽象成泛型T</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 网络请求结果 基类,剥离出数据给上层</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BaseRespond</span>&lt;T&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * code : 200</span></span><br><span class="line"><span class="comment">     * status : SUCCESS</span></span><br><span class="line"><span class="comment">     * msg :</span></span><br><span class="line"><span class="comment">     * data : [&#123;&quot;alarmLevel&quot;:1,&quot;alarmTemperature&quot;:75&#125;,&#123;&quot;alarmLevel&quot;:2,&quot;alarmTemperature&quot;:100&#125;,&#123;&quot;alarmLevel&quot;:3,&quot;alarmTemperature&quot;:150&#125;]</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> code;</span><br><span class="line">    <span class="keyword">private</span> String status;</span><br><span class="line">    <span class="keyword">private</span> String msg;</span><br><span class="line">    <span class="keyword">private</span> T data;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getCode</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setCode</span><span class="params">(<span class="type">int</span> code)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.code = code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getStatus</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> status;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setStatus</span><span class="params">(String status)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.status = status;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getMsg</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setMsg</span><span class="params">(String msg)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.msg = msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> T <span class="title function_">getData</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setData</span><span class="params">(T data)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.data = data;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>RxObserver</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 剥离数据的观察者</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">BaseObserver</span>&lt;M&gt; <span class="keyword">extends</span> <span class="title class_">DisposableObserver</span>&lt;BaseRespond&lt;M&gt;&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onSuccess</span><span class="params">(M model)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onFailure</span><span class="params">(String msg)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> LoadingDialog mLoadingDialog;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">BaseObserver</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> dialog null</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">BaseObserver</span><span class="params">(<span class="meta">@Nullable</span> LoadingDialog dialog)</span> &#123;</span><br><span class="line">        mLoadingDialog = dialog;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onStart</span><span class="params">()</span> &#123;</span><br><span class="line">        showLoadingDialog();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onError</span><span class="params">(Throwable throwable)</span> &#123;</span><br><span class="line">        throwable.printStackTrace();</span><br><span class="line">        <span class="keyword">if</span> (throwable <span class="keyword">instanceof</span> HttpException) &#123;</span><br><span class="line">            <span class="type">HttpException</span> <span class="variable">httpException</span> <span class="operator">=</span> (HttpException) throwable;</span><br><span class="line">            <span class="type">int</span> <span class="variable">code</span> <span class="operator">=</span> httpException.code();</span><br><span class="line">            <span class="type">String</span> <span class="variable">msg</span> <span class="operator">=</span> httpException.getMessage();</span><br><span class="line">            <span class="keyword">if</span> (code == <span class="number">504</span>) &#123;</span><br><span class="line">                msg = <span class="string">&quot;网络不给力&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (code == <span class="number">502</span> || code == <span class="number">404</span>) &#123;</span><br><span class="line">                msg = <span class="string">&quot;服务器异常，请稍后再试&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            onFailure(msg);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            onFailure(throwable.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">        dismissLoadingDialog();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 剥离需要的数据返回给上层</span></span><br><span class="line"><span class="comment">     * 接口请求成功 并不代表真正的成功</span></span><br><span class="line"><span class="comment">     * 需要对业务的code 判断  再分情况返回给上层</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onNext</span><span class="params">(BaseRespond&lt;M&gt; mBaseRespond)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;SUCCESS&quot;</span>.endsWith(mBaseRespond.getStatus())) &#123;</span><br><span class="line">            onSuccess(mBaseRespond.getData());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            onFailure(<span class="string">&quot;服务器Status返回Fail&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onComplete</span><span class="params">()</span> &#123;</span><br><span class="line">        dismissLoadingDialog();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">showLoadingDialog</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (mLoadingDialog != <span class="literal">null</span>) &#123;</span><br><span class="line">            mLoadingDialog.show();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">dismissLoadingDialog</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mLoadingDialog != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="type">Activity</span> <span class="variable">activity</span> <span class="operator">=</span> mLoadingDialog.getContext();</span><br><span class="line">            <span class="keyword">if</span> (isInvalidContext(activity)) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            mLoadingDialog.hide();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isInvalidContext</span><span class="params">(Activity activity)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (activity == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (activity.isDestroyed() || activity.isFinishing());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这样ISkyNet里面的接口签名变成了这样</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 区域温度</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@GET(&quot;/monitor/region/temperature&quot;)</span></span><br><span class="line">Observable&lt;RxRespond&lt;RegionTemperatureList&gt;&gt; <span class="title function_">regionTemperature</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
-
-<p>我们的接口使用代码变成了这样</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">skyNet.regionTemperature()</span><br><span class="line">    				.compose(RxSchedulers.io_main())</span><br><span class="line">                    .subscribeWith(<span class="keyword">new</span> <span class="title class_">BaseObserver</span>&lt;RegionTemperatureList&gt;() &#123;</span><br><span class="line">                        <span class="meta">@Override</span></span><br><span class="line">                        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSuccess</span><span class="params">(RegionTemperatureList model)</span> &#123;</span><br><span class="line">                            <span class="comment">//这里的数据是有效的</span></span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                        <span class="meta">@Override</span></span><br><span class="line">                        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onFailure</span><span class="params">(String msg)</span> &#123;</span><br><span class="line">                            </span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;);</span><br></pre></td></tr></table></figure>
-
-<p>当然，这种写法需要服务端返回的结构格式都是一样的，这样可以减少很多重复处理的代码。</p>
-<h3 id="重复-轮询请求"><a href="#重复-轮询请求" class="headerlink" title="重复/轮询请求"></a>重复/轮询请求</h3><p>直接上代码</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">skyNet.regionTemperature()</span><br><span class="line">                    .repeatWhen(objectObservable -&gt; 		objectObservable.flatMap((Function&lt;Object, ObservableSource&lt;?&gt;&gt;) o -&gt; &#123;</span><br><span class="line">                        <span class="keyword">if</span> (!isMonitoring) &#123;</span><br><span class="line">                            <span class="keyword">return</span> Observable.empty();</span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            <span class="keyword">return</span> Observable.timer(<span class="number">1</span>, TimeUnit.SECONDS);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;))</span><br><span class="line">                    .compose(RxSchedulers.io_main())</span><br><span class="line">                    .subscribeWith(<span class="keyword">new</span> <span class="title class_">BaseObserver</span>&lt;RegionTemperatureList&gt;() &#123;</span><br><span class="line">                        <span class="meta">@Override</span></span><br><span class="line">                        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSuccess</span><span class="params">(RegionTemperatureList model)</span> &#123;</span><br><span class="line">                            </span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                        <span class="meta">@Override</span></span><br><span class="line">                        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onFailure</span><span class="params">(String msg)</span> &#123;</span><br><span class="line">                            </span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;)</span><br></pre></td></tr></table></figure>
-
-<p>当isMonitoring为false的时候结束重复调用，否则1s执行一次。</p>
-<p>值得注意的是如果请求返回错误的话，这个函数就不会重复执行下去，和我们想要的还有点出入，后续需要改进下</p>
-<h3 id="绑定生命周期"><a href="#绑定生命周期" class="headerlink" title="绑定生命周期"></a>绑定生命周期</h3><p>1.引入依赖</p>
-<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">api <span class="string">&#x27;com.trello.rxlifecycle3:rxlifecycle:3.0.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.trello.rxlifecycle3:rxlifecycle-android:3.0.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.trello.rxlifecycle3:rxlifecycle-components:3.0.0&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>2.Activity继承RxAppCompatActivity</p>
-<p>使用<code>.compose(bindToLifecycle())</code>将请求绑定到当前Activity的生命周期</p>
-<h3 id="嵌套网络请求处理"><a href="#嵌套网络请求处理" class="headerlink" title="嵌套网络请求处理"></a>嵌套网络请求处理</h3><p>比如说我们要在一个请求成功后再执行另一个请求</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">skyNet.getPublicKey(System.currentTimeMillis())</span><br><span class="line">                .compose(RxSchedulers.io_main())</span><br><span class="line">                .observeOn(Schedulers.io()) <span class="comment">// （新被观察者，同时也是新观察者）切换到IO线程去发起登录请求</span></span><br><span class="line">                <span class="comment">// 特别注意：因为flatMap是对初始被观察者作变换，所以对于旧被观察者，它是新观察者，所以通过observeOn切换线程</span></span><br><span class="line">                <span class="comment">// 但对于初始观察者，它则是新的被观察者</span></span><br><span class="line">                .flatMap(<span class="keyword">new</span> <span class="title class_">Function</span>&lt;PublicKeyBean, ObservableSource&lt;LoginResultBean&gt;&gt;() &#123; <span class="comment">// 作变换，即作嵌套网络请求</span></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> ObservableSource&lt;LoginResultBean&gt; <span class="title function_">apply</span><span class="params">(PublicKeyBean result)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">                        <span class="comment">// 将网络请求1转换成网络请求2，即发送网络请求2</span></span><br><span class="line">                        <span class="keyword">if</span> (result != <span class="literal">null</span>) &#123;</span><br><span class="line">                            <span class="type">String</span> <span class="variable">modulus</span> <span class="operator">=</span> result.getModulus();</span><br><span class="line">                            <span class="type">String</span> <span class="variable">exponent</span> <span class="operator">=</span> result.getExponent();</span><br><span class="line">                            <span class="type">String</span> <span class="variable">cryPasswd</span> <span class="operator">=</span> CrypUtil.encodePass(passwd, modulus, exponent);</span><br><span class="line">                            <span class="keyword">return</span> skyNet.login(userName, cryPasswd, DeviceUuidFactory.getDeviceUuid());</span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Exception</span>(<span class="string">&quot;getPublicKey Fail&quot;</span>);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;)</span><br><span class="line">                .observeOn(AndroidSchedulers.mainThread())  <span class="comment">// （初始观察者）切换到主线程 处理网络请求2的结果</span></span><br><span class="line">                .subscribeWith(<span class="keyword">new</span> <span class="title class_">RxDataObserver</span>&lt;LoginResultBean&gt;() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSuccess</span><span class="params">(LoginResultBean model)</span> &#123;</span><br><span class="line">                        <span class="keyword">if</span> (model != <span class="literal">null</span> &amp;&amp; model.getResult() == <span class="number">1</span>) &#123;</span><br><span class="line">                            callBack.onLogin(<span class="literal">true</span>);</span><br><span class="line">                            login = <span class="literal">true</span>;</span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            callBack.onLogin(<span class="literal">false</span>);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onFailure</span><span class="params">(String msg)</span> &#123;</span><br><span class="line">                        LogUtils.e(TAG, <span class="string">&quot;login fail: &quot;</span> + msg);</span><br><span class="line">                        callBack.onLogin(<span class="literal">false</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br></pre></td></tr></table></figure>
-
-<p>这里是一段常见的登录代码，需要获取公钥，加密后登录，使用flatmap操作符可以将两个网络请求的结果统一在Observer中处理。</p>
-<h3 id="使用Cookie缓存"><a href="#使用Cookie缓存" class="headerlink" title="使用Cookie缓存"></a>使用Cookie缓存</h3><p>1.引入依赖</p>
-<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="comment">// http cookie管理</span></span><br><span class="line">api <span class="string">&#x27;com.github.franmontiel:PersistentCookieJar:v1.0.1&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>2.在RetrofitManager配置使用</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"> OkHttpClient.<span class="type">Builder</span> <span class="variable">builder</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">OkHttpClient</span>.Builder();</span><br><span class="line"><span class="type">ClearableCookieJar</span> <span class="variable">cookieJar</span> <span class="operator">=</span></span><br><span class="line">                    <span class="keyword">new</span> <span class="title class_">PersistentCookieJar</span>(<span class="keyword">new</span> <span class="title class_">SetCookieCache</span>(), <span class="keyword">new</span> <span class="title class_">SharedPrefsCookiePersistor</span>(MyApplication.getContext()));</span><br><span class="line"></span><br><span class="line">            builder.cookieJar(cookieJar);</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>Retorfit</tag>
       </tags>
   </entry>
   <entry>
@@ -883,57 +774,6 @@
       </categories>
       <tags>
         <tag>adb</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>一封遗失的信</title>
-    <url>/2021/03/20/%E4%B8%80%E5%B0%81%E9%81%97%E5%A4%B1%E7%9A%84%E4%BF%A1/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>这是一封寄出去但没被收到的信,balabala。</p>
-<span id="more"></span>
-
-
-
-<p><img src="https://yrc.vlooktech.com/picgo/202409241443963.jpg"></p>
-<h1 id="电影"><a href="#电影" class="headerlink" title="电影"></a>电影</h1><p>因为3月18日扎导版正义联盟上映,重温了BVS（蝙蝠侠大战超人）。这是一部2016年的电影，正是这部电影的失败直接导致了扎导版正义联盟的流产。</p>
-<p>我重新看了一下这部BVS，然后，我发现这部电影并不是印象中的那么差，相反，多看几遍会发现这是一部很用心思的电影。</p>
-<p>虽然是一部超级英雄电影,但是仔细看之后,发现里面有数不清的彩蛋和伏笔。之前看的时候认为剧情有漏洞,看的糊里糊涂。现在倒是对导演有更深的理解,能够去理解导演的叙事结构和表达的理念。尤其是超人和蝙蝠侠这两个角色。</p>
-<p>超人在这部电影里面代表的是一个耶稣的形象,电影里说：”人们害怕自己不理解的东西”,对于人类,超人就是这样一种存在。而蝙蝠侠也不是我之前认知里的那个蝙蝠侠,尤其和诺兰的蝙蝠侠三部曲里面的蝙蝠侠不一样—这是一个步入中年的蝙蝠侠。在这部电影里，蝙蝠侠因为失去家人变得暴戾,残忍，不断堕入黑暗。</p>
-<p>DC的超级英雄其实就是现代的希腊神话,比起古代神话多加了现代科学的设定,现在我们更习惯地将他归于科幻地范畴。DC讨论社会问题,更关心人物的社会性和人性的阴暗面。这是隔壁漫威所缺少的，所以DC的电影更值得回味。</p>
-<h1 id="书"><a href="#书" class="headerlink" title="书"></a>书</h1><p>&lt;&lt;百年孤独&gt;&gt;</p>
-<p>这本书是由哥伦比亚作家加西亚马尔克斯所写。发表在上个世纪50-60年代。哥伦比亚原来是西班牙的殖民地,书原名”Cien años de soledad”,soledad意为孤独,是西班牙语,英文的孤独是solitude,翻译成百年孤独是很贴切的,高中的时候我就看过这本书，那时候正是因为书名看的，书名又酷又看起来很悲伤。</p>
-<p>这本书让我印象比较深的一个是它的魔幻现实主义风格,还有它对孤独的刻画。</p>
-<p>魔幻现实主义风格,我常开玩笑说它就是”行云流水的一本正经的胡说八道”,书里的一个描述也很贴切,”虚无缥缈又不乏细节”。作者的文笔功力是毋庸置疑的，这源于他本身做过记者，社会活动家，从小耳濡目染拉美的离奇古怪的神话故事。马尔克斯博览群书又热爱生活，这本书一出来就引起了拉美的极大共鸣。因为它根植于现实又带有拉美魔幻主义的色彩，时间线错综复杂，讲述七代人与命运的纠葛，包含爱情，婚姻，革命，内战，政治阴谋，冒险等，故事内容十分丰富。</p>
-<p>很多人说看不懂，或者说因为人名很乱看不下去。其实我觉得，当年轻，阅历尚浅的时候有些东西确实看不懂，也得不到乐趣，但你经历了一些事后，也许能在这本书找到共情，找到生活的力量。这本书处处充满生活的气息，细腻又丰富，在我看来，作者并不是在批判孤独，而且要去关注孤独，理解孤独，与孤独和解。这本书至今是当前文学类别种魔幻现实主义最著名，最出色的例子。不好读，但值得一读。</p>
-<p>附上百年孤独的两段话：</p>
-<p><em>你那么憎恨军人，跟他们斗了那么久，琢磨了他们那么久，最终却变得和他们一样。人世间没有任何理想值得以这样的沉沦作为代价。</em></p>
-<p><em>不论在什么地方都要记住，过去都是假的，回忆没有归路，春天总是一去不返，最疯狂执著的爱情也终究是过眼云烟。</em></p>
-<h1 id="一件小事"><a href="#一件小事" class="headerlink" title="一件小事"></a>一件小事</h1><p>我经常上班迟到。</p>
-<p>每次我迟到的时候都会遇到邻居家的小女孩。她由她的妈妈带着上学， 约摸着4,5岁的样子。有时候是在等电梯的时候遇到,睁着好奇的大眼睛看着我。每次从电梯出来我和她”兵分两路”,在走一段路的时候她总会回头,朝我这边看,跟我招手再见。</p>
-<p>今天刚好事下雨天,她撑着小伞,跟我我招手再见。</p>
-<p>我想起了一首泰国童谣唱的:</p>
-<p><em>你如此可爱</em></p>
-<p><em>ให้เคอรี่มาส่งได้บ่</em></p>
-<p><em>可以让克里快递把你寄过来吗</em></p>
-<p><em>สั่งซื้อไสหนอ</em></p>
-<p><em>在哪儿能买到你</em></p>
-<p><em>เป็นตาฮักปานนี่</em></p>
-<p><em>你如此可爱</em></p>
-<p><em>ให้เคอรี่มาส่งได้บ่</em></p>
-<p><em>可以让克里快递把你寄过来吗</em></p>
-<p><em>สั่งซื้อไสหนอ</em></p>
-<p><em>在哪儿能买到你</em></p>
-<p><em>ยี่ห้ออีหยัง</em></p>
-<p><em>什么牌子的啊</em></p>
-<p><em>เป็นตาซังเอาฮ้าย</em></p>
-<p><em>你可爱至极</em></p>
-<p>如果有空,给我写回信吧</p>
-]]></content>
-      <categories>
-        <category>生活</category>
-      </categories>
-      <tags>
-        <tag>电影</tag>
-        <tag>书</tag>
       </tags>
   </entry>
   <entry>
@@ -1111,6 +951,166 @@
       </categories>
       <tags>
         <tag>iOS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Retrofit 最佳实践</title>
+    <url>/2019/10/28/Retrifit%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>本文是Retrofit结合Rxjava的最佳实践。</p>
+<span id="more"></span>
+
+<h2 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h2><figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="comment">// rxJava</span></span><br><span class="line">api <span class="string">&#x27;io.reactivex.rxjava2:rxandroid:2.1.1&#x27;</span></span><br><span class="line">api <span class="string">&#x27;io.reactivex.rxjava2:rxjava:2.2.9&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 网络</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.okhttp3:okhttp:3.12.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.okhttp3:logging-interceptor:4.2.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.retrofit2:retrofit:2.3.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.retrofit2:converter-gson:2.3.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.squareup.retrofit2:adapter-rxjava2:2.3.0&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><h3 id="改造Http-Api变成一个Java接口"><a href="#改造Http-Api变成一个Java接口" class="headerlink" title="改造Http Api变成一个Java接口"></a>改造Http Api变成一个Java接口</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取公钥</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@GET(&quot;/smart_platform/logon/getPublicKey&quot;)</span></span><br><span class="line">Observable&lt;PublicKeyBean&gt; <span class="title function_">getPublicKey</span><span class="params">(<span class="meta">@Query(&quot;_&quot;)</span> <span class="type">long</span> systemtime)</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>函数签名可以与服务端接口命名一致</li>
+<li>实体类，如这里的<code>PublicKeyBean</code>代码可以根据服务端返回的json用GsonFormat生成</li>
+</ul>
+<h3 id="定义一个Serveice接口"><a href="#定义一个Serveice接口" class="headerlink" title="定义一个Serveice接口"></a>定义一个Serveice接口</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">ISkyNet</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取公钥</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@GET(&quot;/smart_platform/logon/getPublicKey&quot;)</span></span><br><span class="line">    Observable&lt;PublicKeyBean&gt; <span class="title function_">getPublicKey</span><span class="params">(<span class="meta">@Query(&quot;_&quot;)</span> <span class="type">long</span> systemtime)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建RetrofitManager"><a href="#创建RetrofitManager" class="headerlink" title="创建RetrofitManager"></a>创建RetrofitManager</h3><p> 定义一个<code>RetrofitManager</code>，这个类主要来设置请求的base_url，初始化OkHttp，设置公共请求头，OKHttp基本配置，打印等。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RetrofitManager</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">TAG</span> <span class="operator">=</span> <span class="string">&quot;RetrofitManager&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">SEVER_URL</span> <span class="operator">=</span> <span class="string">&quot;http://dareway.cn:43001&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">DEFAULT_TIME_OUT</span> <span class="operator">=</span> <span class="number">5</span>;<span class="comment">//超时时间 5s</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">DEFAULT_READ_TIME_OUT</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Retrofit mRetrofit;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> RetrofitManager mManager;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> HashSet&lt;String&gt; cookies = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">RetrofitManager</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (mRetrofit == <span class="literal">null</span>) &#123;</span><br><span class="line">            OkHttpClient.<span class="type">Builder</span> <span class="variable">builder</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">OkHttpClient</span>.Builder();</span><br><span class="line">            builder.connectTimeout(DEFAULT_TIME_OUT, TimeUnit.SECONDS);<span class="comment">//连接超时时间</span></span><br><span class="line">            builder.writeTimeout(DEFAULT_READ_TIME_OUT, TimeUnit.SECONDS);<span class="comment">//写操作 超时时间</span></span><br><span class="line">            builder.readTimeout(DEFAULT_READ_TIME_OUT, TimeUnit.SECONDS);<span class="comment">//读操作超时时间</span></span><br><span class="line">            <span class="type">ClearableCookieJar</span> <span class="variable">cookieJar</span> <span class="operator">=</span></span><br><span class="line">                    <span class="keyword">new</span> <span class="title class_">PersistentCookieJar</span>(<span class="keyword">new</span> <span class="title class_">SetCookieCache</span>(), <span class="keyword">new</span> <span class="title class_">SharedPrefsCookiePersistor</span>(MyApplication.getContext()));</span><br><span class="line"></span><br><span class="line">            builder.cookieJar(cookieJar);</span><br><span class="line"></span><br><span class="line">            <span class="type">HttpLoggingInterceptor</span> <span class="variable">loggingInterceptor</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HttpLoggingInterceptor</span>(<span class="keyword">new</span> <span class="title class_">HttpLogger</span>());</span><br><span class="line">            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);</span><br><span class="line">            <span class="comment">//设置 Debug Log 模式</span></span><br><span class="line">            builder.addNetworkInterceptor(loggingInterceptor);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 创建Retrofit</span></span><br><span class="line">            mRetrofit = <span class="keyword">new</span> <span class="title class_">Retrofit</span>.Builder()</span><br><span class="line">                    .baseUrl(SEVER_URL)</span><br><span class="line">                    .addConverterFactory(GsonConverterFactory.create())</span><br><span class="line">                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())</span><br><span class="line">                    .client(builder.build())</span><br><span class="line">                    .build();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取RetrofitManager</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> RetrofitManager</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> RetrofitManager <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (mManager == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (RetrofitManager.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (mManager == <span class="literal">null</span>) &#123;</span><br><span class="line">                    mManager = <span class="keyword">new</span> <span class="title class_">RetrofitManager</span>();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> mManager;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取对应的Service</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> service Service 的 class</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> &lt;T&gt;</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> &lt;T&gt; T <span class="title function_">create</span><span class="params">(Class&lt;T&gt; service)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> mRetrofit.create(service);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">HttpLogger</span> <span class="keyword">implements</span> <span class="title class_">HttpLoggingInterceptor</span>.Logger &#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">log</span><span class="params">(String message)</span> &#123;</span><br><span class="line">            <span class="comment">// 使用Logger打印</span></span><br><span class="line">            Logger.t(<span class="string">&quot;OkHttp&quot;</span>).d(message);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="RetrofitManager生成一个-Service-接口的实现"><a href="#RetrofitManager生成一个-Service-接口的实现" class="headerlink" title="RetrofitManager生成一个 Service 接口的实现"></a>RetrofitManager生成一个 Service 接口的实现</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">ISkyNet</span> <span class="variable">skyNet</span> <span class="operator">=</span> RetrofitManager.getInstance().create(ISkyNet.class);</span><br></pre></td></tr></table></figure>
+
+<h3 id="接口请求"><a href="#接口请求" class="headerlink" title="接口请求"></a>接口请求</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">skyNet.getPublicKey(System.currentTimeMillis())</span><br><span class="line">                .subscribeOn(Schedulers.io())<span class="comment">//在io线程执行</span></span><br><span class="line">                .observeOn(AndroidSchedulers.mainThread())<span class="comment">//在主线程回调</span></span><br><span class="line">                .subscribeWith(<span class="keyword">new</span> <span class="title class_">Observer</span>&lt;PublicKeyBean&gt;() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSubscribe</span><span class="params">(Disposable d)</span> &#123;</span><br><span class="line">                        </span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onNext</span><span class="params">(PublicKeyBean publicKeyBean)</span> &#123;</span><br><span class="line"></span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onError</span><span class="params">(Throwable e)</span> &#123;</span><br><span class="line"></span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onComplete</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>至此，一个请求可以方便的使用Retrofit进行。</p>
+<p>这里我们可以看下Retrofit的优越性</p>
+<ul>
+<li> API 声明：接口方法通过注解的方式及其参数指示如何处理一个请求，请求方式一目了然</li>
+<li> 所有请求采用同一份配置(如Headers，Log打印)，在我们和同一个服务对接的时候不必写很多重复代码</li>
+<li> 结合Rxjava的写法简洁美观，包装了线程切换和异常回调</li>
+<li> 提供各种各样的转换器，支持<code>JSON,protocol buffers</code>等，省去请求返回结果和实体的转换代码</li>
+</ul>
+<h3 id="一些必须知道的事情"><a href="#一些必须知道的事情" class="headerlink" title="一些必须知道的事情"></a>一些必须知道的事情</h3><h4 id="可选参数"><a href="#可选参数" class="headerlink" title="可选参数"></a>可选参数</h4><p>如下接口：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@GET(&quot;index.php?r=default/homepage&quot;)</span></span><br><span class="line">Observable&lt;Response&lt;Exercise&gt;&gt; <span class="title function_">getDataList</span><span class="params">(<span class="meta">@Query(&quot;page&quot;)</span> <span class="type">int</span> page)</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@GET(&quot;index.php?r=default/homepage&quot;)</span></span><br><span class="line">Observable&lt;Response&lt;Exercise&gt;&gt; <span class="title function_">getDataList</span><span class="params">(<span class="meta">@Query(&quot;page&quot;)</span> <span class="type">int</span> page, <span class="meta">@Query(&quot;user_id&quot;)</span> <span class="type">int</span> userId)</span>;</span><br></pre></td></tr></table></figure>
+
+
+<p>两个接口，区别就在于有没有『user_id』参数。</p>
+<p>这样做，总感觉有点罗嗦，体现不出Retrofit的优越性。有没有更好的方法呢？当然有，那就是动态参数（其实很简单）。</p>
+<p>上面的两个接口合并为一个：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@GET(&quot;index.php?r=default/homepage&quot;)</span></span><br><span class="line">Observable&lt;Response&lt;Exercise&gt;&gt; <span class="title function_">getDataList</span><span class="params">(<span class="meta">@Query(&quot;page&quot;)</span> <span class="type">int</span> page,<span class="meta">@Query(&quot;user_id&quot;)</span> Integer userId)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>使用<br>登录：</p>
+<p><code>APIWrapper.getInstance().getDataList(mCurrentPage, 10);</code><br>未登录：</p>
+<p><code>APIWrapper.getInstance().getDataList(mCurrentPage, null);</code></p>
+<p>Retrofit运行null值参数，如果在实际调用的时候传一个null, 系统也不会出错，会把这个参数当作没有。</p>
+<h3 id="混淆配置"><a href="#混淆配置" class="headerlink" title="混淆配置"></a>混淆配置</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">okio</span></span><br><span class="line">-dontwarn org.codehaus.mojo.animal_sniffer.*</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">retrofit</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Platform calls Class.forName on types <span class="built_in">which</span> <span class="keyword">do</span> not exist on Android to determine platform.</span></span><br><span class="line">-dontnote retrofit2.Platform</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Platform used when running on Java 8 VMs. Will not be used at runtime.</span></span><br><span class="line">-dontwarn retrofit2.Platform$Java8</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Retain generic <span class="built_in">type</span> information <span class="keyword">for</span> use by reflection by converters and adapters.</span></span><br><span class="line">-keepattributes Signature</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Retain declared checked exceptions <span class="keyword">for</span> use by a Proxy instance.</span></span><br><span class="line">-keepattributes Exceptions</span><br></pre></td></tr></table></figure>
+
+<h2 id="进阶使用"><a href="#进阶使用" class="headerlink" title="进阶使用"></a>进阶使用</h2><h3 id="更简单的线程封装"><a href="#更简单的线程封装" class="headerlink" title="更简单的线程封装"></a>更简单的线程封装</h3><p>利用compose操作符，可以将</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">.subscribeOn(Schedulers.io())<span class="comment">//在io线程执行</span></span><br><span class="line">.observeOn(AndroidSchedulers.mainThread())<span class="comment">//在主线程回调</span></span><br></pre></td></tr></table></figure>
+
+<p>合并为一行代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">.compose(RxSchedulers.io_main())<span class="comment">//在io线程执行，在主线程回调</span></span><br></pre></td></tr></table></figure>
+
+<p>RxSchedulers的代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RxSchedulers</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; ObservableTransformer&lt;T, T&gt; <span class="title function_">io_main</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> upstream -&gt;</span><br><span class="line">                upstream.subscribeOn(Schedulers.io())</span><br><span class="line">                        .unsubscribeOn(Schedulers.io())</span><br><span class="line">                        .observeOn(AndroidSchedulers.mainThread());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="更简洁的Observer"><a href="#更简洁的Observer" class="headerlink" title="更简洁的Observer"></a>更简洁的Observer</h3><p>我们可以封装一个Observer，用来</p>
+<p>1.处理网络请求接口返回错误码 2.减少回调接口数 3.封装dialog的显示(因为通常dialog都是在onSubscribe的时候显示，onOberver的时候消失)</p>
+<p>RxDataObserver</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">RxDataObserver</span>&lt;M&gt; <span class="keyword">extends</span> <span class="title class_">DisposableObserver</span>&lt;M&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> LoadingDialog mLoadingDialog;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onSuccess</span><span class="params">(M model)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onFailure</span><span class="params">(String msg)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">RxDataObserver</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> dialog may be null,null present not dialog show</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">RxDataObserver</span><span class="params">(<span class="meta">@Nullable</span> LoadingDialog dialog)</span> &#123;</span><br><span class="line">        mLoadingDialog = dialog;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onStart</span><span class="params">()</span> &#123;</span><br><span class="line">        showLoadingDialog();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onError</span><span class="params">(Throwable throwable)</span> &#123;</span><br><span class="line">        throwable.printStackTrace();</span><br><span class="line">        <span class="keyword">if</span> (throwable <span class="keyword">instanceof</span> HttpException) &#123;</span><br><span class="line">            <span class="type">HttpException</span> <span class="variable">httpException</span> <span class="operator">=</span> (HttpException) throwable;</span><br><span class="line">            <span class="type">int</span> <span class="variable">code</span> <span class="operator">=</span> httpException.code();</span><br><span class="line">            <span class="type">String</span> <span class="variable">msg</span> <span class="operator">=</span> httpException.getMessage();</span><br><span class="line">            <span class="keyword">if</span> (code == <span class="number">504</span>) &#123;</span><br><span class="line">                msg = <span class="string">&quot;网络不给力&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (code == <span class="number">502</span> || code == <span class="number">404</span>) &#123;</span><br><span class="line">                msg = <span class="string">&quot;服务器异常，请稍后再试&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            onFailure(msg);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            onFailure(throwable.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">        dismissLoadingDialog();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 直接返回数据给上层</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onNext</span><span class="params">(M m)</span> &#123;</span><br><span class="line">        onSuccess(m);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onComplete</span><span class="params">()</span> &#123;</span><br><span class="line">        dismissLoadingDialog();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">showLoadingDialog</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (mLoadingDialog != <span class="literal">null</span>) &#123;</span><br><span class="line">            mLoadingDialog.show();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">dismissLoadingDialog</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mLoadingDialog != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="type">Activity</span> <span class="variable">activity</span> <span class="operator">=</span> mLoadingDialog.getContext();</span><br><span class="line">            <span class="keyword">if</span> (isInvalidContext(activity)) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            mLoadingDialog.hide();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isInvalidContext</span><span class="params">(Activity activity)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (activity == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (activity.isDestroyed() || activity.isFinishing());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里的话，dialog是由外部传来的(因为界面通常有一个共用的dialog，我们只要控制这个dialog的显示和消失就可以了)</p>
+<p>值得注意的是，如果你有多个异步操作的话，比如说你不仅调用了Retrofit的网络请求还有其他显示dialog的异步操作，可能会在请求结束后这里就把dialog给dismiss掉了，而其他操作并没有完成~，并不应该把dialog消失。这样子的话，如果你想控制这个dialog的显示的话，可以使用RxDataObserver的默认构造函数，这样请求就不会去控制显示dialog。具体的话视业务场景而定，这里封装这个dialog还是很有用的，因为这种情况不算很多。</p>
+<p>这样我们的请求代码变成了</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">skyNet.logout(userName, DeviceUuidFactory.getDeviceUuid())</span><br><span class="line">                .compose(RxSchedulers.io_main())</span><br><span class="line">                .subscribeWith(<span class="keyword">new</span> <span class="title class_">RxDataObserver</span>&lt;TypeContentBean&gt;() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSuccess</span><span class="params">(TypeContentBean model)</span> &#123;</span><br><span class="line">                        <span class="comment">//这里需要对返回结果的code等进行判断，并需要手动获得我们需要的实体类</span></span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onFailure</span><span class="params">(String msg)</span> &#123;</span><br><span class="line">                        </span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="更更简洁的Observer"><a href="#更更简洁的Observer" class="headerlink" title="更更简洁的Observer"></a>更更简洁的Observer</h3><p>在上述的Observer的基础上，我们可以使我们的Observer更加简洁。</p>
+<p>在一些与服务对接的场景下，通常服务返回的数据会有一些自定义的错误码，还有服务固定返回的数据结构的key，比如说data，这样我们这些对错误码和data的处理可以封装在一起。</p>
+<p>封装一个通用返回结构RxRespond，实体类抽象成泛型T</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 网络请求结果 基类,剥离出数据给上层</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BaseRespond</span>&lt;T&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * code : 200</span></span><br><span class="line"><span class="comment">     * status : SUCCESS</span></span><br><span class="line"><span class="comment">     * msg :</span></span><br><span class="line"><span class="comment">     * data : [&#123;&quot;alarmLevel&quot;:1,&quot;alarmTemperature&quot;:75&#125;,&#123;&quot;alarmLevel&quot;:2,&quot;alarmTemperature&quot;:100&#125;,&#123;&quot;alarmLevel&quot;:3,&quot;alarmTemperature&quot;:150&#125;]</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> code;</span><br><span class="line">    <span class="keyword">private</span> String status;</span><br><span class="line">    <span class="keyword">private</span> String msg;</span><br><span class="line">    <span class="keyword">private</span> T data;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getCode</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setCode</span><span class="params">(<span class="type">int</span> code)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.code = code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getStatus</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> status;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setStatus</span><span class="params">(String status)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.status = status;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getMsg</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setMsg</span><span class="params">(String msg)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.msg = msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> T <span class="title function_">getData</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setData</span><span class="params">(T data)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.data = data;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>RxObserver</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 剥离数据的观察者</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">BaseObserver</span>&lt;M&gt; <span class="keyword">extends</span> <span class="title class_">DisposableObserver</span>&lt;BaseRespond&lt;M&gt;&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onSuccess</span><span class="params">(M model)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onFailure</span><span class="params">(String msg)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> LoadingDialog mLoadingDialog;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">BaseObserver</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> dialog null</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">BaseObserver</span><span class="params">(<span class="meta">@Nullable</span> LoadingDialog dialog)</span> &#123;</span><br><span class="line">        mLoadingDialog = dialog;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onStart</span><span class="params">()</span> &#123;</span><br><span class="line">        showLoadingDialog();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onError</span><span class="params">(Throwable throwable)</span> &#123;</span><br><span class="line">        throwable.printStackTrace();</span><br><span class="line">        <span class="keyword">if</span> (throwable <span class="keyword">instanceof</span> HttpException) &#123;</span><br><span class="line">            <span class="type">HttpException</span> <span class="variable">httpException</span> <span class="operator">=</span> (HttpException) throwable;</span><br><span class="line">            <span class="type">int</span> <span class="variable">code</span> <span class="operator">=</span> httpException.code();</span><br><span class="line">            <span class="type">String</span> <span class="variable">msg</span> <span class="operator">=</span> httpException.getMessage();</span><br><span class="line">            <span class="keyword">if</span> (code == <span class="number">504</span>) &#123;</span><br><span class="line">                msg = <span class="string">&quot;网络不给力&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (code == <span class="number">502</span> || code == <span class="number">404</span>) &#123;</span><br><span class="line">                msg = <span class="string">&quot;服务器异常，请稍后再试&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            onFailure(msg);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            onFailure(throwable.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">        dismissLoadingDialog();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 剥离需要的数据返回给上层</span></span><br><span class="line"><span class="comment">     * 接口请求成功 并不代表真正的成功</span></span><br><span class="line"><span class="comment">     * 需要对业务的code 判断  再分情况返回给上层</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onNext</span><span class="params">(BaseRespond&lt;M&gt; mBaseRespond)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;SUCCESS&quot;</span>.endsWith(mBaseRespond.getStatus())) &#123;</span><br><span class="line">            onSuccess(mBaseRespond.getData());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            onFailure(<span class="string">&quot;服务器Status返回Fail&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onComplete</span><span class="params">()</span> &#123;</span><br><span class="line">        dismissLoadingDialog();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">showLoadingDialog</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (mLoadingDialog != <span class="literal">null</span>) &#123;</span><br><span class="line">            mLoadingDialog.show();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">dismissLoadingDialog</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mLoadingDialog != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="type">Activity</span> <span class="variable">activity</span> <span class="operator">=</span> mLoadingDialog.getContext();</span><br><span class="line">            <span class="keyword">if</span> (isInvalidContext(activity)) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            mLoadingDialog.hide();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isInvalidContext</span><span class="params">(Activity activity)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (activity == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (activity.isDestroyed() || activity.isFinishing());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样ISkyNet里面的接口签名变成了这样</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 区域温度</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@GET(&quot;/monitor/region/temperature&quot;)</span></span><br><span class="line">Observable&lt;RxRespond&lt;RegionTemperatureList&gt;&gt; <span class="title function_">regionTemperature</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
+
+<p>我们的接口使用代码变成了这样</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">skyNet.regionTemperature()</span><br><span class="line">    				.compose(RxSchedulers.io_main())</span><br><span class="line">                    .subscribeWith(<span class="keyword">new</span> <span class="title class_">BaseObserver</span>&lt;RegionTemperatureList&gt;() &#123;</span><br><span class="line">                        <span class="meta">@Override</span></span><br><span class="line">                        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSuccess</span><span class="params">(RegionTemperatureList model)</span> &#123;</span><br><span class="line">                            <span class="comment">//这里的数据是有效的</span></span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                        <span class="meta">@Override</span></span><br><span class="line">                        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onFailure</span><span class="params">(String msg)</span> &#123;</span><br><span class="line">                            </span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>当然，这种写法需要服务端返回的结构格式都是一样的，这样可以减少很多重复处理的代码。</p>
+<h3 id="重复-轮询请求"><a href="#重复-轮询请求" class="headerlink" title="重复/轮询请求"></a>重复/轮询请求</h3><p>直接上代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">skyNet.regionTemperature()</span><br><span class="line">                    .repeatWhen(objectObservable -&gt; 		objectObservable.flatMap((Function&lt;Object, ObservableSource&lt;?&gt;&gt;) o -&gt; &#123;</span><br><span class="line">                        <span class="keyword">if</span> (!isMonitoring) &#123;</span><br><span class="line">                            <span class="keyword">return</span> Observable.empty();</span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            <span class="keyword">return</span> Observable.timer(<span class="number">1</span>, TimeUnit.SECONDS);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;))</span><br><span class="line">                    .compose(RxSchedulers.io_main())</span><br><span class="line">                    .subscribeWith(<span class="keyword">new</span> <span class="title class_">BaseObserver</span>&lt;RegionTemperatureList&gt;() &#123;</span><br><span class="line">                        <span class="meta">@Override</span></span><br><span class="line">                        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSuccess</span><span class="params">(RegionTemperatureList model)</span> &#123;</span><br><span class="line">                            </span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                        <span class="meta">@Override</span></span><br><span class="line">                        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onFailure</span><span class="params">(String msg)</span> &#123;</span><br><span class="line">                            </span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>当isMonitoring为false的时候结束重复调用，否则1s执行一次。</p>
+<p>值得注意的是如果请求返回错误的话，这个函数就不会重复执行下去，和我们想要的还有点出入，后续需要改进下</p>
+<h3 id="绑定生命周期"><a href="#绑定生命周期" class="headerlink" title="绑定生命周期"></a>绑定生命周期</h3><p>1.引入依赖</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">api <span class="string">&#x27;com.trello.rxlifecycle3:rxlifecycle:3.0.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.trello.rxlifecycle3:rxlifecycle-android:3.0.0&#x27;</span></span><br><span class="line">api <span class="string">&#x27;com.trello.rxlifecycle3:rxlifecycle-components:3.0.0&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>2.Activity继承RxAppCompatActivity</p>
+<p>使用<code>.compose(bindToLifecycle())</code>将请求绑定到当前Activity的生命周期</p>
+<h3 id="嵌套网络请求处理"><a href="#嵌套网络请求处理" class="headerlink" title="嵌套网络请求处理"></a>嵌套网络请求处理</h3><p>比如说我们要在一个请求成功后再执行另一个请求</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">skyNet.getPublicKey(System.currentTimeMillis())</span><br><span class="line">                .compose(RxSchedulers.io_main())</span><br><span class="line">                .observeOn(Schedulers.io()) <span class="comment">// （新被观察者，同时也是新观察者）切换到IO线程去发起登录请求</span></span><br><span class="line">                <span class="comment">// 特别注意：因为flatMap是对初始被观察者作变换，所以对于旧被观察者，它是新观察者，所以通过observeOn切换线程</span></span><br><span class="line">                <span class="comment">// 但对于初始观察者，它则是新的被观察者</span></span><br><span class="line">                .flatMap(<span class="keyword">new</span> <span class="title class_">Function</span>&lt;PublicKeyBean, ObservableSource&lt;LoginResultBean&gt;&gt;() &#123; <span class="comment">// 作变换，即作嵌套网络请求</span></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> ObservableSource&lt;LoginResultBean&gt; <span class="title function_">apply</span><span class="params">(PublicKeyBean result)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">                        <span class="comment">// 将网络请求1转换成网络请求2，即发送网络请求2</span></span><br><span class="line">                        <span class="keyword">if</span> (result != <span class="literal">null</span>) &#123;</span><br><span class="line">                            <span class="type">String</span> <span class="variable">modulus</span> <span class="operator">=</span> result.getModulus();</span><br><span class="line">                            <span class="type">String</span> <span class="variable">exponent</span> <span class="operator">=</span> result.getExponent();</span><br><span class="line">                            <span class="type">String</span> <span class="variable">cryPasswd</span> <span class="operator">=</span> CrypUtil.encodePass(passwd, modulus, exponent);</span><br><span class="line">                            <span class="keyword">return</span> skyNet.login(userName, cryPasswd, DeviceUuidFactory.getDeviceUuid());</span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Exception</span>(<span class="string">&quot;getPublicKey Fail&quot;</span>);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;)</span><br><span class="line">                .observeOn(AndroidSchedulers.mainThread())  <span class="comment">// （初始观察者）切换到主线程 处理网络请求2的结果</span></span><br><span class="line">                .subscribeWith(<span class="keyword">new</span> <span class="title class_">RxDataObserver</span>&lt;LoginResultBean&gt;() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSuccess</span><span class="params">(LoginResultBean model)</span> &#123;</span><br><span class="line">                        <span class="keyword">if</span> (model != <span class="literal">null</span> &amp;&amp; model.getResult() == <span class="number">1</span>) &#123;</span><br><span class="line">                            callBack.onLogin(<span class="literal">true</span>);</span><br><span class="line">                            login = <span class="literal">true</span>;</span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            callBack.onLogin(<span class="literal">false</span>);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onFailure</span><span class="params">(String msg)</span> &#123;</span><br><span class="line">                        LogUtils.e(TAG, <span class="string">&quot;login fail: &quot;</span> + msg);</span><br><span class="line">                        callBack.onLogin(<span class="literal">false</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>这里是一段常见的登录代码，需要获取公钥，加密后登录，使用flatmap操作符可以将两个网络请求的结果统一在Observer中处理。</p>
+<h3 id="使用Cookie缓存"><a href="#使用Cookie缓存" class="headerlink" title="使用Cookie缓存"></a>使用Cookie缓存</h3><p>1.引入依赖</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="comment">// http cookie管理</span></span><br><span class="line">api <span class="string">&#x27;com.github.franmontiel:PersistentCookieJar:v1.0.1&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>2.在RetrofitManager配置使用</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"> OkHttpClient.<span class="type">Builder</span> <span class="variable">builder</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">OkHttpClient</span>.Builder();</span><br><span class="line"><span class="type">ClearableCookieJar</span> <span class="variable">cookieJar</span> <span class="operator">=</span></span><br><span class="line">                    <span class="keyword">new</span> <span class="title class_">PersistentCookieJar</span>(<span class="keyword">new</span> <span class="title class_">SetCookieCache</span>(), <span class="keyword">new</span> <span class="title class_">SharedPrefsCookiePersistor</span>(MyApplication.getContext()));</span><br><span class="line"></span><br><span class="line">            builder.cookieJar(cookieJar);</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>Retorfit</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一封遗失的信</title>
+    <url>/2021/03/20/%E4%B8%80%E5%B0%81%E9%81%97%E5%A4%B1%E7%9A%84%E4%BF%A1/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>这是一封寄出去但没被收到的信,balabala。</p>
+<span id="more"></span>
+
+
+
+<p><img src="https://yrc.vlooktech.com/picgo/202409241443963.jpg"></p>
+<h1 id="电影"><a href="#电影" class="headerlink" title="电影"></a>电影</h1><p>因为3月18日扎导版正义联盟上映,重温了BVS（蝙蝠侠大战超人）。这是一部2016年的电影，正是这部电影的失败直接导致了扎导版正义联盟的流产。</p>
+<p>我重新看了一下这部BVS，然后，我发现这部电影并不是印象中的那么差，相反，多看几遍会发现这是一部很用心思的电影。</p>
+<p>虽然是一部超级英雄电影,但是仔细看之后,发现里面有数不清的彩蛋和伏笔。之前看的时候认为剧情有漏洞,看的糊里糊涂。现在倒是对导演有更深的理解,能够去理解导演的叙事结构和表达的理念。尤其是超人和蝙蝠侠这两个角色。</p>
+<p>超人在这部电影里面代表的是一个耶稣的形象,电影里说：”人们害怕自己不理解的东西”,对于人类,超人就是这样一种存在。而蝙蝠侠也不是我之前认知里的那个蝙蝠侠,尤其和诺兰的蝙蝠侠三部曲里面的蝙蝠侠不一样—这是一个步入中年的蝙蝠侠。在这部电影里，蝙蝠侠因为失去家人变得暴戾,残忍，不断堕入黑暗。</p>
+<p>DC的超级英雄其实就是现代的希腊神话,比起古代神话多加了现代科学的设定,现在我们更习惯地将他归于科幻地范畴。DC讨论社会问题,更关心人物的社会性和人性的阴暗面。这是隔壁漫威所缺少的，所以DC的电影更值得回味。</p>
+<h1 id="书"><a href="#书" class="headerlink" title="书"></a>书</h1><p>&lt;&lt;百年孤独&gt;&gt;</p>
+<p>这本书是由哥伦比亚作家加西亚马尔克斯所写。发表在上个世纪50-60年代。哥伦比亚原来是西班牙的殖民地,书原名”Cien años de soledad”,soledad意为孤独,是西班牙语,英文的孤独是solitude,翻译成百年孤独是很贴切的,高中的时候我就看过这本书，那时候正是因为书名看的，书名又酷又看起来很悲伤。</p>
+<p>这本书让我印象比较深的一个是它的魔幻现实主义风格,还有它对孤独的刻画。</p>
+<p>魔幻现实主义风格,我常开玩笑说它就是”行云流水的一本正经的胡说八道”,书里的一个描述也很贴切,”虚无缥缈又不乏细节”。作者的文笔功力是毋庸置疑的，这源于他本身做过记者，社会活动家，从小耳濡目染拉美的离奇古怪的神话故事。马尔克斯博览群书又热爱生活，这本书一出来就引起了拉美的极大共鸣。因为它根植于现实又带有拉美魔幻主义的色彩，时间线错综复杂，讲述七代人与命运的纠葛，包含爱情，婚姻，革命，内战，政治阴谋，冒险等，故事内容十分丰富。</p>
+<p>很多人说看不懂，或者说因为人名很乱看不下去。其实我觉得，当年轻，阅历尚浅的时候有些东西确实看不懂，也得不到乐趣，但你经历了一些事后，也许能在这本书找到共情，找到生活的力量。这本书处处充满生活的气息，细腻又丰富，在我看来，作者并不是在批判孤独，而且要去关注孤独，理解孤独，与孤独和解。这本书至今是当前文学类别种魔幻现实主义最著名，最出色的例子。不好读，但值得一读。</p>
+<p>附上百年孤独的两段话：</p>
+<p><em>你那么憎恨军人，跟他们斗了那么久，琢磨了他们那么久，最终却变得和他们一样。人世间没有任何理想值得以这样的沉沦作为代价。</em></p>
+<p><em>不论在什么地方都要记住，过去都是假的，回忆没有归路，春天总是一去不返，最疯狂执著的爱情也终究是过眼云烟。</em></p>
+<h1 id="一件小事"><a href="#一件小事" class="headerlink" title="一件小事"></a>一件小事</h1><p>我经常上班迟到。</p>
+<p>每次我迟到的时候都会遇到邻居家的小女孩。她由她的妈妈带着上学， 约摸着4,5岁的样子。有时候是在等电梯的时候遇到,睁着好奇的大眼睛看着我。每次从电梯出来我和她”兵分两路”,在走一段路的时候她总会回头,朝我这边看,跟我招手再见。</p>
+<p>今天刚好事下雨天,她撑着小伞,跟我我招手再见。</p>
+<p>我想起了一首泰国童谣唱的:</p>
+<p><em>你如此可爱</em></p>
+<p><em>ให้เคอรี่มาส่งได้บ่</em></p>
+<p><em>可以让克里快递把你寄过来吗</em></p>
+<p><em>สั่งซื้อไสหนอ</em></p>
+<p><em>在哪儿能买到你</em></p>
+<p><em>เป็นตาฮักปานนี่</em></p>
+<p><em>你如此可爱</em></p>
+<p><em>ให้เคอรี่มาส่งได้บ่</em></p>
+<p><em>可以让克里快递把你寄过来吗</em></p>
+<p><em>สั่งซื้อไสหนอ</em></p>
+<p><em>在哪儿能买到你</em></p>
+<p><em>ยี่ห้ออีหยัง</em></p>
+<p><em>什么牌子的啊</em></p>
+<p><em>เป็นตาซังเอาฮ้าย</em></p>
+<p><em>你可爱至极</em></p>
+<p>如果有空,给我写回信吧</p>
+]]></content>
+      <categories>
+        <category>生活</category>
+      </categories>
+      <tags>
+        <tag>电影</tag>
+        <tag>书</tag>
       </tags>
   </entry>
   <entry>
@@ -1299,6 +1299,131 @@
       </tags>
   </entry>
   <entry>
+    <title>如何提高效率</title>
+    <url>/2018/03/20/%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98%E6%95%88%E7%8E%87/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>转自：<a href="https://www.mifengtd.cn/articles/how-to-be-productive-aaron-swartz.html">如何提高效率</a></p>
+<p>Aaron Swartz写过一篇很有名的文章，叫做《<a href="http://www.aaronsw.com/weblog/productivity">HOWTO: Be more productive</a>》（如何提高效率）。这篇文章写的实在是太好了，我看了好多遍，很赞同作者的观点。我借鉴了作者提到的一些方法并运用到自己的生活中，发现确实有效果，所以我愿意让更多的人看到这篇文章。<a href="http://www.aaronsw.com/">Aaron Swartz</a>这个人绝对是大牛人，他14时就参与了RSS1.0的制定，他在Stanford读了一年就主动退学了，成为了YC的一员，他的公司后来与reddit合并了，他还是web.py框架的创始人。</p>
+<span id="more"></span>
+
+<p>废话少说，下面就是译文:</p>
+<p>肯定有人跟你说过这样的话“你有看电视的那么长时间，都可以用来写一本书了”，不可否认写书肯定比看电视更好的利用了时间，但是这个结论的成立需要一个假设：“时间是可互换的”，也就是说看电视的时间可以轻松的用来写书。但是很遗憾，事实并非如此。</p>
+<p>不同的时间有不同的质量等级。如果我在走向地铁站的路上发现自己的笔记本忘带了，我就很难集中<a href="http://www.mifengtd.cn/articles/8-tips-for-razor-sharp-concentration.html">注意力</a>写文章。同样，当你不停的被打断的时候，你也很难集中注意力。这里还有一些心理和情感上的因素，有的时候我心情很好，愿意<a href="http://www.mifengtd.cn/articles/be-proactive-1.html">主动</a>去做一些事，但还有一些时候我感到很抑郁和疲惫，就只能看看电视了。</p>
+<p>如果你想变的更加有效率，你必须意识到这个事实，并且很好的处理它。首先，你必须很好的利用不同种类的时间。其次，你必须让你的时间更有效率。</p>
+<h3 id="更有效的利用你的时间"><a href="#更有效的利用你的时间" class="headerlink" title="更有效的利用你的时间"></a>更有效的利用你的时间</h3><ul>
+<li><strong>选择合适的问题</strong></li>
+</ul>
+<p>生命是如此的短暂，为什么浪费时间做一些没意义的事呢？做一些让你感到舒适的事很容易，但是你应该问问自己为什么要做这些事呢？有没有一些<a href="http://www.mifengtd.cn/articles/double_productivity_this_week.html">更重要的事</a>等着你去做？为什么你不去做那些事呢？这些问题很难回答，但是每解决一个都会让你更有效率。</p>
+<p>这不是说你所有的时间都应该用来做那些最重要的事。我的时间就肯定不是这样（否则，我现在就不会在写这篇文章了）。但是，这是我衡量自己的生活是否充实的重要标准。</p>
+<ul>
+<li><strong>收集很多问题</strong></li>
+</ul>
+<p>另一个很多人都知道的秘密是：如果你认准一个问题，投入全部精力去解决它，这样你的效率是最高的。我发现这却是很难实现的。以现在为例，我正在<a href="http://www.mifengtd.cn/articles/how-to-make-exercise-a-daily-habit-with-30-day-challenge.html">锻炼</a>身体，喝橙汁，<a href="http://www.mifengtd.cn/articles/the-art-of-filling.html">整理桌面</a>，和我弟弟聊天，同时在写现在这篇文章。今天一整天，我写了现在这篇文章，读了一本书，吃了点东西，回复了几封邮件，和一些朋友聊了聊天，买了点东西，改了改其他几篇文章，备份了硬盘，还整理了一下图书列表。</p>
+<p>有很多不同的项目让我能够在不同质量的时间下做不同的工作。更重要的是，在你卡壳或是厌烦的时候有其他的一些事可以做。</p>
+<p>这同时会让你变得更加有<a href="http://www.mifengtd.cn/articles/9-ways-of-cultivating-creativity.html">创造力</a>。创造力就是你把自己从其他地方学到的东西能够用到你的工作中。如果你同时做许多不同方向的工作，那你就会得到更多的想法和创意。</p>
+<ul>
+<li><strong>列一个清单</strong></li>
+</ul>
+<p>找一些不同的事同时做并不困难，大部分人都有很多很多的<a href="http://www.mifengtd.cn/articles/building-a-smarter-to-do-list-part-1-43folders.html">待办事项</a>。但是如果你想把它们全记在脑袋里的话，它们就会慢慢消失。要记住所有这些事所给你带来的心智上的<a href="http://www.mifengtd.cn/articles/5-exercises-to-reduce-stress.html">压力</a>会把你压垮。解决办法仍然是很简单：把它们写下来。</p>
+<p>一旦你把要做的事列成了一个清单，你就可以更好的分类组织它们了。比如说，我的清单包括：编程，思考，差事，读书，娱乐休息。</p>
+<p>大部分项目都包括很多不同的任务。以写这篇文章为例，除了真正的写作过程，还包括了阅读其他关于<a href="http://www.mifengtd.cn/articles/how-to-correct-procrastination.html">拖沓</a>的文章，考虑文章的各个部分，整理语句，向别人请教问题等等。每一项任务都属于清单的不同部分，所以你可以在合适的时间才去做某一部分。</p>
+<ul>
+<li><strong>把任务清单和你的生活结合起来</strong></li>
+</ul>
+<p>一旦你有了这样一个任务清单，你需要做的事就是时常记得它，而记住它的最好方法是把它放在你能看到的地方。比如说，我总在我桌子上放一摞书，最上面的那一本就是我最近在读的。当我想要读书的时候，我就直接从上面拿一本书来读。</p>
+<p>对于看电视/电影我也这么做。当我对某一个电影感兴趣的时候，我会把它放在电脑中一个特殊的文件夹内。每当我想休息一下，看看电影的时候，我就会打开那个文件夹。</p>
+<p>我也想过一些更深入的方式，比如说我把一些想看的文章标记为“待读”，当我想要上网的时候就看看那些从前积累下来的未读文章。</p>
+<h3 id="提高你时间的质量"><a href="#提高你时间的质量" class="headerlink" title="提高你时间的质量"></a>提高你时间的质量</h3><p>像上面那样最大限度的利用时间还远远不够，更重要的是提高你自己的时间的质量。那你究竟该怎样做呢？</p>
+<p><strong>减轻身体上的约束</strong></p>
+<ul>
+<li><strong>携带纸和笔：</strong>我认识的很多人的口袋里都有记事簿之类的东西。纸和笔在很多时候都是非常有用的，你可以随时随刻的记录自己的想法，我甚至通过这种方法在地铁上写过整篇文章。</li>
+<li><strong>避免被打扰：</strong>对于那些需要集中注意力的任务，你应该尽量避免被打扰。一个很简单的方法是去一个没人能打扰你的地方，另一个方法是告诉周围的人未来一段时间不要打扰你。关于这点不要过犹不及。当你在浪费时间的时候你反倒应该被打扰一下，帮助别人解决问题肯定比坐在那里看新闻更好的利用了时间。</li>
+</ul>
+<p><strong>减轻心理上的约束</strong></p>
+<ul>
+<li><strong>吃，睡，运动：</strong>当你感到很饿，很累，很焦躁的时候，你的时间的质量会很低。解决这个问题很简单，就是：去吃，去睡，去运动。对自己说“虽然我很累了，但我不能休息，因为我必须要工作”会让你感到自己很努力，但事实上<a href="http://www.mifengtd.cn/articles/the-most-effective-way-to-have-a-rest.html">休息</a>之后你的效率会更高。既然你迟早都要睡觉，还不如先休息好，来提高剩余时间内的效率。</li>
+<li><strong>与快乐的人相处：</strong>跟<a href="http://www.mifengtd.cn/articles/seek-a-happy-story-today-activity.html">快乐</a>的人相处会也会让你变得快乐，也会让你心态更放松。也许很多人愿意躲在屋子里，不与其他人接触，埋头干活，他们觉得这样的话时间才没有被“浪费”，但事实上这会让他们变得情绪低落，工作效率也会大大下降。</li>
+<li><strong>与朋友分担你的压力：</strong>即使你的朋友并不是能够感染他人，给你带来快乐的那种人，和其他的人一起解决复杂的问题也会让问题变得简单。一方面，精神上的压力大家可以互相分担，另一方面，和其他人在一起可以让你专注于工作而不是时常分心。</li>
+</ul>
+<h3 id="拖沓"><a href="#拖沓" class="headerlink" title="拖沓"></a><strong>拖沓</strong></h3><p>上面所说的那些并不是问题的重点，关于效率大家最大的问题还是“<a href="http://www.mifengtd.cn/articles/how-to-correct-procrastination.html">拖沓</a>”。虽然很多人不承认，但是几乎所有人都或多或少的会拖沓。那又该如何避免呢？</p>
+<p>拖沓是什么？从旁观者来看，你在做好玩的事（如玩游戏，看新闻）而不是做真正的工作。但问题的关键是：你究竟为什么会这样？你的脑子里究竟是怎么想的？</p>
+<p>我花了很多时间来研究这件事，我能给出的最好解释是在大脑会给每一项任务赋予一个“脑力场”。你玩过两块磁铁相互作用吗？如果你让它们异极相对，他们就会相互排斥，你会感到他们之间的磁场力。你越是想要把它们和在一起，越会感到它们之间的排斥力。</p>
+<p>心智和精神上也是类似的。它是看不见摸不着的，但你却可以感受到它的存在。并且你越是想要接近它，它会离你越远。</p>
+<p>你不可能通过蛮力来克服两个场之间的排斥力，相反，你应该做的是调转方向。</p>
+<p>那又是什么产生了“精神力场”呢？似乎有两个主要原因：任务是否艰巨，任务是否是被指派的。</p>
+<h3 id="艰巨的任务"><a href="#艰巨的任务" class="headerlink" title="艰巨的任务"></a>艰巨的任务</h3><ul>
+<li><strong>把任务细分</strong></li>
+</ul>
+<p>一个任务很艰巨的原因之一是这个任务很宏大。比如说你想要做一个菜谱构造程序，没有人能一下子完成它，这是一个目标而不是一项任务。一项任务是使你能够朝向目标更进一步的具体概念。一个好的任务是你能够立即拿来实施的，比如“画一个展示菜谱的草图”。</p>
+<p>当你完成了上一个任务后，下一步就会变得更加清晰。你将会考虑一个菜谱有什么构成，你需要什么样的搜索机制，如何构建菜谱的数据库，等等。这样你就构建了一个引擎，每一个任务都会通向下一个任务。</p>
+<p>对于每一个比较大的项目，我都会考虑我需要完成一连串什么样的任务，并且将这些任务加入到我的<a href="http://www.mifengtd.cn/articles/building-a-smarter-to-do-list-part-1-43folders.html">待办事项</a>列表中去。同样，当我做完一些任务之后我会把接下来需要完成的任务再加入任务列表中去。</p>
+<ul>
+<li><strong>简化任务</strong></li>
+</ul>
+<p>另一个让任务变得艰巨的原因就是它太复杂了。“写一本书”这个任务会放你感到无从下手，那么就先从写一篇文章开始吧。如果一篇文章也觉得太多了，那么就先写一个段落的概要吧。最重要的是真正做了一些工作，真正的有进展。</p>
+<p>一旦你明确了你的任务之后，你就可以更清楚的判断它，更容易的理解它。提高完善一些已有的东西比从头创建东西更容易。如果你的一个段落写好了，那么一点一点积累，它会变成一篇文章，最终变成一本书。</p>
+<ul>
+<li><strong>认真考虑它</strong></li>
+</ul>
+<p>通常来说解决一个困难问题需要一些灵感。如果你对那个领域并不熟悉，你应该从研究这个领域开始，借鉴一下其他人的经验，慢慢的研究理解这个领域，并且做一些小的尝试看看你能否搞定这个领域。</p>
+<h3 id="被指派的任务"><a href="#被指派的任务" class="headerlink" title="被指派的任务"></a><strong>被指派的任务</strong></h3><p>被指派的任务是那些你被要求完成的任务。很多心理学实验都表明:当你”刺激”其他人做什么事的时候，他们反倒不容易做好那个事。奖励，惩罚等外部刺激会扼杀”内在动机”–你对于某个问题发自内心的兴趣。人类的大脑对于被要求做的事有先天的抗拒力。<br>这种现象不仅局限于其他人要求你做的事，当你向自己分配任务时仍然会出现这种现象。如果你对自己说”我应该好好做X工作了，这是我现在最重要的事”，之后你就会感到X突然变成了世界上最困难的事情了。然而一旦当Y变成了”最重要的事”，原来的那个X又变得简单了。</p>
+<ul>
+<li><strong>虚构一个任务</strong></li>
+</ul>
+<p>如果你要完成X，那就告诉自己做Y。然而不幸的是，这样欺骗自己却很难，因为你清楚你究竟要做什么。</p>
+<ul>
+<li><strong>不要自己给自己布置任务</strong></li>
+</ul>
+<p>给自己布置任务看起来很诱人，比如对自己说“我要写完这篇文章才去吃饭”，更糟糕的是让别人假装布置给你一些任务。但是这两种方式都会让你变得更没有效率，事实上你还是在给自己布置任务，你的大脑只会去逃避它。</p>
+<ul>
+<li><strong>把事情变得有趣</strong></li>
+</ul>
+<p>困难的工作听起来不会令人感到愉悦，但事实上这可能就是最能让我感到高兴的事。一个困难的问题不但能让你集中全部注意力，而且当你完成它的时候你会感到非常棒，非常有成就感。</p>
+<p>所以帮助自己完成一件事的秘密不是<a href="http://www.mifengtd.cn/articles/becoming-a-master-of-persuasion.html">说服</a>自己必须完成它，而是说服自己这件事确实非常有意思。如果一件事没有意思的话，你需要做的就是让它变得有意思</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>效率的真正秘密在于“聆听自己”，在你饿的时候吃饭，在你疲惫的时候睡觉，当你厌烦的时候休息一下，做那些有趣好玩的项目。</p>
+<p>这看起来很容易，但是社会上的一些观念正在把我们向相反的方向引导。要想变得更加有效率，我们需要做的就是转过头来“聆听自己”。</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>效率</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>自学前端开发之一-Javascript和Node.js</title>
+    <url>/2021/07/13/%E8%87%AA%E5%AD%A6%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B9%8B%E4%B8%80-Javascript%E5%92%8CNode.js/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>前端的基础知识，Javascript和Node.js.</p>
+<span id="more"></span>
+
+<p>我学习前端初衷是想在在微信上开发一个H5页面。我没有从基础的html+js+css开始学起，反而一开始就去使用尝试使用React和Vue框架，最后先选择了Vue。现在想想确实给自己加了一些难度上去，没有规划好循序渐进的学习路线。好在，前端的技术和移动端有很多相似之处，之前在搭建Hexo博客的时候也对脚手架有所了解，所以，第一篇在学会使用Vue之前，梳理一下Vue脚手架搭建的基础，Javascript和Node.js.</p>
+<h1 id="Javascript"><a href="#Javascript" class="headerlink" title="Javascript"></a>Javascript</h1><p>定义：Javascript是一种web<strong>前端语言</strong>，主要用于web开发中，由浏览器解析执行。</p>
+<p>Javascript是一门脚本语言，但也不妨将它与Java做一下对比。（更快掌握新知识的方法之一，就是与老知识对比。）</p>
+<p><em>Javascript和java的关系就像雷峰塔和雷锋之间的关系。</em></p>
+<p>意思是，只差了几个字母，但是可以说是毫无关系！</p>
+<h1 id="Node-js"><a href="#Node-js" class="headerlink" title="Node.js"></a>Node.js</h1><p>定义：<a href="https://nodejs.org/en/">Node.js</a>是一个可以快速构建网络服务及应用的平台，是用Javascript语言构建的服务平台，可用于后端建立服务器。</p>
+<p>Node.js是怎么发展起来的呢。首先要先了解的一点是，原来javascript只是运行在浏览器上的脚本语言，主要用于前端页面的逻辑处理。得益于前端的蓬勃发展，javascript不断发展和完善，后来出现了一个转折点。</p>
+<p>Google的V8引擎的出现！</p>
+<p>得益于V8引擎执行Javascript的速度非常快，性能非常好，JavaScript开始用来写后端代码，Node.js 就是运行在服务端的 JavaScript，你可以理解成java中的JDK。这样子其实前后端的技术在一定程度上实现了融合。</p>
+<h1 id="JavaScript和Node-js的关系"><a href="#JavaScript和Node-js的关系" class="headerlink" title="JavaScript和Node.js的关系"></a>JavaScript和Node.js的关系</h1><p>Javascript 主要应用前端    是<strong>编程语言</strong>    客户端编程语言(需要浏览器的javascript解释器进行解释执行)</p>
+<p>node.js   主要应用后端      是1个<strong>平台</strong>        运行环境(一个基于Chrome JavaScript运行时建立的平台，它是对Google V8引擎进行了封装的运行环境)</p>
+<p>简单的说node.js就是把浏览器的解释器封装起来作为服务器运行平台，用类似javascript的结构语法进行编程，在node.js上运行。</p>
+<h1 id="Node-js的使用"><a href="#Node-js的使用" class="headerlink" title="Node.js的使用"></a>Node.js的使用</h1><p>Node.js有很多版本，推荐使用nvm来下载Node.js并实现版本管理，nvm同时支持Windows和Mac。</p>
+<p>成功下载Node.js后可以使用npm进行依赖库软件包的管理（也可以用yarn，比npm好用），npm继承了传统包管理工具，如curl，wget，homebrew，apt-get等的优良传统，可以方便管理依赖库，软件包等。但也是因为仓库都在外网所以下载速度慢，可以通过设置国内镜像来加快速度，完整设置可以参考我的<a href="https://gist.github.com/iponkan/b82c53bfdfa58469d5127108c932be03">gist</a>，不过我建议你参考我之前科学上网的文章，一劳永逸。</p>
+<h2 id="npx"><a href="#npx" class="headerlink" title="npx"></a>npx</h2><p>npx的概念就是你可以执行网上的npm工程，得到输出结果。其实可以看出，node的应用通常js库都是npm拉取，然后运行。npx就是把这两步步骤结合起来，这样子不必将1.项目clone下来 2.npm install 3.npm run .例如</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npx https://gist.github.com/zkat/4bc19503fe9e9309e2bfaa2c58074d32</span><br><span class="line">git@gist.github.com:4bc19503fe9e9309e2bfaa2c58074d32.git</span><br></pre></td></tr></table></figure>
+
+<p>注意：这里的例子是用gist，应该也可以用github，这里最好是设置代理，因为npx命令无非是通过下载package.json里面的依赖包，然后执行脚本的类似于run的命令。所以，科学上网多么的重要！</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p> <a href="https://www.cnblogs.com/thinkam/p/8262743.html">node.js和JavaScript的关系</a></p>
+<p> <a href="https://www.jianshu.com/p/21d3130ca059">Node.js 是什么？Node.js与JavaScript的区别是什么？</a></p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>移动端跨平台方案浅析</title>
     <url>/2021/07/06/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%96%B9%E6%A1%88%E6%B5%85%E6%9E%90/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本文不涉及到任何代码，只讲概念层面的，结合本人在这几种技术中（Hybrid App的WebView，Picasso（美团点评内部动态化方案），小程序，Futter）的开发经验，对这几种跨平台技术进行一个浅析。另外我在一段时间里也接触到了原生网页开发（html+js+css），算是有些前端开发经验。</p>
@@ -1430,131 +1555,6 @@
         <tag>Flutter</tag>
         <tag>WebView</tag>
         <tag>小程序</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>如何提高效率</title>
-    <url>/2018/03/20/%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98%E6%95%88%E7%8E%87/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>转自：<a href="https://www.mifengtd.cn/articles/how-to-be-productive-aaron-swartz.html">如何提高效率</a></p>
-<p>Aaron Swartz写过一篇很有名的文章，叫做《<a href="http://www.aaronsw.com/weblog/productivity">HOWTO: Be more productive</a>》（如何提高效率）。这篇文章写的实在是太好了，我看了好多遍，很赞同作者的观点。我借鉴了作者提到的一些方法并运用到自己的生活中，发现确实有效果，所以我愿意让更多的人看到这篇文章。<a href="http://www.aaronsw.com/">Aaron Swartz</a>这个人绝对是大牛人，他14时就参与了RSS1.0的制定，他在Stanford读了一年就主动退学了，成为了YC的一员，他的公司后来与reddit合并了，他还是web.py框架的创始人。</p>
-<span id="more"></span>
-
-<p>废话少说，下面就是译文:</p>
-<p>肯定有人跟你说过这样的话“你有看电视的那么长时间，都可以用来写一本书了”，不可否认写书肯定比看电视更好的利用了时间，但是这个结论的成立需要一个假设：“时间是可互换的”，也就是说看电视的时间可以轻松的用来写书。但是很遗憾，事实并非如此。</p>
-<p>不同的时间有不同的质量等级。如果我在走向地铁站的路上发现自己的笔记本忘带了，我就很难集中<a href="http://www.mifengtd.cn/articles/8-tips-for-razor-sharp-concentration.html">注意力</a>写文章。同样，当你不停的被打断的时候，你也很难集中注意力。这里还有一些心理和情感上的因素，有的时候我心情很好，愿意<a href="http://www.mifengtd.cn/articles/be-proactive-1.html">主动</a>去做一些事，但还有一些时候我感到很抑郁和疲惫，就只能看看电视了。</p>
-<p>如果你想变的更加有效率，你必须意识到这个事实，并且很好的处理它。首先，你必须很好的利用不同种类的时间。其次，你必须让你的时间更有效率。</p>
-<h3 id="更有效的利用你的时间"><a href="#更有效的利用你的时间" class="headerlink" title="更有效的利用你的时间"></a>更有效的利用你的时间</h3><ul>
-<li><strong>选择合适的问题</strong></li>
-</ul>
-<p>生命是如此的短暂，为什么浪费时间做一些没意义的事呢？做一些让你感到舒适的事很容易，但是你应该问问自己为什么要做这些事呢？有没有一些<a href="http://www.mifengtd.cn/articles/double_productivity_this_week.html">更重要的事</a>等着你去做？为什么你不去做那些事呢？这些问题很难回答，但是每解决一个都会让你更有效率。</p>
-<p>这不是说你所有的时间都应该用来做那些最重要的事。我的时间就肯定不是这样（否则，我现在就不会在写这篇文章了）。但是，这是我衡量自己的生活是否充实的重要标准。</p>
-<ul>
-<li><strong>收集很多问题</strong></li>
-</ul>
-<p>另一个很多人都知道的秘密是：如果你认准一个问题，投入全部精力去解决它，这样你的效率是最高的。我发现这却是很难实现的。以现在为例，我正在<a href="http://www.mifengtd.cn/articles/how-to-make-exercise-a-daily-habit-with-30-day-challenge.html">锻炼</a>身体，喝橙汁，<a href="http://www.mifengtd.cn/articles/the-art-of-filling.html">整理桌面</a>，和我弟弟聊天，同时在写现在这篇文章。今天一整天，我写了现在这篇文章，读了一本书，吃了点东西，回复了几封邮件，和一些朋友聊了聊天，买了点东西，改了改其他几篇文章，备份了硬盘，还整理了一下图书列表。</p>
-<p>有很多不同的项目让我能够在不同质量的时间下做不同的工作。更重要的是，在你卡壳或是厌烦的时候有其他的一些事可以做。</p>
-<p>这同时会让你变得更加有<a href="http://www.mifengtd.cn/articles/9-ways-of-cultivating-creativity.html">创造力</a>。创造力就是你把自己从其他地方学到的东西能够用到你的工作中。如果你同时做许多不同方向的工作，那你就会得到更多的想法和创意。</p>
-<ul>
-<li><strong>列一个清单</strong></li>
-</ul>
-<p>找一些不同的事同时做并不困难，大部分人都有很多很多的<a href="http://www.mifengtd.cn/articles/building-a-smarter-to-do-list-part-1-43folders.html">待办事项</a>。但是如果你想把它们全记在脑袋里的话，它们就会慢慢消失。要记住所有这些事所给你带来的心智上的<a href="http://www.mifengtd.cn/articles/5-exercises-to-reduce-stress.html">压力</a>会把你压垮。解决办法仍然是很简单：把它们写下来。</p>
-<p>一旦你把要做的事列成了一个清单，你就可以更好的分类组织它们了。比如说，我的清单包括：编程，思考，差事，读书，娱乐休息。</p>
-<p>大部分项目都包括很多不同的任务。以写这篇文章为例，除了真正的写作过程，还包括了阅读其他关于<a href="http://www.mifengtd.cn/articles/how-to-correct-procrastination.html">拖沓</a>的文章，考虑文章的各个部分，整理语句，向别人请教问题等等。每一项任务都属于清单的不同部分，所以你可以在合适的时间才去做某一部分。</p>
-<ul>
-<li><strong>把任务清单和你的生活结合起来</strong></li>
-</ul>
-<p>一旦你有了这样一个任务清单，你需要做的事就是时常记得它，而记住它的最好方法是把它放在你能看到的地方。比如说，我总在我桌子上放一摞书，最上面的那一本就是我最近在读的。当我想要读书的时候，我就直接从上面拿一本书来读。</p>
-<p>对于看电视/电影我也这么做。当我对某一个电影感兴趣的时候，我会把它放在电脑中一个特殊的文件夹内。每当我想休息一下，看看电影的时候，我就会打开那个文件夹。</p>
-<p>我也想过一些更深入的方式，比如说我把一些想看的文章标记为“待读”，当我想要上网的时候就看看那些从前积累下来的未读文章。</p>
-<h3 id="提高你时间的质量"><a href="#提高你时间的质量" class="headerlink" title="提高你时间的质量"></a>提高你时间的质量</h3><p>像上面那样最大限度的利用时间还远远不够，更重要的是提高你自己的时间的质量。那你究竟该怎样做呢？</p>
-<p><strong>减轻身体上的约束</strong></p>
-<ul>
-<li><strong>携带纸和笔：</strong>我认识的很多人的口袋里都有记事簿之类的东西。纸和笔在很多时候都是非常有用的，你可以随时随刻的记录自己的想法，我甚至通过这种方法在地铁上写过整篇文章。</li>
-<li><strong>避免被打扰：</strong>对于那些需要集中注意力的任务，你应该尽量避免被打扰。一个很简单的方法是去一个没人能打扰你的地方，另一个方法是告诉周围的人未来一段时间不要打扰你。关于这点不要过犹不及。当你在浪费时间的时候你反倒应该被打扰一下，帮助别人解决问题肯定比坐在那里看新闻更好的利用了时间。</li>
-</ul>
-<p><strong>减轻心理上的约束</strong></p>
-<ul>
-<li><strong>吃，睡，运动：</strong>当你感到很饿，很累，很焦躁的时候，你的时间的质量会很低。解决这个问题很简单，就是：去吃，去睡，去运动。对自己说“虽然我很累了，但我不能休息，因为我必须要工作”会让你感到自己很努力，但事实上<a href="http://www.mifengtd.cn/articles/the-most-effective-way-to-have-a-rest.html">休息</a>之后你的效率会更高。既然你迟早都要睡觉，还不如先休息好，来提高剩余时间内的效率。</li>
-<li><strong>与快乐的人相处：</strong>跟<a href="http://www.mifengtd.cn/articles/seek-a-happy-story-today-activity.html">快乐</a>的人相处会也会让你变得快乐，也会让你心态更放松。也许很多人愿意躲在屋子里，不与其他人接触，埋头干活，他们觉得这样的话时间才没有被“浪费”，但事实上这会让他们变得情绪低落，工作效率也会大大下降。</li>
-<li><strong>与朋友分担你的压力：</strong>即使你的朋友并不是能够感染他人，给你带来快乐的那种人，和其他的人一起解决复杂的问题也会让问题变得简单。一方面，精神上的压力大家可以互相分担，另一方面，和其他人在一起可以让你专注于工作而不是时常分心。</li>
-</ul>
-<h3 id="拖沓"><a href="#拖沓" class="headerlink" title="拖沓"></a><strong>拖沓</strong></h3><p>上面所说的那些并不是问题的重点，关于效率大家最大的问题还是“<a href="http://www.mifengtd.cn/articles/how-to-correct-procrastination.html">拖沓</a>”。虽然很多人不承认，但是几乎所有人都或多或少的会拖沓。那又该如何避免呢？</p>
-<p>拖沓是什么？从旁观者来看，你在做好玩的事（如玩游戏，看新闻）而不是做真正的工作。但问题的关键是：你究竟为什么会这样？你的脑子里究竟是怎么想的？</p>
-<p>我花了很多时间来研究这件事，我能给出的最好解释是在大脑会给每一项任务赋予一个“脑力场”。你玩过两块磁铁相互作用吗？如果你让它们异极相对，他们就会相互排斥，你会感到他们之间的磁场力。你越是想要把它们和在一起，越会感到它们之间的排斥力。</p>
-<p>心智和精神上也是类似的。它是看不见摸不着的，但你却可以感受到它的存在。并且你越是想要接近它，它会离你越远。</p>
-<p>你不可能通过蛮力来克服两个场之间的排斥力，相反，你应该做的是调转方向。</p>
-<p>那又是什么产生了“精神力场”呢？似乎有两个主要原因：任务是否艰巨，任务是否是被指派的。</p>
-<h3 id="艰巨的任务"><a href="#艰巨的任务" class="headerlink" title="艰巨的任务"></a>艰巨的任务</h3><ul>
-<li><strong>把任务细分</strong></li>
-</ul>
-<p>一个任务很艰巨的原因之一是这个任务很宏大。比如说你想要做一个菜谱构造程序，没有人能一下子完成它，这是一个目标而不是一项任务。一项任务是使你能够朝向目标更进一步的具体概念。一个好的任务是你能够立即拿来实施的，比如“画一个展示菜谱的草图”。</p>
-<p>当你完成了上一个任务后，下一步就会变得更加清晰。你将会考虑一个菜谱有什么构成，你需要什么样的搜索机制，如何构建菜谱的数据库，等等。这样你就构建了一个引擎，每一个任务都会通向下一个任务。</p>
-<p>对于每一个比较大的项目，我都会考虑我需要完成一连串什么样的任务，并且将这些任务加入到我的<a href="http://www.mifengtd.cn/articles/building-a-smarter-to-do-list-part-1-43folders.html">待办事项</a>列表中去。同样，当我做完一些任务之后我会把接下来需要完成的任务再加入任务列表中去。</p>
-<ul>
-<li><strong>简化任务</strong></li>
-</ul>
-<p>另一个让任务变得艰巨的原因就是它太复杂了。“写一本书”这个任务会放你感到无从下手，那么就先从写一篇文章开始吧。如果一篇文章也觉得太多了，那么就先写一个段落的概要吧。最重要的是真正做了一些工作，真正的有进展。</p>
-<p>一旦你明确了你的任务之后，你就可以更清楚的判断它，更容易的理解它。提高完善一些已有的东西比从头创建东西更容易。如果你的一个段落写好了，那么一点一点积累，它会变成一篇文章，最终变成一本书。</p>
-<ul>
-<li><strong>认真考虑它</strong></li>
-</ul>
-<p>通常来说解决一个困难问题需要一些灵感。如果你对那个领域并不熟悉，你应该从研究这个领域开始，借鉴一下其他人的经验，慢慢的研究理解这个领域，并且做一些小的尝试看看你能否搞定这个领域。</p>
-<h3 id="被指派的任务"><a href="#被指派的任务" class="headerlink" title="被指派的任务"></a><strong>被指派的任务</strong></h3><p>被指派的任务是那些你被要求完成的任务。很多心理学实验都表明:当你”刺激”其他人做什么事的时候，他们反倒不容易做好那个事。奖励，惩罚等外部刺激会扼杀”内在动机”–你对于某个问题发自内心的兴趣。人类的大脑对于被要求做的事有先天的抗拒力。<br>这种现象不仅局限于其他人要求你做的事，当你向自己分配任务时仍然会出现这种现象。如果你对自己说”我应该好好做X工作了，这是我现在最重要的事”，之后你就会感到X突然变成了世界上最困难的事情了。然而一旦当Y变成了”最重要的事”，原来的那个X又变得简单了。</p>
-<ul>
-<li><strong>虚构一个任务</strong></li>
-</ul>
-<p>如果你要完成X，那就告诉自己做Y。然而不幸的是，这样欺骗自己却很难，因为你清楚你究竟要做什么。</p>
-<ul>
-<li><strong>不要自己给自己布置任务</strong></li>
-</ul>
-<p>给自己布置任务看起来很诱人，比如对自己说“我要写完这篇文章才去吃饭”，更糟糕的是让别人假装布置给你一些任务。但是这两种方式都会让你变得更没有效率，事实上你还是在给自己布置任务，你的大脑只会去逃避它。</p>
-<ul>
-<li><strong>把事情变得有趣</strong></li>
-</ul>
-<p>困难的工作听起来不会令人感到愉悦，但事实上这可能就是最能让我感到高兴的事。一个困难的问题不但能让你集中全部注意力，而且当你完成它的时候你会感到非常棒，非常有成就感。</p>
-<p>所以帮助自己完成一件事的秘密不是<a href="http://www.mifengtd.cn/articles/becoming-a-master-of-persuasion.html">说服</a>自己必须完成它，而是说服自己这件事确实非常有意思。如果一件事没有意思的话，你需要做的就是让它变得有意思</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>效率的真正秘密在于“聆听自己”，在你饿的时候吃饭，在你疲惫的时候睡觉，当你厌烦的时候休息一下，做那些有趣好玩的项目。</p>
-<p>这看起来很容易，但是社会上的一些观念正在把我们向相反的方向引导。要想变得更加有效率，我们需要做的就是转过头来“聆听自己”。</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>效率</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>自学前端开发之一-Javascript和Node.js</title>
-    <url>/2021/07/13/%E8%87%AA%E5%AD%A6%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B9%8B%E4%B8%80-Javascript%E5%92%8CNode.js/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>前端的基础知识，Javascript和Node.js.</p>
-<span id="more"></span>
-
-<p>我学习前端初衷是想在在微信上开发一个H5页面。我没有从基础的html+js+css开始学起，反而一开始就去使用尝试使用React和Vue框架，最后先选择了Vue。现在想想确实给自己加了一些难度上去，没有规划好循序渐进的学习路线。好在，前端的技术和移动端有很多相似之处，之前在搭建Hexo博客的时候也对脚手架有所了解，所以，第一篇在学会使用Vue之前，梳理一下Vue脚手架搭建的基础，Javascript和Node.js.</p>
-<h1 id="Javascript"><a href="#Javascript" class="headerlink" title="Javascript"></a>Javascript</h1><p>定义：Javascript是一种web<strong>前端语言</strong>，主要用于web开发中，由浏览器解析执行。</p>
-<p>Javascript是一门脚本语言，但也不妨将它与Java做一下对比。（更快掌握新知识的方法之一，就是与老知识对比。）</p>
-<p><em>Javascript和java的关系就像雷峰塔和雷锋之间的关系。</em></p>
-<p>意思是，只差了几个字母，但是可以说是毫无关系！</p>
-<h1 id="Node-js"><a href="#Node-js" class="headerlink" title="Node.js"></a>Node.js</h1><p>定义：<a href="https://nodejs.org/en/">Node.js</a>是一个可以快速构建网络服务及应用的平台，是用Javascript语言构建的服务平台，可用于后端建立服务器。</p>
-<p>Node.js是怎么发展起来的呢。首先要先了解的一点是，原来javascript只是运行在浏览器上的脚本语言，主要用于前端页面的逻辑处理。得益于前端的蓬勃发展，javascript不断发展和完善，后来出现了一个转折点。</p>
-<p>Google的V8引擎的出现！</p>
-<p>得益于V8引擎执行Javascript的速度非常快，性能非常好，JavaScript开始用来写后端代码，Node.js 就是运行在服务端的 JavaScript，你可以理解成java中的JDK。这样子其实前后端的技术在一定程度上实现了融合。</p>
-<h1 id="JavaScript和Node-js的关系"><a href="#JavaScript和Node-js的关系" class="headerlink" title="JavaScript和Node.js的关系"></a>JavaScript和Node.js的关系</h1><p>Javascript 主要应用前端    是<strong>编程语言</strong>    客户端编程语言(需要浏览器的javascript解释器进行解释执行)</p>
-<p>node.js   主要应用后端      是1个<strong>平台</strong>        运行环境(一个基于Chrome JavaScript运行时建立的平台，它是对Google V8引擎进行了封装的运行环境)</p>
-<p>简单的说node.js就是把浏览器的解释器封装起来作为服务器运行平台，用类似javascript的结构语法进行编程，在node.js上运行。</p>
-<h1 id="Node-js的使用"><a href="#Node-js的使用" class="headerlink" title="Node.js的使用"></a>Node.js的使用</h1><p>Node.js有很多版本，推荐使用nvm来下载Node.js并实现版本管理，nvm同时支持Windows和Mac。</p>
-<p>成功下载Node.js后可以使用npm进行依赖库软件包的管理（也可以用yarn，比npm好用），npm继承了传统包管理工具，如curl，wget，homebrew，apt-get等的优良传统，可以方便管理依赖库，软件包等。但也是因为仓库都在外网所以下载速度慢，可以通过设置国内镜像来加快速度，完整设置可以参考我的<a href="https://gist.github.com/iponkan/b82c53bfdfa58469d5127108c932be03">gist</a>，不过我建议你参考我之前科学上网的文章，一劳永逸。</p>
-<h2 id="npx"><a href="#npx" class="headerlink" title="npx"></a>npx</h2><p>npx的概念就是你可以执行网上的npm工程，得到输出结果。其实可以看出，node的应用通常js库都是npm拉取，然后运行。npx就是把这两步步骤结合起来，这样子不必将1.项目clone下来 2.npm install 3.npm run .例如</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npx https://gist.github.com/zkat/4bc19503fe9e9309e2bfaa2c58074d32</span><br><span class="line">git@gist.github.com:4bc19503fe9e9309e2bfaa2c58074d32.git</span><br></pre></td></tr></table></figure>
-
-<p>注意：这里的例子是用gist，应该也可以用github，这里最好是设置代理，因为npx命令无非是通过下载package.json里面的依赖包，然后执行脚本的类似于run的命令。所以，科学上网多么的重要！</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p> <a href="https://www.cnblogs.com/thinkam/p/8262743.html">node.js和JavaScript的关系</a></p>
-<p> <a href="https://www.jianshu.com/p/21d3130ca059">Node.js 是什么？Node.js与JavaScript的区别是什么？</a></p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>前端</tag>
       </tags>
   </entry>
   <entry>
